@@ -1,0 +1,58 @@
+name: Portfolio Task
+description: Track a cybersecurity portfolio deliverable or project-management task.
+title: "[Portfolio] "
+labels: ["type:documentation"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Project Area
+      options:
+        - GRC
+        - Vulnerability Risk
+        - CTI
+        - PM
+    validations:
+      required: true
+  - type: dropdown
+    id: deliverable
+    attributes:
+      label: Deliverable Type
+      options:
+        - Research
+        - Analysis
+        - Report
+        - Dashboard
+        - README
+        - Review
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What should this task accomplish?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What must be true before this task is considered done?
+      value: |
+        - [ ] Public-safe wording
+        - [ ] Evidence or framework named
+        - [ ] Linked from the relevant README
+        - [ ] Reviewed for overclaiming
+    validations:
+      required: true

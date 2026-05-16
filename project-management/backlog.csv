@@ -1,0 +1,18 @@
+Title,Project Area,Deliverable Type,Priority,Sprint,Evidence,Status
+Create portfolio landing README,PM,README,High,Sprint 0,Drafted,Done
+Create GitHub Project fields and views,PM,Review,High,Sprint 0,Needs Evidence,Backlog
+Define fictional organization for NIST CSF assessment,GRC,Research,High,Sprint 1,Needs Evidence,Backlog
+Draft NIST CSF risk assessment scope,GRC,Report,High,Sprint 1,Needs Evidence,Backlog
+Build initial risk register,GRC,Analysis,High,Sprint 1,Needs Evidence,Backlog
+Map risks to NIST CSF functions,GRC,Analysis,Medium,Sprint 1,Needs Evidence,Backlog
+Draft GRC executive brief,GRC,Report,Medium,Sprint 1,Needs Evidence,Backlog
+Research CISA KEV catalog source,Vulnerability Risk,Research,High,Sprint 2,Needs Evidence,Backlog
+Build KEV triage scoring model,Vulnerability Risk,Analysis,High,Sprint 2,Needs Evidence,Backlog
+Create remediation SLA matrix,Vulnerability Risk,Report,Medium,Sprint 2,Needs Evidence,Backlog
+Draft weekly vulnerability brief,Vulnerability Risk,Report,Medium,Sprint 2,Needs Evidence,Backlog
+Select public breach or threat scenario for CTI brief,CTI,Research,High,Sprint 3,Needs Evidence,Backlog
+Map adversary behavior to MITRE ATT&CK,CTI,Analysis,High,Sprint 3,Needs Evidence,Backlog
+Draft CTI executive summary,CTI,Report,Medium,Sprint 3,Needs Evidence,Backlog
+Create incident response improvement backlog,CTI,Analysis,Medium,Sprint 3,Needs Evidence,Backlog
+Polish portfolio for recruiter review,PM,Review,High,Sprint 4,Needs Evidence,Backlog
+Review portfolio for overclaiming and sensitive content,PM,Review,High,Sprint 4,Needs Evidence,Backlog
