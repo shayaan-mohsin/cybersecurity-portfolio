@@ -1,35 +1,20 @@
 # Risk Register
 
-## Scoring Model
+Scoring uses qualitative likelihood and impact based on the sampled HHS OCR breach patterns, HHS healthcare guidance, and NIST CSF 2.0 control themes.
 
-| Score | Likelihood meaning | Impact meaning |
-|---|---|---|
-| High | Likely to occur or already observed as a recurring weakness | Could affect sensitive data, patient trust, business continuity, or leadership visibility |
-| Medium | Plausible given current-state assumptions | Could affect a department, workflow, or important control objective |
-| Low | Less likely under current assumptions | Limited operational or security impact |
+| ID | Risk statement | Evidence basis | Likelihood | Impact | Priority | NIST CSF theme | Recommended response |
+|---|---|---|---|---|---|---|---|
+| R-001 | Internet-facing or poorly managed network servers may be compromised, exposing large volumes of healthcare data. | Network Server appeared in 60 of 100 sampled records and accounted for most affected individuals in the sample. | High | High | High | Identify / Protect / Detect | Maintain a current server inventory, prioritize exploitable vulnerabilities, harden configurations, centralize logs, and verify backup coverage. |
+| R-002 | Email compromise may expose patient or operational information through phishing, mailbox access, or unsafe forwarding rules. | Email appeared in 21 sampled records. HHS ransomware guidance highlights user action, malicious links, and attachments as common infection paths. | High | Medium | High | Protect / Detect / Respond | Enforce MFA, monitor suspicious mailbox rules, publish reporting steps, and maintain an email compromise response playbook. |
+| R-003 | Business associate or vendor involvement may increase breach impact when third-party access and notification responsibilities are unclear. | Business associate presence was marked in 28 sampled records. | Medium | High | High | Govern / Identify / Respond | Maintain a vendor inventory, document data access, review security requirements, define notification timelines, and review vendor access at least quarterly. |
+| R-004 | Privileged account misuse or weak authentication may allow attackers to move from initial access to sensitive systems. | Hacking/IT incidents dominated the sample, making identity control a high-leverage prevention area. | High | High | High | Protect / Detect | Require MFA for privileged and remote access, review admin roles, remove stale accounts, and alert on high-risk login behavior. |
+| R-005 | Incomplete asset and data inventory may prevent the organization from identifying where regulated data resides and which systems need priority protection. | Network servers, email, electronic medical records, desktop computers, and paper/films all appeared as breached information locations. | High | High | High | Govern / Identify | Build a lightweight asset and data-location inventory; classify systems by data sensitivity, business function, and recovery priority. |
+| R-006 | Incident response may be delayed if escalation paths, containment steps, and evidence collection responsibilities are not defined. | HHS ransomware guidance emphasizes initial analysis, containment, eradication, recovery, and post-incident activities. | Medium | High | High | Respond | Create playbooks for ransomware, email compromise, unauthorized access, and vendor notification; run tabletop exercises. |
+| R-007 | Backup and recovery gaps may turn a security incident into a prolonged operational disruption. | HHS ransomware guidance identifies frequent backups and tested restoration as critical recovery capabilities. | Medium | High | High | Recover | Define recovery tiers, protect backups from attacker access, test restores, and document recovery communication steps. |
+| R-008 | Unauthorized access or disclosure may occur when workforce access, minimum necessary workflows, and review cadence are informal. | Unauthorized Access/Disclosure appeared in 11 sampled records. | Medium | Medium | Medium | Govern / Protect | Conduct access reviews, document role-based access expectations, and reinforce reporting procedures for misdirected disclosures. |
+| R-009 | Security monitoring may miss early indicators of compromise across email, endpoints, servers, and cloud services. | Hacking/IT incidents and server/email locations suggest that detection must cover multiple entry and persistence points. | Medium | High | High | Detect / Respond | Define critical log sources, review alert coverage, document escalation thresholds, and track incident metrics. |
+| R-010 | Leadership may underfund security improvements if breach risk is not translated into patient, operational, and third-party impact. | The sampled records show both high frequency and high impact variation, including one record above 3.1 million affected individuals. | Medium | Medium | Medium | Govern | Use risk dashboards and executive summaries to connect security work to patient trust, continuity, regulatory exposure, and vendor accountability. |
 
-Priority is based on likelihood, impact, healthcare sensitivity, and feasibility of remediation.
+## Priority Summary
 
-## Register
-
-| ID | Risk | Affected area | Likelihood | Impact | Priority | Recommended response | Owner | NIST CSF function |
-|---|---|---|---|---|---|---|---|---|
-| R-001 | Inconsistent access review process | Employee and manager accounts | Medium | High | High | Establish quarterly access reviews, define account owners, and document approvals | IT Support / Operations Manager | Govern / Protect |
-| R-002 | Limited incident response documentation | Operations and leadership | Medium | High | High | Create a lightweight incident response playbook, escalation matrix, and tabletop schedule | Operations Manager / IT Support | Respond / Govern |
-| R-003 | Weak vendor access governance | Scheduling, billing, and IT support vendors | Medium | High | High | Require named accounts, least privilege, vendor owner assignment, and periodic review | IT Support / Vendor Owner | Govern / Protect |
-| R-004 | MFA coverage is not verified across all users | Scheduling SaaS, billing portal, email | Medium | High | High | Validate MFA coverage, prioritize privileged and remote users, and document exceptions | IT Support | Protect |
-| R-005 | Asset inventory is incomplete | Laptops, SaaS tools, shared folders | Medium | Medium | Medium | Build a lightweight asset and application inventory with owner, data type, and criticality | IT Support / Office Manager | Identify |
-| R-006 | Security awareness and phishing reporting are informal | Employees and managers | High | Medium | Medium | Publish phishing reporting steps and run annual security awareness training | Office Manager / Leadership | Protect / Detect |
-| R-007 | Cloud document storage ownership is unclear | Intake forms and internal documents | Medium | Medium | Medium | Assign folder owners, review sharing permissions, and define retention expectations | Office Manager | Govern / Protect |
-| R-008 | Backup and recovery expectations are unclear | Scheduling, billing, cloud documents | Low | High | Medium | Define recovery objectives and test restoration for one critical workflow | IT Support / Leadership | Recover |
-| R-009 | Security monitoring and alert review are ad hoc | Email, SaaS login activity, privileged access | Medium | Medium | Medium | Define alert sources, review cadence, and escalation criteria | IT Support | Detect / Respond |
-
-## Summary
-
-The highest-priority risks are access governance, incident response readiness, vendor access, and MFA verification. These create practical risk in a healthcare services environment because they affect sensitive information, service continuity, and accountability.
-
-## Top Three Recommendations
-
-1. Establish quarterly access reviews for employees and vendors.
-2. Create a lightweight incident response playbook and escalation matrix.
-3. Validate MFA coverage for scheduling, billing, email, vendor, and privileged accounts.
+The highest-priority risks are network server exposure, identity and privileged access weakness, incomplete inventory, vendor oversight gaps, and incident response readiness. These risks are tightly connected: an organization cannot prioritize vulnerabilities, assign owners, detect compromise, or recover confidently without knowing which systems and vendors support sensitive workflows.

@@ -1,46 +1,32 @@
-# NIST CSF Mapping
+# NIST CSF 2.0 Mapping
 
-This mapping uses NIST CSF 2.0 as a public reference framework. It is a portfolio exercise, not a formal control assessment or compliance attestation.
+This mapping uses NIST CSF 2.0 to translate the breach trend findings into security outcomes and implementation priorities. Category themes are selected at a practical level for a small or modest-maturity healthcare organization.
 
-## Function-Level Mapping
-
-| NIST CSF function | CareBridge interpretation | Related risks | Example action |
+| NIST CSF 2.0 function | Relevant category themes | Related risks | Assessment implication |
 |---|---|---|---|
-| Govern | Define security accountability, policy ownership, risk decisions, and vendor oversight | R-001, R-002, R-003, R-007 | Assign owners for access reviews, vendor access, document storage, and incident response |
-| Identify | Understand assets, workflows, users, vendors, and sensitive data | R-005 | Build a lightweight inventory of SaaS tools, laptops, shared folders, and business owners |
-| Protect | Reduce risk through access control, MFA, training, and data safeguards | R-001, R-003, R-004, R-006, R-007 | Validate MFA coverage, apply least privilege, and publish user guidance |
-| Detect | Improve visibility into suspicious activity and user reporting | R-006, R-009 | Define phishing reporting, alert sources, and review cadence |
-| Respond | Prepare for incidents through roles, escalation, analysis, and communication | R-002, R-009 | Create a lightweight incident response playbook and escalation matrix |
-| Recover | Restore critical workflows and learn from disruption | R-008 | Define recovery objectives and test restoration steps |
+| Govern | Organizational context; risk management strategy; roles and responsibilities; cybersecurity supply chain risk management | R-003, R-005, R-010 | Leadership needs clear ownership for systems, vendors, sensitive data, and risk decisions. |
+| Identify | Asset management; risk assessment; improvement | R-001, R-005, R-008 | Inventory and data-location visibility are prerequisites for prioritizing network server, email, and electronic record risk. |
+| Protect | Identity management, authentication, and access control; awareness and training; data security; platform security; infrastructure resilience | R-001, R-002, R-004, R-007, R-008 | Access control, MFA, secure configuration, user reporting, and resilient backups reduce the most common observed exposure paths. |
+| Detect | Continuous monitoring; adverse event analysis | R-002, R-004, R-009 | Monitoring should cover email, privileged access, server activity, endpoint alerts, and vendor access anomalies. |
+| Respond | Incident management; incident analysis; incident reporting and communication; incident mitigation | R-002, R-003, R-006, R-009 | Playbooks should define containment, evidence handling, escalation, vendor coordination, and breach decision support. |
+| Recover | Incident recovery plan execution; recovery communication | R-006, R-007, R-010 | Recovery priorities should be tied to clinical, operational, and patient communication needs. |
 
-## Category Themes
+## Mapping By Finding
 
-| Function | Category theme | Portfolio application |
+| Finding | CSF interpretation | Control direction |
 |---|---|---|
-| Govern | Organizational context | Identify the workflows and sensitive data that matter most to CareBridge |
-| Govern | Roles, responsibilities, and authorities | Assign owners for access reviews, vendors, incident response, and cloud storage |
-| Govern | Policy | Document lightweight expectations for access, vendor support, incident reporting, and data handling |
-| Govern | Cybersecurity supply chain risk management | Create a vendor access review cycle and named owner model |
-| Identify | Asset management | Track laptops, SaaS tools, shared folders, and business owners |
-| Identify | Risk assessment | Score risks by likelihood, impact, priority, and business area |
-| Protect | Identity management, authentication, and access control | Validate MFA, remove stale accounts, and apply least privilege |
-| Protect | Awareness and training | Publish phishing reporting and security awareness guidance |
-| Protect | Data security | Review shared folders and sensitive document handling |
-| Detect | Continuous monitoring | Define the minimum alert sources and review cadence for email and SaaS activity |
-| Respond | Incident management | Create a response playbook, escalation matrix, and tabletop exercise |
-| Recover | Recovery plan execution | Define restoration expectations for scheduling, billing, and document workflows |
+| Hacking/IT incidents dominate the sample | Treat compromise prevention and detection as board-level risk topics, not only technical backlog items. | Prioritize identity, patching, secure configuration, logging, and response readiness. |
+| Network servers appear most often as breached information locations | Server inventory and hardening are core risk management tasks. | Maintain system owners, exposure review, vulnerability prioritization, backup validation, and alert coverage. |
+| Email appears frequently | Workforce-facing controls remain critical in healthcare operations. | Enforce MFA, phishing reporting, mailbox monitoring, and account compromise playbooks. |
+| Business associates are present in a meaningful share of records | Supply chain risk should be integrated into governance and response. | Track vendors, data access, security expectations, incident contacts, and review cadence. |
+| Affected-individual totals vary widely | Risk cannot be ranked by incident count alone. | Combine likelihood, impact, data sensitivity, system criticality, and affected-population scale. |
 
-## Key Observation
+## Target State
 
-The strongest near-term value comes from governance and process improvements. CareBridge does not need an enterprise-scale security program to reduce risk; it needs clear ownership, repeatable access reviews, practical response steps, and basic visibility into the systems that support sensitive workflows.
+The target state is a repeatable healthcare security baseline:
 
-## Practical Maturity Target
-
-The target state is not "perfect security." The target state is a repeatable, explainable security baseline:
-
-- Known systems and owners
-- Reviewed user and vendor access
-- MFA coverage validated
-- Incident response steps documented
-- Staff know how to report suspicious activity
-- Recovery expectations are defined for critical workflows
+1. Leadership can name the systems, vendors, and data flows that matter most.
+2. Technical teams can prioritize vulnerabilities and misconfigurations by patient and operational impact.
+3. Workforce users know how to report suspicious email, account issues, and disclosure concerns.
+4. Incident responders can contain, analyze, communicate, and recover without inventing the process during the incident.
+5. Vendors with sensitive data access are reviewed as part of routine governance.

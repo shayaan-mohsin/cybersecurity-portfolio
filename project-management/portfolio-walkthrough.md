@@ -1,15 +1,15 @@
-# Recruiter Walkthrough
+# Portfolio Walkthrough
 
 ## What This Repository Shows
 
-This portfolio is designed to show early-career cybersecurity capability in two ways:
+This repository demonstrates early-career cybersecurity capability in two ways:
 
-1. Cybersecurity thinking across GRC, cyber risk, CTI, and vulnerability prioritization.
+1. Cybersecurity analysis across GRC, cyber risk, CTI, and vulnerability prioritization.
 2. Project-management discipline through roadmap planning, sprint structure, backlog tracking, and executive summaries.
 
 ## Best Starting Points
 
-For GRC / risk roles:
+For GRC and risk roles:
 
 - `projects/01-nist-csf-risk-assessment/`
 - `project-management/portfolio-risk-register.md`
@@ -32,4 +32,4 @@ For project-management evidence:
 
 ## Positioning Note
 
-The work is intentionally public-safe and uses fictional or sanitized scenarios. It is meant to show judgment, structure, communication, and practical security analysis.
+The strongest work in this repository is built from public datasets, official frameworks, and clearly stated assumptions. The goal is to show judgment, structure, communication, and practical security analysis without implying access to any organization's internal systems.

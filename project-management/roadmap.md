@@ -11,15 +11,16 @@ Deliverables:
 - Backlog seed list
 - Issue templates
 
-## Sprint 1: NIST CSF Risk Assessment
+## Sprint 1: Healthcare Breach Risk Assessment
 
-Goal: publish the first GRC/risk case study using a fictional organization and NIST CSF 2.0 framing.
+Goal: publish a GRC/risk assessment using public HHS OCR breach records, HHS healthcare cybersecurity guidance, and NIST CSF 2.0 framing.
 
 Deliverables:
-- Scope and assumptions
-- Asset and risk register
+- Data methodology
+- Breach trend analysis
+- Evidence-informed risk register
 - NIST CSF mapping
-- Prioritized risk roadmap
+- Prioritized 30/60/90-day roadmap
 - Executive brief
 
 ## Sprint 2: CISA KEV Vulnerability Prioritization
@@ -46,11 +47,11 @@ Deliverables:
 
 ## Sprint 4: Portfolio Polish
 
-Goal: turn the work into a recruiter-ready cybersecurity portfolio.
+Goal: refine the repository for public review and ensure each deliverable is accurate, evidence-backed, and professionally bounded.
 
 Deliverables:
 - Final README polish
 - Evidence review
 - Executive summaries
-- Public-safe content review
+- Public content review
 - LinkedIn/GitHub profile alignment

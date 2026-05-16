@@ -18,7 +18,7 @@ Use:
 
 Public.
 
-The portfolio uses fictional and sanitized scenarios, so it is appropriate for a public GitHub repository.
+The portfolio uses public datasets, official frameworks, and clearly bounded assumptions, so it is appropriate for a public GitHub repository.
 
 ## Create The Repository In GitHub
 
@@ -71,8 +71,8 @@ Use the starter issue list in:
 Start with these five:
 
 1. Create GitHub Project fields and views
-2. Define fictional organization for NIST CSF assessment
-3. Build initial risk register
+2. Document HHS OCR breach data methodology
+3. Build evidence-informed risk register
 4. Research CISA KEV catalog source
 5. Select public breach or threat scenario for CTI brief
 

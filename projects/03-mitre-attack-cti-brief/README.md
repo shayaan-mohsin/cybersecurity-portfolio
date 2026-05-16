@@ -4,9 +4,9 @@
 
 Build a CTI-style threat brief using MITRE ATT&CK to translate adversary behavior into business impact and response recommendations.
 
-## Scenario
+## Analysis Focus
 
-Fictional scenario: a mid-sized organization is concerned about credential theft, phishing, and unauthorized access to cloud-hosted business tools.
+The brief will focus on credential theft, phishing, and unauthorized access to cloud-hosted business tools. The analysis will use public threat knowledge, ATT&CK technique mapping, and clearly bounded business assumptions.
 
 ## Deliverables
 
@@ -23,6 +23,6 @@ Fictional scenario: a mid-sized organization is concerned about credential theft
 - Detection and response recommendation development
 - Incident-response planning concepts
 
-## Portfolio Value
+## Value
 
 This project shows how threat research can be made useful for leadership, operations, and security teams.
