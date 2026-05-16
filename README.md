@@ -21,6 +21,10 @@ The portfolio is managed as a sprint-based GitHub Project:
 - Deliverables grouped by GRC, Vulnerability Risk, CTI, and PM
 - Evidence status tracked from initial research through publication
 
+Live roadmap:
+
+- [Cybersecurity Portfolio Roadmap](https://github.com/users/shayaan-mohsin/projects/1)
+
 Start here:
 
 - [Roadmap](project-management/roadmap.md)
