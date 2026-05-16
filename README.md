@@ -10,7 +10,7 @@ This repository shows both cybersecurity analysis and project-management discipl
 |---|---|---|
 | [Healthcare Breach Risk Assessment](projects/01-nist-csf-risk-assessment/README.md) | GRC, cyber risk, breach trend analysis, NIST CSF 2.0 mapping | HHS OCR breach sample, risk register, CSF mapping, prioritized roadmap, executive brief |
 | [CISA KEV Vulnerability Prioritization](projects/02-cisa-kev-vulnerability-prioritization/README.md) | Vulnerability risk, exploited vulnerability prioritization, remediation planning | CISA KEV feed, triage model, SLA matrix, Python analysis workflow, weekly brief |
-| [MITRE ATT&CK CTI Brief](projects/03-mitre-attack-cti-brief/README.md) | CTI, adversary behavior, response recommendations | Threat profile, ATT&CK mapping, response backlog, executive summary |
+| [Scattered Spider CTI Brief](projects/03-mitre-attack-cti-brief/README.md) | CTI, ATT&CK mapping, identity risk, response planning | CISA AA23-320A, MITRE ATT&CK G1015, detection plan, response backlog, executive summary |
 
 ## Project Management
 
@@ -44,6 +44,7 @@ This repository is a working public cybersecurity portfolio. Deliverables use pu
 - HHS OCR Breach Portal
 - HHS HC3 healthcare cybersecurity guidance
 - CISA Known Exploited Vulnerabilities Catalog
+- CISA cyber threat advisories
 - MITRE ATT&CK
 - Governance, Risk, and Compliance
 - Vulnerability prioritization

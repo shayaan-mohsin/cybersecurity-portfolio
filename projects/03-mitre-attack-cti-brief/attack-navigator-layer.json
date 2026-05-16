@@ -1,0 +1,48 @@
+{
+  "name": "Scattered Spider Identity Intrusion CTI Brief",
+  "versions": {
+    "attack": "17",
+    "navigator": "5.1.0",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Selected ATT&CK techniques from public CISA and MITRE reporting for Scattered Spider defensive analysis.",
+  "filters": {
+    "platforms": [
+      "Windows",
+      "macOS",
+      "Linux",
+      "Office Suite",
+      "SaaS",
+      "IaaS",
+      "Identity Provider"
+    ]
+  },
+  "techniques": [
+    {"techniqueID": "T1589", "tactic": "reconnaissance", "color": "#ffd966", "comment": "Gather victim identity information for social engineering.", "enabled": true},
+    {"techniqueID": "T1598.004", "tactic": "reconnaissance", "color": "#ffd966", "comment": "Voice-based phishing for information.", "enabled": true},
+    {"techniqueID": "T1566.004", "tactic": "initial-access", "color": "#f6b26b", "comment": "Spearphishing voice against employees and help desks.", "enabled": true},
+    {"techniqueID": "T1078.002", "tactic": "initial-access", "color": "#f6b26b", "comment": "Use of valid domain accounts.", "enabled": true},
+    {"techniqueID": "T1199", "tactic": "initial-access", "color": "#f6b26b", "comment": "Trusted relationship and contracted help desk risk.", "enabled": true},
+    {"techniqueID": "T1556.006", "tactic": "persistence", "color": "#e06666", "comment": "MFA process modification and token enrollment.", "enabled": true},
+    {"techniqueID": "T1219.002", "tactic": "persistence", "color": "#e06666", "comment": "Remote access tools for persistence.", "enabled": true},
+    {"techniqueID": "T1136", "tactic": "persistence", "color": "#e06666", "comment": "Create accounts in compromised environments.", "enabled": true},
+    {"techniqueID": "T1656", "tactic": "defense-evasion", "color": "#cc0000", "comment": "Social engineering through impersonation.", "enabled": true},
+    {"techniqueID": "T1621", "tactic": "credential-access", "color": "#cc0000", "comment": "MFA request generation and push fatigue.", "enabled": true},
+    {"techniqueID": "T1552.001", "tactic": "credential-access", "color": "#cc0000", "comment": "Credentials in files.", "enabled": true},
+    {"techniqueID": "T1087.004", "tactic": "discovery", "color": "#93c47d", "comment": "Cloud account discovery.", "enabled": true},
+    {"techniqueID": "T1213.002", "tactic": "discovery", "color": "#93c47d", "comment": "SharePoint repository discovery.", "enabled": true},
+    {"techniqueID": "T1213.003", "tactic": "discovery", "color": "#93c47d", "comment": "Code repository discovery.", "enabled": true},
+    {"techniqueID": "T1114", "tactic": "collection", "color": "#6fa8dc", "comment": "Email collection.", "enabled": true},
+    {"techniqueID": "T1213.005", "tactic": "collection", "color": "#6fa8dc", "comment": "Messaging application collection.", "enabled": true},
+    {"techniqueID": "T1567.002", "tactic": "exfiltration", "color": "#8e7cc3", "comment": "Exfiltration to cloud storage.", "enabled": true},
+    {"techniqueID": "T1486", "tactic": "impact", "color": "#674ea7", "comment": "Data encrypted for impact.", "enabled": true},
+    {"techniqueID": "T1490", "tactic": "impact", "color": "#674ea7", "comment": "Inhibit system recovery.", "enabled": true}
+  ],
+  "legendItems": [
+    {"label": "Reconnaissance / Initial Access", "color": "#f6b26b"},
+    {"label": "Identity persistence / Credential access", "color": "#cc0000"},
+    {"label": "Discovery / Collection", "color": "#6fa8dc"},
+    {"label": "Exfiltration / Impact", "color": "#674ea7"}
+  ]
+}

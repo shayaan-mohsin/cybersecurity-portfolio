@@ -11,9 +11,9 @@ Build KEV triage scoring model,Vulnerability Risk,Analysis,High,Sprint 2,Reviewe
 Create remediation SLA matrix,Vulnerability Risk,Report,Medium,Sprint 2,Reviewed,Done
 Draft weekly vulnerability brief,Vulnerability Risk,Report,Medium,Sprint 2,Reviewed,Done
 Draft KEV executive summary,Vulnerability Risk,Report,Medium,Sprint 2,Reviewed,Done
-Select public breach or threat scenario for CTI brief,CTI,Research,High,Sprint 3,Needs Evidence,Backlog
-Map adversary behavior to MITRE ATT&CK,CTI,Analysis,High,Sprint 3,Needs Evidence,Backlog
-Draft CTI executive summary,CTI,Report,Medium,Sprint 3,Needs Evidence,Backlog
-Create incident response improvement backlog,CTI,Analysis,Medium,Sprint 3,Needs Evidence,Backlog
+Select Scattered Spider public-source CTI focus,CTI,Research,High,Sprint 3,Reviewed,Done
+Map Scattered Spider behavior to MITRE ATT&CK,CTI,Analysis,High,Sprint 3,Reviewed,Done
+Draft CTI executive summary,CTI,Report,Medium,Sprint 3,Reviewed,Done
+Create incident response improvement backlog,CTI,Analysis,Medium,Sprint 3,Reviewed,Done
 Polish repository for public review,PM,Review,High,Sprint 4,Needs Evidence,Backlog
 Review portfolio for overclaiming and sensitive content,PM,Review,High,Sprint 4,Needs Evidence,Backlog

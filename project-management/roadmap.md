@@ -36,16 +36,18 @@ Deliverables:
 - Weekly vulnerability brief
 - Executive summary
 
-## Sprint 3: MITRE ATT&CK CTI Brief
+## Sprint 3: Scattered Spider CTI Brief
 
-Goal: demonstrate CTI-style research, adversary behavior mapping, and response recommendations.
+Goal: publish a public-source CTI brief using CISA Scattered Spider reporting and MITRE ATT&CK G1015 mapping.
 
 Deliverables:
+- Sources and methodology
 - Threat profile
-- ATT&CK mapping
-- Business impact summary
-- Detection and response recommendations
-- Incident-response improvement backlog
+- ATT&CK technique mapping
+- Detection and response plan
+- Response improvement backlog
+- Executive summary
+- ATT&CK Navigator layer
 
 ## Sprint 4: Portfolio Polish
 
