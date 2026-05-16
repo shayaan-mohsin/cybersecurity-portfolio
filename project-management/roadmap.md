@@ -25,14 +25,16 @@ Deliverables:
 
 ## Sprint 2: CISA KEV Vulnerability Prioritization
 
-Goal: demonstrate vulnerability prioritization using authoritative public vulnerability intelligence.
+Goal: publish an exploited-vulnerability prioritization workflow using the official CISA KEV catalog.
 
 Deliverables:
 - Data source notes
-- Triage model
+- KEV catalog analysis
+- Triage scoring model
 - Remediation SLA matrix
-- Python/pandas analysis workflow
+- Python analysis workflow
 - Weekly vulnerability brief
+- Executive summary
 
 ## Sprint 3: MITRE ATT&CK CTI Brief
 

@@ -9,7 +9,7 @@ This repository shows both cybersecurity analysis and project-management discipl
 | Project | Focus | Primary evidence |
 |---|---|---|
 | [Healthcare Breach Risk Assessment](projects/01-nist-csf-risk-assessment/README.md) | GRC, cyber risk, breach trend analysis, NIST CSF 2.0 mapping | HHS OCR breach sample, risk register, CSF mapping, prioritized roadmap, executive brief |
-| [CISA KEV Vulnerability Prioritization](projects/02-cisa-kev-vulnerability-prioritization/README.md) | Vulnerability risk, prioritization logic, remediation planning | Triage model, SLA matrix, Python analysis workflow, weekly brief |
+| [CISA KEV Vulnerability Prioritization](projects/02-cisa-kev-vulnerability-prioritization/README.md) | Vulnerability risk, exploited vulnerability prioritization, remediation planning | CISA KEV feed, triage model, SLA matrix, Python analysis workflow, weekly brief |
 | [MITRE ATT&CK CTI Brief](projects/03-mitre-attack-cti-brief/README.md) | CTI, adversary behavior, response recommendations | Threat profile, ATT&CK mapping, response backlog, executive summary |
 
 ## Project Management
@@ -49,7 +49,7 @@ This repository is a working public cybersecurity portfolio. Deliverables use pu
 - Vulnerability prioritization
 - Cyber Threat Intelligence
 - Digital forensics and incident response concepts
-- Python and pandas
+- Python data analysis
 
 ## Author
 
