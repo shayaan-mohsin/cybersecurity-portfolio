@@ -18,7 +18,6 @@ https://github.com/users/shayaan-mohsin/projects/1
 - GitHub CLI installed locally.
 - GitHub CLI authenticated as `shayaan-mohsin`.
 - Local Git repository initialized on branch `main`.
-- Initial portfolio commit created.
 - Public GitHub repository created.
 - Portfolio pushed to GitHub.
 - Public GitHub Project created and linked to the repository.
@@ -34,14 +33,14 @@ https://github.com/users/shayaan-mohsin/projects/1
 - Starter backlog converted into GitHub issues.
 - Project item metadata populated across the starter backlog.
 
-## Remaining Manual Polish
+## Portfolio V1 Status
 
-GitHub CLI does not currently expose a simple command for creating named visual Project views. In the GitHub Project UI, add these views manually:
+Portfolio V1 is complete. All three project tracks are published in the repository:
 
-- Backlog
-- Current Sprint
-- Roadmap
-- Portfolio Evidence
-- PM Dashboard
+| Project | Status |
+|---|---|
+| Healthcare Breach Risk Assessment | Complete |
+| CISA KEV Vulnerability Prioritization | Complete |
+| Scattered Spider CTI Brief | Complete |
 
-The underlying fields and issue metadata are already in place, so these views should be quick to create from the GitHub web interface.
+Final public-content review is documented in [`project-management/final-portfolio-review.md`](project-management/final-portfolio-review.md).

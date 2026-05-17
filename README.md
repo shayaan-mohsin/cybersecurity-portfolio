@@ -32,10 +32,11 @@ Start here:
 - [Portfolio Risk Register](project-management/portfolio-risk-register.md)
 - [GitHub Project Setup](project-management/github-project-setup.md)
 - [Portfolio Walkthrough](project-management/portfolio-walkthrough.md)
+- [Final Portfolio Review](project-management/final-portfolio-review.md)
 
 ## Current Status
 
-This repository is a working public cybersecurity portfolio. Deliverables use public datasets, official frameworks, and clearly bounded assumptions to demonstrate risk analysis, security communication, and project-management execution.
+Portfolio V1 is complete. The repository includes three evidence-backed cybersecurity projects, sprint/project-management artifacts, public-source data or advisory references, executive summaries, and a final public-content review.
 
 ## Tools And Concepts
 

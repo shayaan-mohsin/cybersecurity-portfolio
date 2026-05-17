@@ -2,11 +2,11 @@
 
 ## Week Of
 
-YYYY-MM-DD
+Use ISO format, for example: `2026-01-01`
 
 ## Summary
 
-Short summary of the week’s security risk, threat, or portfolio progress.
+Short summary of the week's security risk, threat, or portfolio progress.
 
 ## Highlights
 

@@ -1,6 +1,6 @@
 Title,Project Area,Deliverable Type,Priority,Sprint,Evidence,Status
-Create portfolio landing README,PM,README,High,Sprint 0,Drafted,Done
-Create GitHub Project fields and views,PM,Review,High,Sprint 0,Needs Evidence,Backlog
+Create portfolio landing README,PM,README,High,Sprint 0,Reviewed,Done
+Create GitHub Project fields and views,PM,Review,High,Sprint 0,Reviewed,Done
 Document HHS OCR breach data methodology,GRC,Research,High,Sprint 1,Reviewed,Done
 Draft healthcare breach trend analysis,GRC,Report,High,Sprint 1,Reviewed,Done
 Build evidence-informed risk register,GRC,Analysis,High,Sprint 1,Reviewed,Done
@@ -15,5 +15,5 @@ Select Scattered Spider public-source CTI focus,CTI,Research,High,Sprint 3,Revie
 Map Scattered Spider behavior to MITRE ATT&CK,CTI,Analysis,High,Sprint 3,Reviewed,Done
 Draft CTI executive summary,CTI,Report,Medium,Sprint 3,Reviewed,Done
 Create incident response improvement backlog,CTI,Analysis,Medium,Sprint 3,Reviewed,Done
-Polish repository for public review,PM,Review,High,Sprint 4,Needs Evidence,Backlog
-Review portfolio for overclaiming and sensitive content,PM,Review,High,Sprint 4,Needs Evidence,Backlog
+Polish repository for public review,PM,Review,High,Sprint 4,Reviewed,Done
+Review portfolio for overclaiming and sensitive content,PM,Review,High,Sprint 4,Reviewed,Done
