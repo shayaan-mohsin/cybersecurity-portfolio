@@ -1,5 +1,11 @@
 # Detection And Response Plan
 
+## Defender Workflow
+
+The visual below summarizes the defensive operating path for this brief. The rest of the file expands each part into log sources, detection use cases, response playbooks, and metrics.
+
+![Identity-focused defender workflow](visuals/identity-defense-workflow.svg)
+
 ## Priority Log Sources
 
 | Source | Why it matters |

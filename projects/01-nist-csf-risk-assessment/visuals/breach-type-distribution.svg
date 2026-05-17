@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="362" viewBox="0 0 980 362" role="img" aria-labelledby="title desc">
+<title id="title">Breach Type Distribution</title>
+<desc id="desc">Record count by reported breach type in the sampled HHS OCR data</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="18" y="18" width="944" height="326" rx="14" fill="#f8fafc" stroke="#dbe3ef"/>
+<text fill="#0f172a" font-size="24" font-weight="700"><tspan x="42" dy="0">Breach Type Distribution</tspan></text>
+<text fill="#475569" font-size="13" font-weight="400"><tspan x="42" dy="0">Record count by reported breach type in the sampled HHS OCR data</tspan></text>
+<text fill="#0f172a" font-size="14" font-weight="600"><tspan x="42" dy="0">Hacking/IT Incident</tspan></text>
+<rect x="275" y="116" width="560" height="26" rx="13" fill="#e2e8f0"/>
+<rect x="275" y="116" width="560" height="26" rx="13" fill="#2563eb"/>
+<text x="857" y="135" fill="#0f172a" font-size="14" font-weight="700">88</text>
+<text fill="#0f172a" font-size="14" font-weight="600"><tspan x="42" dy="0">Unauthorized</tspan><tspan x="42" dy="18">Access/Disclosure</tspan></text>
+<rect x="275" y="174" width="560" height="26" rx="13" fill="#e2e8f0"/>
+<rect x="275" y="174" width="70" height="26" rx="13" fill="#0891b2"/>
+<text x="857" y="193" fill="#0f172a" font-size="14" font-weight="700">11</text>
+<text fill="#0f172a" font-size="14" font-weight="600"><tspan x="42" dy="0">Theft</tspan></text>
+<rect x="275" y="232" width="560" height="26" rx="13" fill="#e2e8f0"/>
+<rect x="275" y="232" width="6" height="26" rx="13" fill="#16a34a"/>
+<text x="857" y="251" fill="#0f172a" font-size="14" font-weight="700">1</text>
+</svg>

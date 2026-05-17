@@ -2,6 +2,12 @@
 
 This mapping translates public Scattered Spider reporting into defensive analysis. The selected techniques are not a complete list of every technique associated with the group; they are the techniques most relevant to an identity, help desk, SaaS, and incident-response readiness brief.
 
+## Attack Flow Visual
+
+The diagram below provides a quick path through the CTI story before the technique-level table. It is not a replacement for ATT&CK mapping; it is a reader aid that connects the main behavior clusters to defensive planning.
+
+![Scattered Spider attack flow](visuals/scattered-spider-attack-flow.svg)
+
 | Tactic | ATT&CK ID | Technique | Source-backed behavior | Detection and response focus |
 |---|---|---|---|---|
 | Reconnaissance | T1589 | Gather Victim Identity Information | Public reporting describes gathering usernames, passwords, PII, and employee role information to support social engineering. | Monitor exposed executive/help desk identity data; limit public process details; train support teams on identity-proofing abuse. |

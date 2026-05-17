@@ -4,6 +4,14 @@
 
 The sampled HHS OCR records cover 100 public breach reports submitted from February 9, 2026 through May 1, 2026. The sample included healthcare providers, health plans, and business associates.
 
+## Visual Summary
+
+The charts below provide the quick-read version of the analysis. They are generated from the local sample using [`scripts/analyze_hhs_breaches.py`](scripts/analyze_hhs_breaches.py), which keeps the visual layer traceable to the same CSV used for the written findings.
+
+![Healthcare breach dashboard](visuals/healthcare-breach-dashboard.svg)
+
+![Covered entity type distribution](visuals/entity-type-distribution.svg)
+
 ## Breach Type
 
 | Type of breach | Records | Share of sample | Individuals affected |

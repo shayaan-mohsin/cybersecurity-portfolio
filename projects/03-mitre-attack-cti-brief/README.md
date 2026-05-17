@@ -8,6 +8,18 @@ The analysis focuses on one practical question:
 
 > How should an organization prepare for identity-focused social engineering, help desk abuse, MFA bypass, cloud/SaaS discovery, data theft, and ransomware activity associated with Scattered Spider tradecraft?
 
+## How To Read This Project
+
+Start with the attack-flow visual for the story of the intrusion path, then read the ATT&CK mapping for technique-level detail. The detection-and-response file and response backlog show how the intelligence can become concrete defensive work.
+
+This brief is intentionally written for both technical and nontechnical readers: it explains the attacker behavior, the business risk, and the defensive response without relying on private incident data.
+
+## Visual Snapshot
+
+![Scattered Spider attack flow](visuals/scattered-spider-attack-flow.svg)
+
+![Defender workflow](visuals/identity-defense-workflow.svg)
+
 ## Evidence Base
 
 The brief uses public-source reporting collected on May 16, 2026:
@@ -27,6 +39,14 @@ The brief uses public-source reporting collected on May 16, 2026:
 | Cloud, SaaS, collaboration, and code repositories can become collection targets | MITRE maps the group to cloud storage, SharePoint, code repositories, messaging applications, and email collection. | Cloud/SaaS audit logs need monitoring for bulk access, unusual searches, and suspicious downloads. |
 | The activity can escalate to extortion and ransomware impact | CISA describes data theft, extortion, and ransomware variants, and MITRE maps data encryption for impact. | Incident response should include data-theft containment, executive communications, legal/privacy coordination, and recovery testing. |
 
+## Analyst Competencies Represented
+
+- Public-source CTI research and source-bounded analysis
+- MITRE ATT&CK technique mapping
+- Identity-focused threat modeling
+- Detection engineering and response planning concepts
+- Executive communication for threat-informed risk decisions
+
 ## Deliverables
 
 - [`sources-and-methodology.md`](sources-and-methodology.md): sources, collection date, method, confidence, and limitations
@@ -36,6 +56,7 @@ The brief uses public-source reporting collected on May 16, 2026:
 - [`response-backlog.md`](response-backlog.md): prioritized defensive improvement backlog
 - [`executive-summary.md`](executive-summary.md): leadership-facing summary
 - [`attack-navigator-layer.json`](attack-navigator-layer.json): ATT&CK Navigator layer for selected techniques
+- [`visuals/`](visuals/): attack-flow and defender workflow diagrams
 
 ## Source References
 

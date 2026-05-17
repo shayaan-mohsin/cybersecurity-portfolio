@@ -8,6 +8,24 @@ The assessment focuses on one practical question:
 
 > Based on recent public healthcare breach reports, which security risks should a small or modest-maturity healthcare organization prioritize first?
 
+## How To Read This Project
+
+This project is organized like a compact GRC analyst report. Start with the visual snapshot and key findings for the high-level story, then use the methodology, risk register, CSF mapping, roadmap, and executive brief to see how the evidence becomes risk decisions.
+
+The goal is not to prove that every healthcare organization has the same control gaps. The goal is to show how public breach patterns can guide practical risk conversations around identity, exposed systems, third-party access, monitoring, response, and recovery.
+
+## Visual Snapshot
+
+These visuals were generated from the local HHS OCR sample using [`scripts/analyze_hhs_breaches.py`](scripts/analyze_hhs_breaches.py).
+
+![Healthcare breach dashboard](visuals/healthcare-breach-dashboard.svg)
+
+![Breach type distribution](visuals/breach-type-distribution.svg)
+
+![Location of breached information](visuals/information-location-records.svg)
+
+![Affected individuals by breach type](visuals/affected-individuals-by-breach-type.svg)
+
 ## Evidence Base
 
 The analysis uses a dated sample of the most recent 100 public HIPAA breach records displayed in the HHS OCR Breach Portal on May 16, 2026. The portal showed 710 HIPAA breach records at the time of collection. The sampled records had breach submission dates from February 9, 2026 through May 1, 2026.
@@ -24,6 +42,14 @@ The sample is stored in [`data/hhs-ocr-breach-sample-2026-05-16.csv`](data/hhs-o
 | Business associate involvement is material | 28 of 100 records marked business associate present | Vendor access, contract security expectations, breach notification pathways, and third-party oversight need defined ownership. |
 | The sampled records represent large potential patient impact | 6,692,288 affected individuals across the sample | Even a small number of high-impact incidents can dominate risk exposure and leadership attention. |
 
+## Analyst Competencies Represented
+
+- Public-source data handling and transparent methodology
+- Healthcare risk interpretation without using private patient data
+- NIST CSF 2.0 mapping across Govern, Identify, Protect, Detect, Respond, and Recover
+- Risk-register development with likelihood, impact, ownership, and response planning
+- Executive communication that connects technical findings to business impact
+
 ## Deliverables
 
 - [`data-methodology.md`](data-methodology.md): source list, collection method, fields used, and limitations
@@ -32,6 +58,18 @@ The sample is stored in [`data/hhs-ocr-breach-sample-2026-05-16.csv`](data/hhs-o
 - [`csf-mapping.md`](csf-mapping.md): mapping of findings to NIST CSF 2.0 functions and category themes
 - [`prioritized-roadmap.md`](prioritized-roadmap.md): 30/60/90-day remediation roadmap
 - [`executive-brief.md`](executive-brief.md): leadership-facing summary
+- [`scripts/analyze_hhs_breaches.py`](scripts/analyze_hhs_breaches.py): repeatable Python analysis and SVG visual generation
+- [`outputs/hhs-breach-summary-2026-05-16.md`](outputs/hhs-breach-summary-2026-05-16.md): generated data summary
+
+## How To Run
+
+From this project folder:
+
+```powershell
+python scripts/analyze_hhs_breaches.py data/hhs-ocr-breach-sample-2026-05-16.csv --as-of 2026-05-16 --output-dir outputs --visual-dir visuals
+```
+
+The script uses only Python's standard library.
 
 ## Source References
 
