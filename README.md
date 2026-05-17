@@ -54,6 +54,8 @@ Project-management artifacts:
 - [GitHub Project Setup](project-management/github-project-setup.md)
 - [Portfolio Walkthrough](project-management/portfolio-walkthrough.md)
 - [Final Portfolio Review](project-management/final-portfolio-review.md)
+- [Visual Quality Control](project-management/visual-quality-control.md)
+- [Visual Quality Report](project-management/visual-quality-report.md)
 
 ## Current Status
 
@@ -74,6 +76,7 @@ Portfolio V1 is complete. The repository includes three evidence-backed cybersec
 - Digital forensics and incident response concepts
 - Python data analysis
 - GitHub Projects and sprint-based delivery tracking
+- SVG visual generation and quality-control checks
 
 ## Author
 

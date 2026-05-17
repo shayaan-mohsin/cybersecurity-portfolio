@@ -16,7 +16,7 @@ The goal is not to prove that every healthcare organization has the same control
 
 ## Visual Snapshot
 
-These visuals were generated from the local HHS OCR sample using [`scripts/analyze_hhs_breaches.py`](scripts/analyze_hhs_breaches.py).
+These visuals were generated from the local HHS OCR sample using [`../../tools/generate_portfolio_visuals.py`](../../tools/generate_portfolio_visuals.py) and checked with [`../../tools/visual_quality_check.py`](../../tools/visual_quality_check.py).
 
 ![Healthcare breach dashboard](visuals/healthcare-breach-dashboard.svg)
 
@@ -58,18 +58,21 @@ The sample is stored in [`data/hhs-ocr-breach-sample-2026-05-16.csv`](data/hhs-o
 - [`csf-mapping.md`](csf-mapping.md): mapping of findings to NIST CSF 2.0 functions and category themes
 - [`prioritized-roadmap.md`](prioritized-roadmap.md): 30/60/90-day remediation roadmap
 - [`executive-brief.md`](executive-brief.md): leadership-facing summary
-- [`scripts/analyze_hhs_breaches.py`](scripts/analyze_hhs_breaches.py): repeatable Python analysis and SVG visual generation
+- [`scripts/analyze_hhs_breaches.py`](scripts/analyze_hhs_breaches.py): repeatable Python analysis workflow
 - [`outputs/hhs-breach-summary-2026-05-16.md`](outputs/hhs-breach-summary-2026-05-16.md): generated data summary
+- [`visuals/`](visuals/): QC-checked SVG visual artifacts
 
 ## How To Run
 
 From this project folder:
 
 ```powershell
-python scripts/analyze_hhs_breaches.py data/hhs-ocr-breach-sample-2026-05-16.csv --as-of 2026-05-16 --output-dir outputs --visual-dir visuals
+python scripts/analyze_hhs_breaches.py data/hhs-ocr-breach-sample-2026-05-16.csv --as-of 2026-05-16 --output-dir outputs
+python ..\..\tools\generate_portfolio_visuals.py --repo-root ..\..
+python ..\..\tools\visual_quality_check.py visuals --report ..\..\project-management\visual-quality-report.md
 ```
 
-The script uses only Python's standard library.
+The scripts use only Python's standard library.
 
 ## Source References
 

@@ -1,20 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="362" viewBox="0 0 980 362" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="732" viewBox="0 0 1120 732" role="img" aria-labelledby="title desc" data-qc-version="1">
 <title id="title">Covered Entity Type Distribution</title>
-<desc id="desc">Record count by covered entity type</desc>
+<desc id="desc">Sampled reports grouped by covered entity type.</desc>
+<defs>
+<marker id="arrowHead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+<path d="M2,2 L12,7 L2,12 Z" fill="#172033"/>
+</marker>
+<style>
+.font { font-family: Segoe UI, Arial, Helvetica, sans-serif; }
+</style>
+</defs>
 <rect width="100%" height="100%" fill="#ffffff"/>
-<rect x="18" y="18" width="944" height="326" rx="14" fill="#f8fafc" stroke="#dbe3ef"/>
-<text fill="#0f172a" font-size="24" font-weight="700"><tspan x="42" dy="0">Covered Entity Type Distribution</tspan></text>
-<text fill="#475569" font-size="13" font-weight="400"><tspan x="42" dy="0">Record count by covered entity type</tspan></text>
-<text fill="#0f172a" font-size="14" font-weight="600"><tspan x="42" dy="0">Healthcare Provider</tspan></text>
-<rect x="275" y="116" width="560" height="26" rx="13" fill="#e2e8f0"/>
-<rect x="275" y="116" width="560" height="26" rx="13" fill="#2563eb"/>
-<text x="857" y="135" fill="#0f172a" font-size="14" font-weight="700">76</text>
-<text fill="#0f172a" font-size="14" font-weight="600"><tspan x="42" dy="0">Business Associate</tspan></text>
-<rect x="275" y="174" width="560" height="26" rx="13" fill="#e2e8f0"/>
-<rect x="275" y="174" width="103" height="26" rx="13" fill="#0891b2"/>
-<text x="857" y="193" fill="#0f172a" font-size="14" font-weight="700">14</text>
-<text fill="#0f172a" font-size="14" font-weight="600"><tspan x="42" dy="0">Health Plan</tspan></text>
-<rect x="275" y="232" width="560" height="26" rx="13" fill="#e2e8f0"/>
-<rect x="275" y="232" width="73" height="26" rx="13" fill="#16a34a"/>
-<text x="857" y="251" fill="#0f172a" font-size="14" font-weight="700">10</text>
+<rect x="24" y="24" width="1072" height="684" rx="24" fill="#f5f7fb" stroke="#d8dee9"/>
+<rect x="64" y="58" width="168" height="28" rx="14" fill="#e8eefc"/>
+<text class="font" x="84" y="78" font-size="12" font-weight="700" fill="#1f5eff" text-anchor="start">Project 1</text>
+<text class="font" x="64" y="126" font-size="34" font-weight="800" fill="#172033" text-anchor="start">Covered Entity Type Distribution</text>
+<text class="font" x="64" y="158" font-size="16" font-weight="400" fill="#667085" text-anchor="start">Sampled reports grouped by covered entity type.</text>
+<g data-qc-card="true">
+<rect x="72" y="178" width="976" height="358" rx="18" fill="#ffffff" stroke="#d8dee9"/>
+<rect x="72" y="178" width="976" height="7" rx="3.5" fill="#1f9d55"/>
+<text class="font" x="98" y="220" font-size="18" font-weight="800" fill="#172033" text-anchor="start">Evidence View</text>
+<text class="font" x="98" y="244" font-size="13" font-weight="400" fill="#667085" text-anchor="start">Generated from the local HHS OCR sample.</text>
+<text class="font" x="98" y="298" font-size="12" font-weight="600" fill="#172033" text-anchor="start">Healthcare Provider</text>
+<rect x="376" y="280" width="570" height="24" rx="12" fill="#e6ebf2"/>
+<rect x="376" y="280" width="570" height="24" rx="12" fill="#1f9d55"/>
+<text class="font" x="960" y="298" font-size="12" font-weight="800" fill="#172033" text-anchor="start">76</text>
+<text class="font" x="98" y="373" font-size="12" font-weight="600" fill="#172033" text-anchor="start">Business Associate</text>
+<rect x="376" y="355" width="570" height="24" rx="12" fill="#e6ebf2"/>
+<rect x="376" y="355" width="105" height="24" rx="12" fill="#1f9d55"/>
+<text class="font" x="960" y="373" font-size="12" font-weight="800" fill="#172033" text-anchor="start">14</text>
+<text class="font" x="98" y="448" font-size="12" font-weight="600" fill="#172033" text-anchor="start">Health Plan</text>
+<rect x="376" y="430" width="570" height="24" rx="12" fill="#e6ebf2"/>
+<rect x="376" y="430" width="75" height="24" rx="12" fill="#1f9d55"/>
+<text class="font" x="960" y="448" font-size="12" font-weight="800" fill="#172033" text-anchor="start">10</text>
+</g>
+<g data-qc-card="true">
+<rect x="72" y="556" width="976" height="112" rx="18" fill="#ffffff" stroke="#d8dee9"/>
+<rect x="72" y="556" width="976" height="7" rx="3.5" fill="#1f9d55"/>
+<text class="font" x="96" y="598" font-size="16" font-weight="800" fill="#172033" text-anchor="start">How To Read It</text>
+<text class="font" x="96" y="628" font-size="13" font-weight="400" fill="#667085" text-anchor="start">Use the chart as a prioritization signal, then validate</text>
+<text class="font" x="96" y="648" font-size="13" font-weight="400" fill="#667085" text-anchor="start">local controls, ownership, and exposure.</text>
+</g>
 </svg>
