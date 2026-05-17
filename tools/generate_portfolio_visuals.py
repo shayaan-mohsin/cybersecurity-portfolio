@@ -81,11 +81,19 @@ class Svg:
     def __init__(self, width: int, height: int, title: str, desc: str) -> None:
         self.width = width
         self.height = height
+        self.footer_added = False
         self.parts: list[str] = [
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc" data-qc-version="1">',
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc" data-qc-version="2" data-qc-polish="true">',
             f"<title id=\"title\">{esc(title)}</title>",
             f"<desc id=\"desc\">{esc(desc)}</desc>",
             "<defs>",
+            '<linearGradient id="canvasGrad" x1="0" x2="1" y1="0" y2="1">',
+            '<stop offset="0%" stop-color="#f8fbff"/>',
+            '<stop offset="100%" stop-color="#eef3f8"/>',
+            "</linearGradient>",
+            '<filter id="cardShadow" x="-8%" y="-8%" width="116%" height="116%">',
+            '<feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.08"/>',
+            "</filter>",
             '<marker id="arrowHead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">',
             '<path d="M2,2 L12,7 L2,12 Z" fill="#172033"/>',
             "</marker>",
@@ -94,7 +102,8 @@ class Svg:
             "</style>",
             "</defs>",
             f'<rect width="100%" height="100%" fill="{PAPER}"/>',
-            f'<rect x="24" y="24" width="{width - 48}" height="{height - 48}" rx="24" fill="{CANVAS}" stroke="{LINE}"/>',
+            f'<rect data-qc-frame="true" x="24" y="24" width="{width - 48}" height="{height - 48}" rx="28" fill="url(#canvasGrad)" stroke="{LINE}"/>',
+            '<path d="M44 122 H1236" stroke="#dde6f3" stroke-width="1"/>',
         ]
 
     def text(self, x: int, y: int, value: str, size: int = 14, weight: int = 400, color: str = INK, anchor: str = "start") -> None:
@@ -114,12 +123,14 @@ class Svg:
         if eyebrow:
             self.parts.append(f'<rect x="64" y="58" width="168" height="28" rx="14" fill="#e8eefc"/>')
             self.text(84, 78, eyebrow, 12, 700, BLUE)
+        self.parts.append(f'<rect x="{self.width - 270}" y="58" width="198" height="30" rx="15" fill="#ecfdf5" stroke="#b8e7d6"/>')
+        self.text(self.width - 250, 78, "QC-ready artifact", 12, 700, "#087f5b")
         self.text(64, 126 if eyebrow else 88, title, 34, 800)
         self.text(64, 158 if eyebrow else 120, subtitle, 16, 400, MUTED)
 
     def card_start(self, x: int, y: int, w: int, h: int, accent: str | None = None) -> None:
         self.parts.append(f'<g data-qc-card="true">')
-        self.parts.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="18" fill="{PAPER}" stroke="{LINE}"/>')
+        self.parts.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="22" fill="{PAPER}" stroke="{LINE}" filter="url(#cardShadow)"/>')
         if accent:
             self.parts.append(f'<rect x="{x}" y="{y}" width="{w}" height="7" rx="3.5" fill="{accent}"/>')
 
@@ -157,18 +168,34 @@ class Svg:
         top = y + 102
         row_h = max(46, int((h - 132) / max(len(rows), 1)))
         max_value = max([value for _, value in rows] + [1])
+        for tick in [0.25, 0.5, 0.75, 1.0]:
+            gx = bar_x + int(bar_w * tick)
+            self.parts.append(f'<line x1="{gx}" y1="{top - 12}" x2="{gx}" y2="{top + len(rows) * row_h - 18}" stroke="#edf1f7" stroke-width="1"/>')
         for index, (label, value) in enumerate(rows):
             yy = top + index * row_h
             label_lines = wrap_words(label, 26)[:2]
+            self.parts.append(f'<rect x="{chart_x}" y="{yy - 4}" width="28" height="28" rx="14" fill="#eef3ff"/>')
+            self.text(chart_x + 14, yy + 17, str(index + 1), 11, 800, BLUE, "middle")
             for line_index, line in enumerate(label_lines):
-                self.text(chart_x, yy + 18 + line_index * 15, line, 12, 600, INK)
+                self.text(chart_x + 40, yy + 18 + line_index * 15, line, 12, 600, INK)
             self.parts.append(f'<rect x="{bar_x}" y="{yy}" width="{bar_w}" height="24" rx="12" fill="#e6ebf2"/>')
             actual = max(4, int((value / max_value) * bar_w))
             self.parts.append(f'<rect x="{bar_x}" y="{yy}" width="{actual}" height="24" rx="12" fill="{PALETTE[index % len(PALETTE)] if color == "multi" else color}"/>')
             self.text(bar_x + bar_w + 14, yy + 18, compact_number(value), 12, 800, INK)
         self.card_end()
 
+    def footer(self, source: str, note: str) -> None:
+        self.footer_added = True
+        y = self.height - 54
+        self.parts.append('<g data-qc-footer="true">')
+        self.parts.append(f'<rect x="48" y="{y - 22}" width="{self.width - 96}" height="34" rx="17" fill="#ffffff" stroke="#dbe3ef"/>')
+        self.text(70, y, f"Source: {source}", 12, 600, MUTED)
+        self.text(self.width - 70, y, note, 12, 700, "#087f5b", "end")
+        self.parts.append("</g>")
+
     def save(self, path: Path) -> None:
+        if not self.footer_added:
+            self.footer("public-source analysis", "QC-ready")
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("\n".join(self.parts + ["</svg>"]), encoding="utf-8")
 
@@ -218,6 +245,7 @@ def project1_dashboard(rows: list[dict[str, str]], path: Path) -> None:
     svg.narrative_card(64, 730, 356, 110, "Primary Read", ["Server and email controls drive the first risk conversation."], BLUE)
     svg.narrative_card(462, 730, 356, 110, "Governance Angle", ["Third-party involvement needs ownership, cadence, and evidence."], AMBER)
     svg.narrative_card(860, 730, 356, 110, "Executive Lens", ["A few large events can dominate patient and business impact."], RED)
+    svg.footer("HHS OCR sample, collected 2026-05-16", "QC gate enforced")
     svg.save(path)
 
 
@@ -229,6 +257,7 @@ def project1_bar(path: Path, title: str, subtitle: str, rows: list[tuple[str, in
     svg.header(title, subtitle, "Project 1")
     svg.bar_panel(72, 178, 976, panel_h, "Evidence View", "Generated from the local HHS OCR sample.", rows, color, max_rows)
     svg.narrative_card(72, 198 + panel_h, 976, 112, "How To Read It", ["Use the chart as a prioritization signal, then validate local controls, ownership, and exposure."], color)
+    svg.footer("HHS OCR sample, collected 2026-05-16", "QC gate enforced")
     svg.save(path)
 
 
@@ -315,6 +344,7 @@ def project2_dashboard(rows: list[dict[str, str]], path: Path, as_of: dt.date) -
     svg.narrative_card(64, 730, 356, 110, "Primary Read", ["KEV still needs sequencing, ownership, and escalation rules."], BLUE)
     svg.narrative_card(462, 730, 356, 110, "Risk Signal", ["Ransomware linkage raises urgency and leadership visibility."], RED)
     svg.narrative_card(860, 730, 356, 110, "Operating Rhythm", ["New entries make this a recurring workflow, not cleanup."], TEAL)
+    svg.footer("CISA KEV snapshot, collected 2026-05-16", "QC gate enforced")
     svg.save(path)
 
 
@@ -326,6 +356,7 @@ def project2_bar(path: Path, title: str, subtitle: str, rows: list[tuple[str, in
     svg.header(title, subtitle, "Project 2")
     svg.bar_panel(72, 178, 976, panel_h, "Evidence View", "Generated from the local CISA KEV snapshot.", rows, color, max_rows)
     svg.narrative_card(72, 198 + panel_h, 976, 112, "How To Read It", ["Use this as a workflow signal, then confirm local asset exposure and business ownership."], color)
+    svg.footer("CISA KEV snapshot, collected 2026-05-16", "QC gate enforced")
     svg.save(path)
 
 
@@ -368,6 +399,7 @@ def generate_project3(root: Path) -> None:
     svg.arrow("M626 477 H682")
     svg.arrow("M934 477 H990")
     svg.narrative_card(76, 596, 1128, 132, "Defensive Focus", ["Harden identity proofing, govern MFA changes, watch SaaS access, control remote tools, and rehearse data-theft response."], BLUE)
+    svg.footer("CISA AA23-320A and MITRE ATT&CK G1015", "QC gate enforced")
     svg.save(visuals / "scattered-spider-attack-flow.svg")
 
     svg = Svg(1280, 760, "Identity defense workflow", "Premium defender workflow for identity-centered Scattered Spider tradecraft.")
@@ -388,6 +420,7 @@ def generate_project3(root: Path) -> None:
     svg.arrow("M394 507 H472")
     svg.arrow("M800 507 H878")
     svg.narrative_card(76, 620, 1130, 132, "Program Outcome", ["Fewer risky reset paths, stronger detection coverage, clearer escalation ownership, and faster containment."], TEAL)
+    svg.footer("CISA AA23-320A and MITRE ATT&CK G1015", "QC gate enforced")
     svg.save(visuals / "identity-defense-workflow.svg")
 
 

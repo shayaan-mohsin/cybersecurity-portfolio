@@ -13,6 +13,10 @@ The gate is implemented in [`tools/visual_quality_check.py`](../tools/visual_qua
 - Text coordinates stay inside the canvas.
 - Card-tagged groups keep text within card boundaries.
 - Arrow-tagged paths use a defined arrow marker.
+- Visuals include current QC version metadata.
+- Visuals include a rounded presentation frame.
+- Visuals include source/QC footer context.
+- Card treatments use the standard radius and shadow treatment.
 
 ## How To Run
 
