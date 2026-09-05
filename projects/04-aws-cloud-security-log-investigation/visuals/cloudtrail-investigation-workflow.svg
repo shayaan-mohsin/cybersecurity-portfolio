@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="860" viewBox="0 0 1280 860" role="img" aria-labelledby="title desc" data-qc-version="2" data-qc-polish="true">
+  <title id="title">CloudTrail investigation workflow</title>
+  <desc id="desc">Workflow diagram for collecting, sanitizing, analyzing, triaging, and reporting CloudTrail events.</desc>
+  <defs>
+    <linearGradient id="canvasGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef3f8"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrowHead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L12,7 L2,12 Z" fill="#172033"/>
+    </marker>
+    <style>.font { font-family: Segoe UI, Arial, Helvetica, sans-serif; }</style>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <rect data-qc-frame="true" x="24" y="24" width="1232" height="812" rx="28" fill="url(#canvasGrad)" stroke="#d8dee9"/>
+  <path d="M44 122 H1236" stroke="#dde6f3" stroke-width="1"/>
+  <rect x="64" y="58" width="168" height="28" rx="14" fill="#e8eefc"/>
+  <text class="font" x="84" y="78" font-size="12" font-weight="700" fill="#1f5eff">Project 4</text>
+  <rect x="1010" y="58" width="198" height="30" rx="15" fill="#ecfdf5" stroke="#b8e7d6"/>
+  <text class="font" x="1030" y="78" font-size="12" font-weight="700" fill="#087f5b">QC-ready artifact</text>
+  <text class="font" x="64" y="126" font-size="34" font-weight="800" fill="#172033">CloudTrail Investigation Workflow</text>
+  <text class="font" x="64" y="158" font-size="16" font-weight="400" fill="#667085">From AWS activity to sanitized evidence, findings, remediation, and reporting.</text>
+
+  <g data-qc-card="true">
+    <rect x="76" y="214" width="246" height="134" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="76" y="214" width="246" height="7" rx="3.5" fill="#1f5eff"/>
+    <text class="font" x="100" y="256" font-size="16" font-weight="800" fill="#172033">Collect</text>
+    <text class="font" x="100" y="286" font-size="13" font-weight="400" fill="#667085">Export Event History</text>
+    <text class="font" x="100" y="306" font-size="13" font-weight="400" fill="#667085">or trail-delivered JSON</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="386" y="214" width="246" height="134" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="386" y="214" width="246" height="7" rx="3.5" fill="#0f9f9a"/>
+    <text class="font" x="410" y="256" font-size="16" font-weight="800" fill="#172033">Sanitize</text>
+    <text class="font" x="410" y="286" font-size="13" font-weight="400" fill="#667085">Redact account IDs, ARNs,</text>
+    <text class="font" x="410" y="306" font-size="13" font-weight="400" fill="#667085">IP addresses, and keys</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="696" y="214" width="246" height="134" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="696" y="214" width="246" height="7" rx="3.5" fill="#1f9d55"/>
+    <text class="font" x="720" y="256" font-size="16" font-weight="800" fill="#172033">Analyze</text>
+    <text class="font" x="720" y="286" font-size="13" font-weight="400" fill="#667085">Python flags identity, S3,</text>
+    <text class="font" x="720" y="306" font-size="13" font-weight="400" fill="#667085">network, and logging risks</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="1006" y="214" width="198" height="134" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="1006" y="214" width="198" height="7" rx="3.5" fill="#c97a10"/>
+    <text class="font" x="1030" y="256" font-size="16" font-weight="800" fill="#172033">Triage</text>
+    <text class="font" x="1030" y="286" font-size="13" font-weight="400" fill="#667085">Rank by exposure,</text>
+    <text class="font" x="1030" y="306" font-size="13" font-weight="400" fill="#667085">privilege, and impact</text>
+  </g>
+
+  <path data-qc-arrow="true" d="M322 281 H374" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+  <path data-qc-arrow="true" d="M632 281 H684" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+  <path data-qc-arrow="true" d="M942 281 H994" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+
+  <g data-qc-card="true">
+    <rect x="220" y="470" width="268" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="220" y="470" width="268" height="7" rx="3.5" fill="#cc3f3f"/>
+    <text class="font" x="244" y="512" font-size="16" font-weight="800" fill="#172033">Investigate</text>
+    <text class="font" x="244" y="542" font-size="13" font-weight="400" fill="#667085">Ask who, what changed,</text>
+    <text class="font" x="244" y="562" font-size="13" font-weight="400" fill="#667085">whether it succeeded, why</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="582" y="470" width="268" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="582" y="470" width="268" height="7" rx="3.5" fill="#6f56d9"/>
+    <text class="font" x="606" y="512" font-size="16" font-weight="800" fill="#172033">Remediate</text>
+    <text class="font" x="606" y="542" font-size="13" font-weight="400" fill="#667085">Reverse exposure, remove</text>
+    <text class="font" x="606" y="562" font-size="13" font-weight="400" fill="#667085">excess privilege, restore logs</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="944" y="470" width="260" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="944" y="470" width="260" height="7" rx="3.5" fill="#475569"/>
+    <text class="font" x="968" y="512" font-size="16" font-weight="800" fill="#172033">Report</text>
+    <text class="font" x="968" y="542" font-size="13" font-weight="400" fill="#667085">Write findings, evidence,</text>
+    <text class="font" x="968" y="562" font-size="13" font-weight="400" fill="#667085">and clear next actions</text>
+  </g>
+
+  <path data-qc-arrow="true" d="M1105 348 C1105 420 354 404 354 458" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+  <path data-qc-arrow="true" d="M488 541 H570" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+  <path data-qc-arrow="true" d="M850 541 H932" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+
+  <g data-qc-card="true">
+    <rect x="76" y="666" width="1128" height="98" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="76" y="666" width="1128" height="7" rx="3.5" fill="#1f5eff"/>
+    <text class="font" x="100" y="708" font-size="16" font-weight="800" fill="#172033">Analyst Habit</text>
+    <text class="font" x="100" y="732" font-size="13" font-weight="400" fill="#667085">The strongest output is not a huge log dump.</text>
+    <text class="font" x="100" y="750" font-size="13" font-weight="400" fill="#667085">It is a clear timeline, risk meaning, and action plan.</text>
+  </g>
+
+  <g data-qc-footer="true">
+    <rect x="48" y="784" width="1184" height="34" rx="17" fill="#ffffff" stroke="#dbe3ef"/>
+    <text class="font" x="70" y="806" font-size="12" font-weight="600" fill="#667085">Source: CloudTrail investigation workflow and project detection catalog</text>
+    <text class="font" x="1210" y="806" font-size="12" font-weight="700" fill="#087f5b" text-anchor="end">QC gate enforced</text>
+  </g>
+</svg>

@@ -1,0 +1,84 @@
+[
+  {
+    "id": "AWS-CT-001",
+    "name": "Root account activity",
+    "severity": "High",
+    "event_names": ["ConsoleLogin"],
+    "identity_types": ["Root"],
+    "category": "Identity",
+    "recommendation": "Confirm MFA, validate that root use was expected, and review follow-on account changes."
+  },
+  {
+    "id": "AWS-CT-002",
+    "name": "Failed console login",
+    "severity": "Medium",
+    "event_names": ["ConsoleLogin"],
+    "console_login_results": ["Failure"],
+    "category": "Identity",
+    "recommendation": "Review source IP, targeted identity, repeated attempts, and any successful login after failure."
+  },
+  {
+    "id": "AWS-CT-003",
+    "name": "Access key created",
+    "severity": "High",
+    "event_names": ["CreateAccessKey"],
+    "category": "Credential",
+    "recommendation": "Validate business need, remove unused keys, rotate as needed, and prefer temporary credentials."
+  },
+  {
+    "id": "AWS-CT-004",
+    "name": "Privilege policy changed",
+    "severity": "High",
+    "event_names": ["AttachUserPolicy", "AttachRolePolicy", "PutUserPolicy", "PutRolePolicy"],
+    "category": "Privilege",
+    "recommendation": "Confirm approval, scope the granted permissions, and replace broad access with least privilege."
+  },
+  {
+    "id": "AWS-CT-005",
+    "name": "Public administrative ingress",
+    "severity": "Critical",
+    "event_names": ["AuthorizeSecurityGroupIngress"],
+    "category": "Network Exposure",
+    "recommendation": "Revoke public admin access, restrict source ranges, and alert on ports 22 and 3389 exposed to the internet."
+  },
+  {
+    "id": "AWS-CT-006",
+    "name": "S3 public access control weakened",
+    "severity": "High",
+    "event_names": ["DeletePublicAccessBlock", "PutBucketPolicy", "PutBucketAcl"],
+    "category": "Data Exposure",
+    "recommendation": "Keep Block Public Access enabled, validate bucket policy scope, and review Access Analyzer results."
+  },
+  {
+    "id": "AWS-CT-007",
+    "name": "CloudTrail logging changed",
+    "severity": "Critical",
+    "event_names": ["StopLogging", "DeleteTrail", "UpdateTrail", "PutEventSelectors"],
+    "category": "Logging",
+    "recommendation": "Validate change approval, restore logging if needed, and restrict CloudTrail administration."
+  },
+  {
+    "id": "AWS-CT-008",
+    "name": "GuardDuty configuration changed",
+    "severity": "High",
+    "event_names": ["CreateDetector", "UpdateDetector", "DeleteDetector"],
+    "category": "Detection",
+    "recommendation": "Document detection coverage changes and confirm GuardDuty status matches the lab plan."
+  },
+  {
+    "id": "AWS-CT-009",
+    "name": "Access denied activity",
+    "severity": "Medium",
+    "error_codes_contains": ["AccessDenied", "UnauthorizedOperation"],
+    "category": "Denied Activity",
+    "recommendation": "Review whether the denied action was expected, misconfigured, or suspicious."
+  },
+  {
+    "id": "AWS-CT-010",
+    "name": "Remediation evidence",
+    "severity": "Informational",
+    "event_names": ["RevokeSecurityGroupIngress", "PutPublicAccessBlock", "StartLogging"],
+    "category": "Remediation",
+    "recommendation": "Use this event to close the investigation timeline and document corrective action."
+  }
+]

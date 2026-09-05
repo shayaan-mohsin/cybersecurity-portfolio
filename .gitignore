@@ -6,3 +6,7 @@ Thumbs.db
 data/raw/
 reports/private/
 *.log
+private/
+projects/**/private/
+projects/**/data/raw/
+projects/**/screenshots/private/

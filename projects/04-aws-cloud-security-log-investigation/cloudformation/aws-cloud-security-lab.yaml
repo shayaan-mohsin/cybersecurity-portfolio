@@ -1,0 +1,199 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Cost-conscious AWS cloud security monitoring and CloudTrail investigation lab.
+
+Parameters:
+  LabName:
+    Type: String
+    Default: shayaan-cloud-security-lab
+    Description: Friendly name used in resource tags.
+  EnableGuardDuty:
+    Type: String
+    Default: "false"
+    AllowedValues:
+      - "true"
+      - "false"
+    Description: Set to true only if you want to enable GuardDuty in this Region.
+
+Conditions:
+  CreateGuardDuty: !Equals [!Ref EnableGuardDuty, "true"]
+
+Resources:
+  EvidenceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireLabEvidenceAfter90Days
+            Status: Enabled
+            ExpirationInDays: 90
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+      Tags:
+        - Key: Project
+          Value: !Ref LabName
+        - Key: Purpose
+          Value: portfolio-cloud-security-lab
+
+  CloudTrailLogBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireCloudTrailLogsAfter90Days
+            Status: Enabled
+            ExpirationInDays: 90
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+      Tags:
+        - Key: Project
+          Value: !Ref LabName
+        - Key: Purpose
+          Value: cloudtrail-log-storage
+
+  CloudTrailBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref CloudTrailLogBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AWSCloudTrailAclCheck
+            Effect: Allow
+            Principal:
+              Service: cloudtrail.amazonaws.com
+            Action: s3:GetBucketAcl
+            Resource: !GetAtt CloudTrailLogBucket.Arn
+          - Sid: AWSCloudTrailWrite
+            Effect: Allow
+            Principal:
+              Service: cloudtrail.amazonaws.com
+            Action: s3:PutObject
+            Resource: !Sub "${CloudTrailLogBucket.Arn}/AWSLogs/${AWS::AccountId}/*"
+            Condition:
+              StringEquals:
+                s3:x-amz-acl: bucket-owner-full-control
+
+  LabTrail:
+    Type: AWS::CloudTrail::Trail
+    DependsOn:
+      - CloudTrailBucketPolicy
+    Properties:
+      TrailName: !Sub "${LabName}-trail"
+      S3BucketName: !Ref CloudTrailLogBucket
+      EnableLogFileValidation: true
+      IncludeGlobalServiceEvents: true
+      IsLogging: true
+      IsMultiRegionTrail: false
+      EventSelectors:
+        - IncludeManagementEvents: true
+          ReadWriteType: All
+      Tags:
+        - Key: Project
+          Value: !Ref LabName
+        - Key: Purpose
+          Value: management-event-logging
+
+  LabVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.44.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${LabName}-vpc"
+        - Key: Project
+          Value: !Ref LabName
+
+  LabSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref LabVpc
+      CidrBlock: 10.44.10.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${LabName}-subnet"
+        - Key: Project
+          Value: !Ref LabName
+
+  LabSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Detached lab security group. No inbound rules by default.
+      VpcId: !Ref LabVpc
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub "${LabName}-detached-sg"
+        - Key: Project
+          Value: !Ref LabName
+
+  LabAccessAnalyzer:
+    Type: AWS::AccessAnalyzer::Analyzer
+    Properties:
+      AnalyzerName: !Sub "${LabName}-access-analyzer"
+      Type: ACCOUNT
+      Tags:
+        - Key: Project
+          Value: !Ref LabName
+
+  GuardDutyDetector:
+    Type: AWS::GuardDuty::Detector
+    Condition: CreateGuardDuty
+    Properties:
+      Enable: true
+      FindingPublishingFrequency: FIFTEEN_MINUTES
+      Tags:
+        - Key: Project
+          Value: !Ref LabName
+
+Outputs:
+  EvidenceBucketName:
+    Description: S3 bucket for sanitized lab evidence.
+    Value: !Ref EvidenceBucket
+  CloudTrailLogBucketName:
+    Description: S3 bucket receiving CloudTrail management logs.
+    Value: !Ref CloudTrailLogBucket
+  TrailName:
+    Description: CloudTrail trail name.
+    Value: !Ref LabTrail
+  VpcId:
+    Description: Lab VPC ID.
+    Value: !Ref LabVpc
+  SecurityGroupId:
+    Description: Detached security group used for controlled configuration-change events.
+    Value: !Ref LabSecurityGroup
+  AccessAnalyzerArn:
+    Description: IAM Access Analyzer ARN.
+    Value: !Ref LabAccessAnalyzer

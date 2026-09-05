@@ -1,0 +1,12 @@
+event_name,count
+ConsoleLogin,2
+CreateAccessKey,1
+AttachUserPolicy,1
+AuthorizeSecurityGroupIngress,1
+RevokeSecurityGroupIngress,1
+DeletePublicAccessBlock,1
+StopLogging,1
+CreateDetector,1
+CreateSampleFindings,1
+PutBucketPolicy,1
+UpdateStack,1

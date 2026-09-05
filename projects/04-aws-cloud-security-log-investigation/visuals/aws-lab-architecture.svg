@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="860" viewBox="0 0 1280 860" role="img" aria-labelledby="title desc" data-qc-version="2" data-qc-polish="true">
+  <title id="title">AWS cloud security lab architecture</title>
+  <desc id="desc">Architecture diagram showing AWS logging, controls, evidence handling, and Python analysis.</desc>
+  <defs>
+    <linearGradient id="canvasGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef3f8"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrowHead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L12,7 L2,12 Z" fill="#172033"/>
+    </marker>
+    <style>.font { font-family: Segoe UI, Arial, Helvetica, sans-serif; }</style>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <rect data-qc-frame="true" x="24" y="24" width="1232" height="812" rx="28" fill="url(#canvasGrad)" stroke="#d8dee9"/>
+  <path d="M44 122 H1236" stroke="#dde6f3" stroke-width="1"/>
+  <rect x="64" y="58" width="168" height="28" rx="14" fill="#e8eefc"/>
+  <text class="font" x="84" y="78" font-size="12" font-weight="700" fill="#1f5eff">Project 4</text>
+  <rect x="1010" y="58" width="198" height="30" rx="15" fill="#ecfdf5" stroke="#b8e7d6"/>
+  <text class="font" x="1030" y="78" font-size="12" font-weight="700" fill="#087f5b">QC-ready artifact</text>
+  <text class="font" x="64" y="126" font-size="34" font-weight="800" fill="#172033">AWS Cloud Security Lab</text>
+  <text class="font" x="64" y="158" font-size="16" font-weight="400" fill="#667085">Secure build, CloudTrail evidence, detection logic, and Python reporting.</text>
+
+  <g data-qc-card="true">
+    <rect x="76" y="210" width="290" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="76" y="210" width="290" height="7" rx="3.5" fill="#1f5eff"/>
+    <text class="font" x="100" y="252" font-size="16" font-weight="800" fill="#172033">Identity Layer</text>
+    <text class="font" x="100" y="282" font-size="13" font-weight="400" fill="#667085">MFA, IAM review, root use,</text>
+    <text class="font" x="100" y="302" font-size="13" font-weight="400" fill="#667085">policy changes, access keys</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="494" y="210" width="290" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="494" y="210" width="290" height="7" rx="3.5" fill="#0f9f9a"/>
+    <text class="font" x="518" y="252" font-size="16" font-weight="800" fill="#172033">Logging Layer</text>
+    <text class="font" x="518" y="282" font-size="13" font-weight="400" fill="#667085">CloudTrail management events</text>
+    <text class="font" x="518" y="302" font-size="13" font-weight="400" fill="#667085">with log file validation</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="912" y="210" width="290" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="912" y="210" width="290" height="7" rx="3.5" fill="#1f9d55"/>
+    <text class="font" x="936" y="252" font-size="16" font-weight="800" fill="#172033">Detection Layer</text>
+    <text class="font" x="936" y="282" font-size="13" font-weight="400" fill="#667085">GuardDuty sample findings</text>
+    <text class="font" x="936" y="302" font-size="13" font-weight="400" fill="#667085">and Access Analyzer review</text>
+  </g>
+
+  <path data-qc-arrow="true" d="M366 281 H482" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+  <path data-qc-arrow="true" d="M784 281 H900" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+
+  <g data-qc-card="true">
+    <rect x="76" y="438" width="290" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="76" y="438" width="290" height="7" rx="3.5" fill="#c97a10"/>
+    <text class="font" x="100" y="480" font-size="16" font-weight="800" fill="#172033">Hardened Resources</text>
+    <text class="font" x="100" y="510" font-size="13" font-weight="400" fill="#667085">S3 encryption, versioning,</text>
+    <text class="font" x="100" y="530" font-size="13" font-weight="400" fill="#667085">and Block Public Access</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="494" y="438" width="290" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="494" y="438" width="290" height="7" rx="3.5" fill="#6f56d9"/>
+    <text class="font" x="518" y="480" font-size="16" font-weight="800" fill="#172033">Network Test Area</text>
+    <text class="font" x="518" y="510" font-size="13" font-weight="400" fill="#667085">Detached security group for</text>
+    <text class="font" x="518" y="530" font-size="13" font-weight="400" fill="#667085">controlled exposure events</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="912" y="438" width="290" height="142" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="912" y="438" width="290" height="7" rx="3.5" fill="#cc3f3f"/>
+    <text class="font" x="936" y="480" font-size="16" font-weight="800" fill="#172033">Evidence Handling</text>
+    <text class="font" x="936" y="510" font-size="13" font-weight="400" fill="#667085">Raw logs stay private;</text>
+    <text class="font" x="936" y="530" font-size="13" font-weight="400" fill="#667085">public artifacts are sanitized</text>
+  </g>
+
+  <path data-qc-arrow="true" d="M639 352 V426" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+  <path data-qc-arrow="true" d="M784 509 H900" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+  <path data-qc-arrow="true" d="M366 509 H482" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+
+  <g data-qc-card="true">
+    <rect x="180" y="654" width="920" height="92" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="180" y="654" width="920" height="7" rx="3.5" fill="#0f9f9a"/>
+    <text class="font" x="204" y="696" font-size="16" font-weight="800" fill="#172033">Python Analysis Output</text>
+    <text class="font" x="204" y="726" font-size="13" font-weight="400" fill="#667085">CloudTrail parser flags risky events, summarizes actors, and writes investigation reports.</text>
+  </g>
+
+  <path data-qc-arrow="true" d="M1057 580 C1057 622 640 610 640 642" fill="none" stroke="#172033" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+
+  <g data-qc-footer="true">
+    <rect x="48" y="784" width="1184" height="34" rx="17" fill="#ffffff" stroke="#dbe3ef"/>
+    <text class="font" x="70" y="806" font-size="12" font-weight="600" fill="#667085">Source: AWS CloudTrail, S3, GuardDuty, IAM Access Analyzer documentation</text>
+    <text class="font" x="1210" y="806" font-size="12" font-weight="700" fill="#087f5b" text-anchor="end">QC gate enforced</text>
+  </g>
+</svg>

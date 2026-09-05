@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="860" viewBox="0 0 1280 860" role="img" aria-labelledby="title desc" data-qc-version="2" data-qc-polish="true">
+  <title id="title">CloudTrail risk signals</title>
+  <desc id="desc">Dashboard-style summary of sample CloudTrail findings by severity and security category.</desc>
+  <defs>
+    <linearGradient id="canvasGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef3f8"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrowHead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L12,7 L2,12 Z" fill="#172033"/>
+    </marker>
+    <style>.font { font-family: Segoe UI, Arial, Helvetica, sans-serif; }</style>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <rect data-qc-frame="true" x="24" y="24" width="1232" height="812" rx="28" fill="url(#canvasGrad)" stroke="#d8dee9"/>
+  <path d="M44 122 H1236" stroke="#dde6f3" stroke-width="1"/>
+  <rect x="64" y="58" width="168" height="28" rx="14" fill="#e8eefc"/>
+  <text class="font" x="84" y="78" font-size="12" font-weight="700" fill="#1f5eff">Project 4</text>
+  <rect x="1010" y="58" width="198" height="30" rx="15" fill="#ecfdf5" stroke="#b8e7d6"/>
+  <text class="font" x="1030" y="78" font-size="12" font-weight="700" fill="#087f5b">QC-ready artifact</text>
+  <text class="font" x="64" y="126" font-size="34" font-weight="800" fill="#172033">CloudTrail Risk Signals</text>
+  <text class="font" x="64" y="158" font-size="16" font-weight="400" fill="#667085">Sample log review translated into triage categories and next actions.</text>
+
+  <g data-qc-card="true">
+    <rect x="76" y="210" width="250" height="144" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="76" y="210" width="250" height="7" rx="3.5" fill="#cc3f3f"/>
+    <text class="font" x="100" y="248" font-size="13" font-weight="700" fill="#475569">Critical</text>
+    <text class="font" x="100" y="291" font-size="32" font-weight="800" fill="#cc3f3f">2</text>
+    <text class="font" x="100" y="322" font-size="12" font-weight="400" fill="#667085">Public admin ingress and</text>
+    <text class="font" x="100" y="340" font-size="12" font-weight="400" fill="#667085">CloudTrail logging change</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="370" y="210" width="250" height="144" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="370" y="210" width="250" height="7" rx="3.5" fill="#c97a10"/>
+    <text class="font" x="394" y="248" font-size="13" font-weight="700" fill="#475569">High</text>
+    <text class="font" x="394" y="291" font-size="32" font-weight="800" fill="#c97a10">6</text>
+    <text class="font" x="394" y="322" font-size="12" font-weight="400" fill="#667085">Root, IAM, S3, GuardDuty,</text>
+    <text class="font" x="394" y="340" font-size="12" font-weight="400" fill="#667085">and credential signals</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="664" y="210" width="250" height="144" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="664" y="210" width="250" height="7" rx="3.5" fill="#6f56d9"/>
+    <text class="font" x="688" y="248" font-size="13" font-weight="700" fill="#475569">Medium</text>
+    <text class="font" x="688" y="291" font-size="32" font-weight="800" fill="#6f56d9">3</text>
+    <text class="font" x="688" y="322" font-size="12" font-weight="400" fill="#667085">Failed login and denied</text>
+    <text class="font" x="688" y="340" font-size="12" font-weight="400" fill="#667085">activity needing context</text>
+  </g>
+  <g data-qc-card="true">
+    <rect x="958" y="210" width="246" height="144" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="958" y="210" width="246" height="7" rx="3.5" fill="#1f9d55"/>
+    <text class="font" x="982" y="248" font-size="13" font-weight="700" fill="#475569">Informational</text>
+    <text class="font" x="982" y="291" font-size="32" font-weight="800" fill="#1f9d55">1</text>
+    <text class="font" x="982" y="322" font-size="12" font-weight="400" fill="#667085">Remediation evidence to</text>
+    <text class="font" x="982" y="340" font-size="12" font-weight="400" fill="#667085">close the timeline</text>
+  </g>
+
+  <g data-qc-card="true">
+    <rect x="76" y="424" width="540" height="236" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="76" y="424" width="540" height="7" rx="3.5" fill="#1f5eff"/>
+    <text class="font" x="100" y="466" font-size="18" font-weight="800" fill="#172033">Risk Categories</text>
+    <text class="font" x="100" y="504" font-size="13" font-weight="700" fill="#172033">Identity</text>
+    <rect x="232" y="488" width="230" height="18" rx="9" fill="#1f5eff"/>
+    <text class="font" x="484" y="504" font-size="12" font-weight="800" fill="#172033">2</text>
+    <text class="font" x="100" y="540" font-size="13" font-weight="700" fill="#172033">Data Exposure</text>
+    <rect x="232" y="524" width="230" height="18" rx="9" fill="#0f9f9a"/>
+    <text class="font" x="484" y="540" font-size="12" font-weight="800" fill="#172033">2</text>
+    <text class="font" x="100" y="576" font-size="13" font-weight="700" fill="#172033">Denied Activity</text>
+    <rect x="232" y="560" width="230" height="18" rx="9" fill="#6f56d9"/>
+    <text class="font" x="484" y="576" font-size="12" font-weight="800" fill="#172033">2</text>
+    <text class="font" x="100" y="612" font-size="13" font-weight="700" fill="#172033">Network Exposure</text>
+    <rect x="232" y="596" width="116" height="18" rx="9" fill="#cc3f3f"/>
+    <text class="font" x="484" y="612" font-size="12" font-weight="800" fill="#172033">1</text>
+  </g>
+
+  <g data-qc-card="true">
+    <rect x="664" y="424" width="540" height="236" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <rect x="664" y="424" width="540" height="7" rx="3.5" fill="#0f9f9a"/>
+    <text class="font" x="688" y="466" font-size="18" font-weight="800" fill="#172033">Investigation Takeaway</text>
+    <text class="font" x="688" y="506" font-size="13" font-weight="400" fill="#667085">The most important signals affect visibility,</text>
+    <text class="font" x="688" y="528" font-size="13" font-weight="400" fill="#667085">privilege, public exposure, and credentials.</text>
+    <text class="font" x="688" y="570" font-size="13" font-weight="400" fill="#667085">Denied events still matter because they show</text>
+    <text class="font" x="688" y="592" font-size="13" font-weight="400" fill="#667085">attempted behavior that AWS blocked.</text>
+  </g>
+
+  <g data-qc-card="true">
+    <rect x="76" y="704" width="1128" height="60" rx="22" fill="#ffffff" stroke="#d8dee9" filter="url(#cardShadow)"/>
+    <text class="font" x="100" y="742" font-size="14" font-weight="700" fill="#172033">Output:</text>
+    <text class="font" x="160" y="742" font-size="13" font-weight="400" fill="#667085">CSV findings, event frequency summaries, actor review, and a markdown investigation report.</text>
+  </g>
+
+  <g data-qc-footer="true">
+    <rect x="48" y="784" width="1184" height="34" rx="17" fill="#ffffff" stroke="#dbe3ef"/>
+    <text class="font" x="70" y="806" font-size="12" font-weight="600" fill="#667085">Source: Sanitized sample CloudTrail events and Python analyzer output</text>
+    <text class="font" x="1210" y="806" font-size="12" font-weight="700" fill="#087f5b" text-anchor="end">QC gate enforced</text>
+  </g>
+</svg>

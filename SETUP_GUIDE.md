@@ -10,7 +10,7 @@ Name:
 
 Description:
 
-`Cybersecurity portfolio focused on GRC, cyber risk, CTI, vulnerability prioritization, and security strategy.`
+`Cybersecurity portfolio focused on GRC, cyber risk, cloud security, CTI, vulnerability prioritization, and security strategy.`
 
 Visibility:
 
@@ -49,3 +49,4 @@ The starter backlog was converted into GitHub issues and tracked through the pro
 | Sprint 2 | CISA KEV Vulnerability Prioritization | Complete |
 | Sprint 3 | Scattered Spider CTI Brief | Complete |
 | Sprint 4 | Public review and final polish | Complete |
+| Sprint 5 | AWS Cloud Security Log Investigation Lab | Complete |

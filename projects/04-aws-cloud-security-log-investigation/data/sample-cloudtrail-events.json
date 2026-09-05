@@ -1,0 +1,276 @@
+{
+  "Records": [
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "Root",
+        "principalId": "111122223333",
+        "arn": "arn:aws:iam::111122223333:root",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T15:03:11Z",
+      "eventSource": "signin.amazonaws.com",
+      "eventName": "ConsoleLogin",
+      "awsRegion": "us-east-1",
+      "sourceIPAddress": "198.51.100.10",
+      "userAgent": "Mozilla/5.0",
+      "requestParameters": null,
+      "responseElements": {
+        "ConsoleLogin": "Success"
+      },
+      "eventType": "AwsConsoleSignIn"
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-auditor",
+        "arn": "arn:aws:iam::111122223333:user/lab-auditor",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T15:18:42Z",
+      "eventSource": "signin.amazonaws.com",
+      "eventName": "ConsoleLogin",
+      "awsRegion": "us-east-1",
+      "sourceIPAddress": "203.0.113.21",
+      "userAgent": "Mozilla/5.0",
+      "responseElements": {
+        "ConsoleLogin": "Failure"
+      },
+      "errorMessage": "Failed authentication",
+      "eventType": "AwsConsoleSignIn"
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T15:31:10Z",
+      "eventSource": "iam.amazonaws.com",
+      "eventName": "CreateAccessKey",
+      "awsRegion": "us-east-1",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "aws-cli/2.x",
+      "requestParameters": {
+        "userName": "lab-admin"
+      },
+      "responseElements": {
+        "accessKey": {
+          "accessKeyId": "AKIAEXAMPLE000000000"
+        }
+      }
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T15:42:27Z",
+      "eventSource": "iam.amazonaws.com",
+      "eventName": "AttachUserPolicy",
+      "awsRegion": "us-east-1",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "aws-cli/2.x",
+      "requestParameters": {
+        "userName": "lab-auditor",
+        "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+      },
+      "responseElements": null
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T16:04:03Z",
+      "eventSource": "ec2.amazonaws.com",
+      "eventName": "AuthorizeSecurityGroupIngress",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "aws-cli/2.x",
+      "requestParameters": {
+        "groupId": "sg-0123456789abcdef0",
+        "ipPermissions": {
+          "items": [
+            {
+              "ipProtocol": "tcp",
+              "fromPort": 22,
+              "toPort": 22,
+              "ipRanges": {
+                "items": [
+                  {
+                    "cidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "responseElements": {
+        "return": true
+      }
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T16:06:59Z",
+      "eventSource": "ec2.amazonaws.com",
+      "eventName": "RevokeSecurityGroupIngress",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "aws-cli/2.x",
+      "requestParameters": {
+        "groupId": "sg-0123456789abcdef0"
+      },
+      "responseElements": {
+        "return": true
+      }
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T16:20:43Z",
+      "eventSource": "s3.amazonaws.com",
+      "eventName": "DeletePublicAccessBlock",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "aws-cli/2.x",
+      "requestParameters": {
+        "bucketName": "shayaan-lab-evidence-example"
+      },
+      "responseElements": null
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-auditor",
+        "arn": "arn:aws:iam::111122223333:user/lab-auditor",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T16:32:15Z",
+      "eventSource": "cloudtrail.amazonaws.com",
+      "eventName": "StopLogging",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "203.0.113.21",
+      "userAgent": "aws-cli/2.x",
+      "requestParameters": {
+        "name": "shayaan-cloud-security-lab-trail"
+      },
+      "errorCode": "AccessDenied",
+      "errorMessage": "User is not authorized to perform cloudtrail:StopLogging"
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T17:12:48Z",
+      "eventSource": "guardduty.amazonaws.com",
+      "eventName": "CreateDetector",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "cloudformation.amazonaws.com",
+      "requestParameters": {
+        "enable": true,
+        "findingPublishingFrequency": "FIFTEEN_MINUTES"
+      },
+      "responseElements": {
+        "detectorId": "12abc34d567e8f901g2hij3kl456mno7"
+      }
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T17:19:26Z",
+      "eventSource": "guardduty.amazonaws.com",
+      "eventName": "CreateSampleFindings",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "Mozilla/5.0",
+      "requestParameters": {
+        "findingTypes": [
+          "UnauthorizedAccess:IAMUser/ConsoleLogin"
+        ]
+      },
+      "responseElements": null
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-analyst",
+        "arn": "arn:aws:iam::111122223333:user/lab-analyst",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T17:44:08Z",
+      "eventSource": "s3.amazonaws.com",
+      "eventName": "PutBucketPolicy",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "198.51.100.44",
+      "userAgent": "aws-cli/2.x",
+      "requestParameters": {
+        "bucketName": "shayaan-lab-evidence-example",
+        "bucketPolicy": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": "s3:GetObject",
+              "Resource": "arn:aws:s3:::shayaan-lab-evidence-example/*"
+            }
+          ]
+        }
+      },
+      "errorCode": "AccessDenied",
+      "errorMessage": "Access denied because public access is blocked"
+    },
+    {
+      "eventVersion": "1.09",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "lab-admin",
+        "arn": "arn:aws:iam::111122223333:user/lab-admin",
+        "accountId": "111122223333"
+      },
+      "eventTime": "2026-09-01T18:05:13Z",
+      "eventSource": "cloudformation.amazonaws.com",
+      "eventName": "UpdateStack",
+      "awsRegion": "us-west-2",
+      "sourceIPAddress": "203.0.113.55",
+      "userAgent": "Mozilla/5.0",
+      "requestParameters": {
+        "stackName": "shayaan-cloud-security-lab"
+      },
+      "responseElements": null
+    }
+  ]
+}

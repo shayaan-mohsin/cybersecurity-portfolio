@@ -28,19 +28,20 @@ https://github.com/users/shayaan-mohsin/projects/1
   - Priority
   - Evidence
   - Sprint
-- Sprint field configured with one-week iterations from Sprint 0 through Sprint 4.
+- Sprint field configured with one-week iterations from Sprint 0 through Sprint 5.
 - Starter labels created.
 - Starter backlog converted into GitHub issues.
 - Project item metadata populated across the starter backlog.
 
-## Portfolio V1 Status
+## Portfolio V2 Status
 
-Portfolio V1 is complete. All three project tracks are published in the repository:
+Portfolio V2 is complete. The repository now includes four project tracks:
 
 | Project | Status |
 |---|---|
 | Healthcare Breach Risk Assessment | Complete |
 | CISA KEV Vulnerability Prioritization | Complete |
 | Scattered Spider CTI Brief | Complete |
+| AWS Cloud Security Log Investigation Lab | Complete |
 
 Final public-content review is documented in [`project-management/final-portfolio-review.md`](project-management/final-portfolio-review.md).

@@ -59,3 +59,20 @@ Deliverables:
 - Executive summaries
 - Public content review
 - LinkedIn/GitHub profile alignment
+
+## Sprint 5: AWS Cloud Security And Log Investigation
+
+Goal: add hands-on cloud security evidence through an AWS lab design, CloudTrail investigation workflow, detection catalog, Python automation, and public-safe evidence handling.
+
+Deliverables:
+- AWS lab architecture
+- CloudFormation build template
+- Secure build and hardening guide
+- CloudTrail field guide
+- Log collection and sanitization workflow
+- Detection catalog
+- Python CloudTrail analyzer
+- Sample sanitized events and generated report
+- Cloud risk register
+- Executive summary
+- Resume and interview notes

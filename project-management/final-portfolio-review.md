@@ -1,36 +1,54 @@
 # Final Portfolio Review
 
-Review date: May 17, 2026
+## Review Summary
 
-## Review Scope
+The portfolio now contains four completed cybersecurity projects:
 
-This review covered the public repository, project folders, project-management artifacts, Markdown links, public-facing language, and GitHub issue status for Portfolio V1.
+1. Healthcare breach risk assessment using HHS OCR data and NIST CSF 2.0
+2. CISA KEV vulnerability prioritization workflow
+3. Scattered Spider CTI brief using CISA and MITRE ATT&CK
+4. AWS cloud security monitoring and CloudTrail log investigation lab
 
-## Completed Project Tracks
+The repository presents public-source analysis, bounded lab evidence, Python-supported workflows, visual artifacts, executive summaries, and project-management tracking.
 
-| Project | Evidence base | Core deliverables | Status |
-|---|---|---|---|
-| Healthcare Breach Risk Assessment | HHS OCR breach sample, HHS guidance, NIST CSF 2.0, NIST SP 1300 | Data methodology, breach trend analysis, risk register, CSF mapping, roadmap, executive brief | Complete |
-| CISA KEV Vulnerability Prioritization | CISA KEV CSV/JSON feeds and BOD 22-01 context | Data notes, catalog analysis, triage model, SLA matrix, Python workflow, generated outputs, weekly brief, executive summary | Complete |
-| Scattered Spider CTI Brief | CISA AA23-320A, CISA update alert, MITRE ATT&CK G1015, ATT&CK mapping guidance | Sources/methodology, threat profile, ATT&CK mapping, detection/response plan, response backlog, executive summary, Navigator layer | Complete |
+## Public-Facing Quality Review
 
-## Public-Content Review
+### Strengths
 
-| Check | Result |
-|---|---|
-| Project folders have README files and linked deliverables | Passed |
-| Local Markdown links resolve | Passed |
-| Public project language avoids fake-client framing | Passed |
-| Work is based on public datasets, official advisories, or clearly stated assumptions | Passed |
-| Boundary statements avoid inappropriate assurance claims, client-work claims, or confirmed-compromise claims | Passed |
-| Project-management artifacts reflect completed sprint work | Passed |
+- Projects use public sources, official guidance, or sanitized lab evidence.
+- Each project has a clear analyst question and practical deliverables.
+- Reports connect technical evidence to risk, ownership, remediation, and executive communication.
+- Visual artifacts are checked with a deterministic SVG quality gate.
+- Python scripts support repeatable analysis and generated outputs.
+- The AWS project adds hands-on cloud security and log-reading evidence.
 
-## Red-Flag Wording Review
+### Boundaries Confirmed
 
-The repository was reviewed for stale wording, behind-the-scenes notes, sensitive-source indicators, inappropriate assurance claims, and unresolved template markers.
+The portfolio avoids claiming:
 
-Remaining template language is limited to files in the `templates/` folder and is clearly intended for reuse.
+- formal HIPAA audit authority
+- live client work
+- production AWS administration
+- confirmed incident response against a real organization
+- proprietary access to employer, school, or patient data
+- certifications or employment experience not already verified
 
-## Final Notes
+### Evidence Handling
 
-Portfolio V1 is complete and suitable for public review. The strongest future enhancements would be optional additions such as charts, PDF exports, a small dashboard, or a portfolio landing site, but those are improvements rather than blockers.
+Public artifacts are designed to avoid exposing sensitive information:
+
+- healthcare project uses public HHS OCR records
+- vulnerability project uses the public CISA KEV catalog
+- CTI project uses public CISA and MITRE sources
+- AWS project uses sanitized sample logs and warns against committing raw CloudTrail exports
+
+## Remaining Improvement Opportunities
+
+- Add screenshots from a live AWS lab run after deployment in a personal AWS account.
+- Replace the AWS sample log file with a sanitized export from an actual lab session.
+- Add LinkedIn carousel versions for each project after final design review.
+- Add short demo videos or walkthrough GIFs if the portfolio expands into a hosted site.
+
+## Final Assessment
+
+The portfolio is strong enough to share publicly. It now demonstrates GRC, cyber risk, CTI, vulnerability prioritization, cloud security, log investigation, Python automation, visual communication, and project-management discipline.

@@ -17,3 +17,11 @@ Draft CTI executive summary,CTI,Report,Medium,Sprint 3,Reviewed,Done
 Create incident response improvement backlog,CTI,Analysis,Medium,Sprint 3,Reviewed,Done
 Polish repository for public review,PM,Review,High,Sprint 4,Reviewed,Done
 Review portfolio for overclaiming and sensitive content,PM,Review,High,Sprint 4,Reviewed,Done
+Design AWS cloud security lab architecture,Cloud Security,Research,High,Sprint 5,Reviewed,Done
+Create CloudFormation lab template,Cloud Security,Analysis,High,Sprint 5,Reviewed,Done
+Document AWS hardening and cleanup workflow,Cloud Security,Report,High,Sprint 5,Reviewed,Done
+Build CloudTrail detection catalog,Cloud Security,Analysis,High,Sprint 5,Reviewed,Done
+Create Python CloudTrail analyzer,Cloud Security,Analysis,High,Sprint 5,Reviewed,Done
+Generate sample CloudTrail investigation report,Cloud Security,Report,High,Sprint 5,Reviewed,Done
+Add cloud security visuals and QC check,Cloud Security,Review,Medium,Sprint 5,Reviewed,Done
+Draft resume and interview notes for cloud lab,Cloud Security,Report,Medium,Sprint 5,Reviewed,Done

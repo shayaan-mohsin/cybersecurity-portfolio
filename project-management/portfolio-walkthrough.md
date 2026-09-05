@@ -4,8 +4,8 @@
 
 This repository demonstrates early-career cybersecurity capability in two ways:
 
-1. Cybersecurity analysis across GRC, cyber risk, CTI, and vulnerability prioritization.
-2. Project-management discipline through roadmap planning, sprint structure, backlog tracking, and executive summaries.
+1. Cybersecurity analysis across GRC, cyber risk, cloud security, CTI, vulnerability prioritization, and log investigation.
+2. Project-management discipline through roadmap planning, sprint structure, backlog tracking, visual quality gates, and executive summaries.
 
 ## Best Starting Points
 
@@ -24,6 +24,12 @@ For CTI or threat-analysis roles:
 - `projects/03-mitre-attack-cti-brief/`
 - `projects/03-mitre-attack-cti-brief/attack-mapping.md`
 
+For cloud security, SOC, or log-investigation roles:
+
+- `projects/04-aws-cloud-security-log-investigation/`
+- `projects/04-aws-cloud-security-log-investigation/docs/investigation-playbook.md`
+- `projects/04-aws-cloud-security-log-investigation/outputs/sample-cloudtrail-investigation-report.md`
+
 For project-management evidence:
 
 - `project-management/roadmap.md`
@@ -32,4 +38,4 @@ For project-management evidence:
 
 ## Positioning Note
 
-The strongest work in this repository is built from public datasets, official frameworks, and clearly stated assumptions. The goal is to show judgment, structure, communication, and practical security analysis without implying access to any organization's internal systems.
+The strongest work in this repository is built from public datasets, official frameworks, advisory sources, and bounded lab evidence. The goal is to show judgment, structure, technical curiosity, communication, and practical security analysis without implying access to any organization's internal systems.

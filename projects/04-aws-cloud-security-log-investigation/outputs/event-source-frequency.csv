@@ -1,0 +1,8 @@
+event_source,count
+signin.amazonaws.com,2
+iam.amazonaws.com,2
+ec2.amazonaws.com,2
+s3.amazonaws.com,2
+guardduty.amazonaws.com,2
+cloudtrail.amazonaws.com,1
+cloudformation.amazonaws.com,1
