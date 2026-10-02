@@ -1,8 +1,10 @@
+> Historical planning record. Superseded by the [current portfolio](../../README.md) and [evidence status](../../PUBLISH_STATUS.md). Completion labels here are not current claims.
+
 # Visual Quality Control
 
 This repository uses a lightweight quality gate for SVG visuals before they are committed.
 
-The gate is implemented in [`tools/visual_quality_check.py`](../tools/visual_quality_check.py). It checks for structure, readability, metadata, text containment, and arrow-marker integrity. The goal is not to replace human review; the goal is to catch preventable visual issues before the artifacts reach GitHub.
+The gate is implemented in [`tools/visual_quality_check.py`](../../tools/visual_quality_check.py). It checks for structure, readability, metadata, text containment, and arrow-marker integrity. The goal is not to replace human review; the goal is to catch preventable visual issues before the artifacts reach GitHub.
 
 ## Gate Checks
 

@@ -1,5 +1,5 @@
 actor,count
-lab-admin,8
-lab-auditor,2
-Root,1
-lab-analyst,1
+arn:aws:iam::111122223333:user/lab-admin,8
+arn:aws:iam::111122223333:user/lab-auditor,2
+arn:aws:iam::111122223333:root,1
+arn:aws:iam::111122223333:user/lab-analyst,1

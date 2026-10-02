@@ -1,83 +1,32 @@
-# Architecture
+# What runs locally, and what is only proposed
 
-## Design Goal
+[Project overview](README.md) · [Template](cloudformation/aws-cloud-security-lab.yaml)
 
-The lab creates a small AWS environment that is safe enough for a personal account and realistic enough to support cloud security investigation practice.
+## Implemented offline path
 
-The environment is intentionally modest. The value comes from reading the logs, understanding the controls, and explaining the security decisions, not from deploying a large or expensive cloud footprint.
+Synthetic JSON → input validation and deduplication → Python signal logic → CSV findings and Markdown report.
 
-## Logical Architecture
+No AWS credentials, network calls, SDK, or deployment are required to reproduce that path.
 
-| Layer | Component | Purpose |
-|---|---|---|
-| Identity | AWS account, IAM identities, MFA, least privilege | Control who can administer the environment |
-| Logging | CloudTrail Event History and optional trail to S3 | Preserve management activity for review |
-| Detection | GuardDuty | Surface managed cloud threat findings |
-| Storage | S3 evidence bucket | Practice storage hardening and public-access review |
-| Network | VPC and detached security group | Generate and investigate exposure events without running compute |
-| Access review | IAM Access Analyzer | Review external and public access paths |
-| Automation | Python scripts | Parse logs, flag risky events, and generate reports |
+## Proposed AWS collection lab
 
-## Security Controls In The Template
+![Proposed template layout: a single-Region management-event trail delivers to its log bucket; a separate evidence bucket, account access analyzer, detached network resources, and optional GuardDuty remain distinct.](visuals/aws-lab-architecture.svg)
 
-The CloudFormation template includes:
+*The diagram describes the template. It is not a deployed architecture or evidence that logs were collected.*
 
-- S3 Block Public Access on lab buckets
-- S3 bucket versioning
-- S3 server-side encryption
-- CloudTrail management event logging
-- CloudTrail log file validation
-- a lab VPC and security group with no inbound access by default
-- IAM Access Analyzer for account-level access visibility
-- optional GuardDuty detector creation
+The template defines two encrypted, versioned S3 buckets with all four bucket-level public-access-block settings; a single-Region trail with management-event logging and log-file validation; an account-level IAM Access Analyzer; a VPC, subnet, and detached security group; and optional GuardDuty, disabled by default.
 
-## Cost-Aware Design
+The trail’s bucket policy restricts the CloudTrail service to the named trail with aws:SourceArn conditions. It does not grant an arbitrary trail permission to write.
 
-The lab avoids always-on compute. There is no EC2 instance created by default. The security group exists so the analyst can generate controlled configuration-change events, then immediately reverse them.
+## Boundaries worth inspecting
 
-CloudTrail Event History is available by default for recent management events. A trail can be used for ongoing log delivery, but the project intentionally documents cost considerations because duplicated management-event delivery, data events, and extended services can create charges.
+- No instances, internet gateway, or NAT gateway are defined.
+- No S3 object data events are selected. Management logs do not prove object reads or exfiltration.
+- Encryption is SSE-S3; this template does not define a customer-managed KMS key.
+- Log-file validation produces integrity evidence; it does not itself prove log delivery or complete monitoring.
+- The synthetic fixture spans Regions and is not an export from this single-Region design.
+- Template checks are static. AWS validation, deployment, cost, service availability, and cleanup behavior remain untested.
 
-GuardDuty is optional in the template. AWS documents a 30-day free trial for GuardDuty when first enabled in a Region, but continuing after the trial can incur costs.
+See the [build and validation plan](docs/aws-build-and-hardening-guide.md) before considering a deployment.
 
-## Evidence Flow
-
-1. A user performs AWS management actions in the console or CLI.
-2. CloudTrail records management events.
-3. The analyst exports Event History or retrieves trail-delivered logs.
-4. Raw logs stay private.
-5. The sanitizer redacts sensitive identifiers.
-6. The analyzer parses events and flags risk signals.
-7. The investigation report summarizes what happened and what should be remediated.
-
-## Investigation Model
-
-The project uses four investigation questions:
-
-1. Who performed the action?
-2. What changed?
-3. Was the action expected, denied, risky, or security relevant?
-4. What should be validated, reversed, or monitored next?
-
-## Public Evidence Standard
-
-Public artifacts should prove the work without leaking the account.
-
-Safe to publish:
-
-- sanitized event excerpts
-- frequency summaries
-- detection findings
-- architecture diagrams
-- investigation notes
-- remediation decisions
-- screenshots with account identifiers removed
-
-Keep private:
-
-- raw CloudTrail exports
-- real account IDs
-- access key IDs
-- source IP addresses
-- user names tied to personal accounts
-- exact resource names that identify the account
-- billing or account contact information
+The bucket-policy restriction follows the [AWS CloudTrail bucket policy guidance](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/create-s3-bucket-policy-for-cloudtrail.html). Provider guidance is a design reference, not evidence of deployment.

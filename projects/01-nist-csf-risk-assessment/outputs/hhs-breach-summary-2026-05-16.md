@@ -7,9 +7,10 @@ Analysis date: 2026-05-16
 | Metric | Value |
 | --- | --- |
 | Sample records | 100 |
-| Total affected individuals | 6,692,288 |
+| Sum of reported affected individuals (not unique people) | 6,692,288 |
+| Median reported affected individuals per record | 5,140.5 |
 | Hacking/IT incident records | 88 |
-| Network server records | 60 |
+| Network Server-only records | 60 |
 | Business associate present | 28 |
 
 ## Breach Type Frequency
@@ -54,4 +55,4 @@ Analysis date: 2026-05-16
 
 ## Method Note
 
-This generated summary uses the local dated HHS OCR sample stored in the project data folder. It supports trend analysis and risk framing, but it is not a HIPAA compliance determination or an assessment of any specific organization's internal controls.
+This generated summary uses the local dated HHS OCR sample stored in the project data folder. It supports sample description and risk framing, but it is not a HIPAA compliance determination or an assessment of any specific organization's internal controls.

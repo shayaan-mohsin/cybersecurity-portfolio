@@ -1,485 +1,181 @@
+"""Offline CloudTrail-style JSON review. No AWS SDK, deployment, or automatic response.
+Supported formats: Records, Events/CloudTrailEvent, list, or one event. CSV is deliberately unsupported.
+Severity means review urgency, not confirmed compromise.
 """
-Analyze CloudTrail JSON or CSV exports and generate investigation artifacts.
-
-The script is intentionally dependency-free. It supports common CloudTrail shapes:
-- S3-delivered trail files with a top-level "Records" list
-- lookup-events output with a top-level "Events" list and "CloudTrailEvent"
-- a plain JSON list of event objects
-- CSV exports with common CloudTrail/Event History column names
-"""
-
 from __future__ import annotations
-
-import argparse
-import csv
-import json
-import re
+import argparse, csv, hashlib, ipaddress, json
 from collections import Counter
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+EXPECTED = {'ConsoleLogin': 'signin.amazonaws.com', 'CreateAccessKey': 'iam.amazonaws.com', 'AttachUserPolicy': 'iam.amazonaws.com', 'AttachRolePolicy': 'iam.amazonaws.com', 'PutUserPolicy': 'iam.amazonaws.com', 'PutRolePolicy': 'iam.amazonaws.com', 'AuthorizeSecurityGroupIngress': 'ec2.amazonaws.com', 'RevokeSecurityGroupIngress': 'ec2.amazonaws.com', 'DeletePublicAccessBlock': 's3.amazonaws.com', 'PutPublicAccessBlock': 's3.amazonaws.com', 'PutBucketPolicy': 's3.amazonaws.com', 'StopLogging': 'cloudtrail.amazonaws.com', 'DeleteTrail': 'cloudtrail.amazonaws.com', 'UpdateTrail': 'cloudtrail.amazonaws.com', 'PutEventSelectors': 'cloudtrail.amazonaws.com', 'StartLogging': 'cloudtrail.amazonaws.com', 'CreateDetector': 'guardduty.amazonaws.com', 'UpdateDetector': 'guardduty.amazonaws.com', 'DeleteDetector': 'guardduty.amazonaws.com'}
+ORDER = {'High': 0, 'Medium': 1, 'Informational': 2}
 
+def load_events(path):
+    """Normalize supported JSON containers and reject structurally unusable records."""
+    if Path(path).suffix.lower() != '.json':
+        raise ValueError('Only JSON exports are supported; CSV lacks necessary nested evidence')
+    data = json.loads(Path(path).read_text(encoding='utf-8-sig'))
+    if isinstance(data, dict) and 'Records' in data:
+        data = data['Records']
+    elif isinstance(data, dict) and 'Events' in data:
+        data = data['Events']
+    elif isinstance(data, dict):
+        data = [data]
+    if not isinstance(data, list) or not data:
+        raise ValueError('Expected a nonempty event list')
+    out = []
+    for event in data:
+        if not isinstance(event, dict):
+            raise ValueError('Event must be an object')
+        if 'CloudTrailEvent' in event:
+            event = json.loads(event['CloudTrailEvent'])
+        if not isinstance(event, dict) or not all((isinstance(event.get(k), str) and event[k] for k in ['eventTime', 'eventName', 'eventSource'])):
+            raise ValueError('Missing eventTime/eventName/eventSource')
+        for k in ['userIdentity', 'requestParameters', 'responseElements']:
+            if event.get(k) is not None and (not isinstance(event[k], dict)):
+                raise ValueError('Expected nested object: ' + k)
+        out.append(event)
+    return out
 
-SEVERITY_ORDER = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3, "Informational": 4}
+def deduplicate(events):
+    """Use provider ID with account/Region, or exact-payload hashing if no ID exists."""
+    seen = set()
+    out = []
+    for e in events:
+        key = (e.get('recipientAccountId'), e.get('awsRegion'), e['eventID']) if e.get('eventID') else hashlib.sha256(json.dumps(e, sort_keys=True).encode()).hexdigest()
+        if key not in seen:
+            seen.add(key)
+            out.append(e)
+    return (out, len(events) - len(out))
 
-LOGGING_EVENTS = {"StopLogging", "DeleteTrail", "UpdateTrail", "PutEventSelectors"}
-PRIVILEGE_EVENTS = {"AttachUserPolicy", "AttachRolePolicy", "PutUserPolicy", "PutRolePolicy"}
-S3_EXPOSURE_EVENTS = {"DeletePublicAccessBlock", "PutBucketPolicy", "PutBucketAcl"}
-GUARDDUTY_EVENTS = {"CreateDetector", "UpdateDetector", "DeleteDetector"}
-REMEDIATION_EVENTS = {"RevokeSecurityGroupIngress", "PutPublicAccessBlock", "StartLogging"}
-DENIED_PATTERNS = ("AccessDenied", "UnauthorizedOperation", "AccessDeniedException")
-PUBLIC_CIDRS = ("0.0.0.0/0", "::/0")
-ADMIN_PORTS = {22, 3389}
+def actor(e):
+    """Preserve the full assumed-role session identifier when available."""
+    u = e.get('userIdentity') or {}
+    return u.get('arn') or u.get('principalId') or u.get('userName') or u.get('type', 'Unknown')
 
-
-@dataclass
-class Finding:
-    severity: str
-    category: str
-    signal: str
-    event_time: str
-    event_name: str
-    event_source: str
-    actor: str
-    source_ip: str
-    why_it_matters: str
-    recommendation: str
-
-    def sort_key(self) -> tuple[int, str]:
-        return (SEVERITY_ORDER.get(self.severity, 99), self.event_time)
-
-
-def load_events(path: Path) -> list[dict[str, Any]]:
-    if path.suffix.lower() == ".csv":
-        return load_csv_events(path)
-    with path.open(encoding="utf-8-sig") as handle:
-        payload = json.load(handle)
-    return normalize_json_payload(payload)
-
-
-def normalize_json_payload(payload: Any) -> list[dict[str, Any]]:
-    if isinstance(payload, list):
-        return [event for event in payload if isinstance(event, dict)]
-    if not isinstance(payload, dict):
-        return []
-    if isinstance(payload.get("Records"), list):
-        return [event for event in payload["Records"] if isinstance(event, dict)]
-    if isinstance(payload.get("Events"), list):
-        events: list[dict[str, Any]] = []
-        for wrapper in payload["Events"]:
-            if not isinstance(wrapper, dict):
-                continue
-            cloudtrail_event = wrapper.get("CloudTrailEvent")
-            if isinstance(cloudtrail_event, str):
+def public_permissions(e):
+    """Match the CIDR and port within each permission, never across rules."""
+    p = e.get('requestParameters') or {}
+    perms = p.get('ipPermissions', {})
+    perms = perms.get('items', []) if isinstance(perms, dict) else perms
+    if not isinstance(perms, list):
+        raise ValueError('ipPermissions must contain items/list')
+    found = []
+    for rule in perms:
+        if not isinstance(rule, dict):
+            raise ValueError('Invalid ingress rule')
+        public = False
+        for key, cidrkey in [('ipRanges', 'cidrIp'), ('ipv6Ranges', 'cidrIpv6')]:
+            ranges = rule.get(key, {})
+            ranges = ranges.get('items', []) if isinstance(ranges, dict) else ranges
+            for item in ranges or []:
                 try:
-                    parsed = json.loads(cloudtrail_event)
-                    if isinstance(parsed, dict):
-                        events.append(parsed)
-                        continue
-                except json.JSONDecodeError:
-                    pass
-            events.append(wrapper)
-        return events
-    return [payload]
+                    net = ipaddress.ip_network(item.get(cidrkey, ''), strict=False)
+                    public = public or net.prefixlen == 0
+                except ValueError:
+                    raise ValueError('Invalid ingress CIDR')
+        if public:
+            proto = str(rule.get('ipProtocol', ''))
+            lo, hi = (rule.get('fromPort'), rule.get('toPort'))
+            admin = proto == '-1' or (proto in {'tcp', '6'} and isinstance(lo, int) and isinstance(hi, int) and any((lo <= port <= hi for port in [22, 3389])))
+            found.append(admin)
+    return found
 
-
-def load_csv_events(path: Path) -> list[dict[str, Any]]:
-    with path.open(newline="", encoding="utf-8-sig") as handle:
-        rows = list(csv.DictReader(handle))
-    return [normalize_csv_row(row) for row in rows]
-
-
-def pick(row: dict[str, str], *names: str) -> str:
-    lower_map = {key.lower().replace(" ", "").replace("_", ""): value for key, value in row.items()}
-    for name in names:
-        normalized = name.lower().replace(" ", "").replace("_", "")
-        if normalized in lower_map:
-            return lower_map[normalized] or ""
-    return ""
-
-
-def normalize_csv_row(row: dict[str, str]) -> dict[str, Any]:
-    event_name = pick(row, "eventName", "Event name", "EventName")
-    event_source = pick(row, "eventSource", "Event source", "EventSource")
-    event_time = pick(row, "eventTime", "Event time", "EventTime")
-    actor = pick(row, "userName", "User name", "Username", "User")
-    source_ip = pick(row, "sourceIPAddress", "Source IP address", "Source IP")
-    error_code = pick(row, "errorCode", "Error code")
-    return {
-        "eventTime": event_time,
-        "eventName": event_name,
-        "eventSource": event_source,
-        "sourceIPAddress": source_ip,
-        "errorCode": error_code,
-        "userIdentity": {"type": pick(row, "User type", "userIdentity.type"), "userName": actor},
-        "requestParameters": row,
-        "responseElements": row,
-    }
-
-
-def flatten_text(value: Any) -> str:
-    try:
-        return json.dumps(value, sort_keys=True)
-    except TypeError:
-        return str(value)
-
-
-def event_name(event: dict[str, Any]) -> str:
-    return str(event.get("eventName") or "Unknown")
-
-
-def event_source(event: dict[str, Any]) -> str:
-    return str(event.get("eventSource") or "Unknown")
-
-
-def event_time(event: dict[str, Any]) -> str:
-    return str(event.get("eventTime") or "Unknown")
-
-
-def source_ip(event: dict[str, Any]) -> str:
-    return str(event.get("sourceIPAddress") or "Unknown")
-
-
-def identity(event: dict[str, Any]) -> dict[str, Any]:
-    raw = event.get("userIdentity")
-    return raw if isinstance(raw, dict) else {}
-
-
-def actor(event: dict[str, Any]) -> str:
-    ident = identity(event)
-    if ident.get("type") == "Root":
-        return "Root"
-    if ident.get("userName"):
-        return str(ident["userName"])
-    session_context = ident.get("sessionContext")
-    if isinstance(session_context, dict):
-        issuer = session_context.get("sessionIssuer")
-        if isinstance(issuer, dict) and issuer.get("userName"):
-            return str(issuer["userName"])
-    if ident.get("arn"):
-        return str(ident["arn"]).split("/")[-1]
-    return str(ident.get("type") or "Unknown")
-
-
-def identity_type(event: dict[str, Any]) -> str:
-    return str(identity(event).get("type") or "Unknown")
-
-
-def error_code(event: dict[str, Any]) -> str:
-    return str(event.get("errorCode") or "")
-
-
-def console_login_result(event: dict[str, Any]) -> str:
-    response = event.get("responseElements")
-    if isinstance(response, dict):
-        return str(response.get("ConsoleLogin") or "")
-    return ""
-
-
-def contains_public_cidr(event: dict[str, Any]) -> bool:
-    text = flatten_text(event)
-    return any(cidr in text for cidr in PUBLIC_CIDRS)
-
-
-def contains_admin_port(event: dict[str, Any]) -> bool:
-    text = flatten_text(event)
-    for port in ADMIN_PORTS:
-        if re.search(rf'("fromPort"|fromPort|port)["\s:]*{port}\b', text) or re.search(rf'("toPort"|toPort|port)["\s:]*{port}\b', text):
+def public_allow_policy(p):
+    """Flag wildcard Allow for review without claiming effective public access."""
+    policy = p.get('policy', p.get('bucketPolicy'))
+    if policy is None:
+        return False
+    if isinstance(policy, str):
+        policy = json.loads(policy)
+    if not isinstance(policy, dict):
+        raise ValueError('Policy must be a JSON object')
+    statements = policy.get('Statement', [])
+    if isinstance(statements, dict):
+        statements = [statements]
+    for s in statements:
+        principal = s.get('Principal')
+        wild = principal == '*' or (isinstance(principal, dict) and (principal.get('AWS') == '*' or (isinstance(principal.get('AWS'), list) and '*' in principal['AWS'])))
+        if s.get('Effect') == 'Allow' and wild:
             return True
     return False
 
+def analyze_event(e):
+    """Interpret error outcome first; emit review signals, not incident verdicts."""
+    n = e.get('eventName')
+    service = e.get('eventSource')
+    p = e.get('requestParameters') or {}
+    out = []
 
-def public_bucket_policy(event: dict[str, Any]) -> bool:
-    if event_name(event) not in {"PutBucketPolicy", "PutBucketAcl"}:
-        return False
-    text = flatten_text(event.get("requestParameters", event))
-    return '"Principal": "*"' in text or '"Principal":"*"' in text or "AllUsers" in text or "AuthenticatedUsers" in text
+    def add(severity, signal, why, next_step):
+        out.append(dict(severity=severity, signal=signal, event_id=e.get('eventID', 'not supplied'), event_time=e.get('eventTime', ''), event_name=n, event_source=service, region=e.get('awsRegion', 'not supplied'), actor=actor(e), source_ip=e.get('sourceIPAddress', 'not supplied'), outcome='Denied/error' if e.get('errorCode') else 'Sign-in failure' if (e.get('responseElements') or {}).get('ConsoleLogin') == 'Failure' else 'API recorded without error; final state unverified', why_it_matters=why, recommendation=next_step))
+    if e.get('errorCode'):
+        if n in EXPECTED and service == EXPECTED[n]:
+            add('Medium', 'Action denied or failed', 'No successful change is established by this record. Error: ' + str(e['errorCode']), 'Review authorization, intent and related successful events; do not claim exposure or remediation.')
+        return out
+    if n in EXPECTED and service != EXPECTED[n]:
+        return out
+    if (e.get('userIdentity') or {}).get('type') == 'Root':
+        add('High', 'Root identity activity', 'Root identity is recorded; approval/MFA/intent are unknown.', 'Verify sign-in result, MFA evidence, approval and scope.')
+    if n == 'ConsoleLogin' and (e.get('responseElements') or {}).get('ConsoleLogin') == 'Failure':
+        add('Medium', 'Failed console sign-in', 'A failed sign-in does not establish account compromise.', 'Correlate attempts, successes and identity context.')
+    elif n == 'CreateAccessKey':
+        add('High', 'Access key creation', 'Creation request recorded without error; ownership and need require review.', 'Check target identity, inventory, approval, use and rotation; never publish keys.')
+    elif n in {'AttachUserPolicy', 'AttachRolePolicy', 'PutUserPolicy', 'PutRolePolicy'}:
+        admin = str(p.get('policyArn', '')).endswith(':policy/AdministratorAccess')
+        add('High' if admin else 'Medium', 'IAM policy change', 'AdministratorAccess attachment' if admin else 'Policy semantics and effective permission change are not determined.', 'Compare before/after policies and effective authorization with approval.')
+    elif n == 'AuthorizeSecurityGroupIngress':
+        perms = public_permissions(e)
+        if perms:
+            add('High' if any(perms) else 'Medium', 'World-CIDR ingress rule', 'Administrative port/range/all protocols allowed to world CIDR.' if any(perms) else 'Public ingress rule recorded.', 'Check rule IDs, attached resources, routes/listeners and approval. A detached group does not prove reachable exposure.')
+    elif n == 'RevokeSecurityGroupIngress':
+        add('Informational', 'Ingress removal request', 'Recorded removal is follow-up evidence, not proof that every risky rule is gone.', 'Compare exact rules and verify final group/asset state.')
+    elif n == 'DeletePublicAccessBlock':
+        add('High', 'Bucket public-access-block deletion', 'Bucket layer changed; account/organization controls and effective access remain unknown.', 'Check all BPA layers, bucket policy/ACL and intended access.')
+    elif n == 'PutPublicAccessBlock':
+        cfg = p.get('PublicAccessBlockConfiguration') or p.get('publicAccessBlockConfiguration') or {}
+        vals = [cfg.get(k) for k in ['BlockPublicAcls', 'IgnorePublicAcls', 'BlockPublicPolicy', 'RestrictPublicBuckets']]
+        if all((v is True for v in vals)):
+            add('Informational', 'Bucket public-access-block protections requested', 'All four bucket settings are true in the request.', 'Verify effective settings and intended authorized access.')
+        else:
+            add('Medium', 'Public-access-block configuration review', 'False or missing settings prevent a claim of complete protection.', 'Inspect actual bucket/account/organization settings.')
+    elif n == 'PutBucketPolicy' and public_allow_policy(p):
+        add('Medium', 'Wildcard Allow policy needs review', 'Wildcard Allow found; conditions, resource/action and BPA determine effective public access.', 'Review exact policy and external-access findings; do not infer public access from wildcard alone.')
+    elif n in {'StopLogging', 'DeleteTrail'}:
+        add('High', 'Trail disruption request', 'Trail stop/delete recorded without API error; other trails and event history may still exist.', 'Verify trail status/delivery/selectors/regions and approved changes.')
+    elif n in {'UpdateTrail', 'PutEventSelectors'}:
+        add('Medium', 'Logging configuration review', 'A configuration change can strengthen or reduce visibility.', 'Compare prior settings, required coverage and observed delivery.')
+    elif n == 'StartLogging':
+        add('Informational', 'Logging start request', 'A start request is not proof of delivery.', 'Verify trail status and new delivered log files.')
+    elif n in {'CreateDetector', 'UpdateDetector', 'DeleteDetector'}:
+        disabled = n == 'DeleteDetector' or p.get('enable') is False
+        add('High' if disabled else 'Informational', 'GuardDuty disable/delete request' if disabled else 'GuardDuty configuration review', 'Explicit disable/delete requested.' if disabled else 'Enable/setup or unclassified update; no reduction is established.', 'Verify detector status, enabled data sources, approval and finding delivery.')
+    return out
 
+def write_csv(path, rows, fields):
+    with path.open('w', newline='', encoding='utf-8') as h:
+        w = csv.DictWriter(h, fieldnames=fields)
+        w.writeheader()
+        w.writerows(rows)
 
-def add_finding(findings: list[Finding], event: dict[str, Any], severity: str, category: str, signal: str, why: str, recommendation: str) -> None:
-    findings.append(
-        Finding(
-            severity=severity,
-            category=category,
-            signal=signal,
-            event_time=event_time(event),
-            event_name=event_name(event),
-            event_source=event_source(event),
-            actor=actor(event),
-            source_ip=source_ip(event),
-            why_it_matters=why,
-            recommendation=recommendation,
-        )
-    )
-
-
-def analyze_event(event: dict[str, Any]) -> list[Finding]:
-    findings: list[Finding] = []
-    name = event_name(event)
-    err = error_code(event)
-
-    if identity_type(event) == "Root":
-        add_finding(
-            findings,
-            event,
-            "High",
-            "Identity",
-            "Root account activity",
-            "Root account activity is high impact and should be rare, intentional, and protected by MFA.",
-            "Confirm the activity was expected, verify MFA, and review actions that followed the login.",
-        )
-
-    if name == "ConsoleLogin" and console_login_result(event) == "Failure":
-        add_finding(
-            findings,
-            event,
-            "Medium",
-            "Identity",
-            "Failed console login",
-            "Failed sign-in activity can indicate user error, misconfiguration, or attempted access.",
-            "Review the identity, source IP, repeated attempts, and any successful login after the failure.",
-        )
-
-    if name == "CreateAccessKey":
-        add_finding(
-            findings,
-            event,
-            "High",
-            "Credential",
-            "Access key created",
-            "Long-lived access keys can become persistence or data access risk when they are unnecessary or unmanaged.",
-            "Validate business need, remove unused keys, rotate keys as needed, and prefer temporary credentials.",
-        )
-
-    if name in PRIVILEGE_EVENTS:
-        add_finding(
-            findings,
-            event,
-            "High",
-            "Privilege",
-            "Privilege policy changed",
-            "IAM policy changes can expand what an identity is allowed to do.",
-            "Confirm approval, scope the granted permissions, and replace broad access with least privilege.",
-        )
-
-    if name == "AuthorizeSecurityGroupIngress" and contains_public_cidr(event):
-        severity = "Critical" if contains_admin_port(event) else "High"
-        add_finding(
-            findings,
-            event,
-            severity,
-            "Network Exposure",
-            "Public security group ingress",
-            "Public inbound access can expose cloud resources to internet scanning and unauthorized access attempts.",
-            "Revoke unnecessary public access, restrict source ranges, and alert on public administrative ports.",
-        )
-
-    if name in S3_EXPOSURE_EVENTS and (name == "DeletePublicAccessBlock" or public_bucket_policy(event)):
-        add_finding(
-            findings,
-            event,
-            "High",
-            "Data Exposure",
-            "S3 public access control weakened",
-            "S3 public-access changes can expose sensitive data if not reviewed and tightly controlled.",
-            "Keep Block Public Access enabled, validate bucket policy scope, and review Access Analyzer findings.",
-        )
-
-    if name in LOGGING_EVENTS:
-        add_finding(
-            findings,
-            event,
-            "Critical",
-            "Logging",
-            "CloudTrail logging changed",
-            "CloudTrail changes can reduce the ability to reconstruct account activity during an investigation.",
-            "Validate change approval, restore logging if needed, and restrict CloudTrail administration.",
-        )
-
-    if name in GUARDDUTY_EVENTS:
-        add_finding(
-            findings,
-            event,
-            "High",
-            "Detection",
-            "GuardDuty configuration changed",
-            "Detection coverage changes should be intentional, documented, and reviewed.",
-            "Confirm GuardDuty status matches the lab plan and document the reason for the change.",
-        )
-
-    if any(pattern in err for pattern in DENIED_PATTERNS):
-        add_finding(
-            findings,
-            event,
-            "Medium",
-            "Denied Activity",
-            "Access denied activity",
-            "Denied actions are useful investigation signals because they show attempted behavior even when blocked.",
-            "Review whether the denied action was expected, misconfigured, or suspicious.",
-        )
-
-    if name in REMEDIATION_EVENTS:
-        add_finding(
-            findings,
-            event,
-            "Informational",
-            "Remediation",
-            "Remediation evidence",
-            "Corrective events help complete the timeline and show whether a risky change was reversed.",
-            "Document the remediation and confirm the final resource state.",
-        )
-
-    return findings
-
-
-def write_counter_csv(path: Path, header: tuple[str, str], counter: Counter[str]) -> None:
-    with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
-        writer.writerow(header)
-        for key, value in counter.most_common():
-            writer.writerow([key, value])
-
-
-def write_findings_csv(path: Path, findings: list[Finding]) -> None:
-    with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
-        writer.writerow(["severity", "category", "signal", "event_time", "event_name", "event_source", "actor", "source_ip", "why_it_matters", "recommendation"])
-        for finding in findings:
-            writer.writerow([
-                finding.severity,
-                finding.category,
-                finding.signal,
-                finding.event_time,
-                finding.event_name,
-                finding.event_source,
-                finding.actor,
-                finding.source_ip,
-                finding.why_it_matters,
-                finding.recommendation,
-            ])
-
-
-def markdown_table(rows: list[list[str]]) -> list[str]:
-    if not rows:
-        return []
-    header = rows[0]
-    lines = ["| " + " | ".join(header) + " |", "| " + " | ".join("---" for _ in header) + " |"]
-    for row in rows[1:]:
-        escaped = [str(value).replace("|", "\\|") for value in row]
-        lines.append("| " + " | ".join(escaped) + " |")
-    return lines
-
-
-def build_report(events: list[dict[str, Any]], findings: list[Finding]) -> str:
-    event_names = Counter(event_name(event) for event in events)
-    event_sources = Counter(event_source(event) for event in events)
-    actors = Counter(actor(event) for event in events)
-    source_ips = Counter(source_ip(event) for event in events)
-    severities = Counter(finding.severity for finding in findings)
-
-    lines = [
-        "# CloudTrail Investigation Report",
-        "",
-        "Generated by `scripts/analyze_cloudtrail.py`.",
-        "",
-        "## Dataset Summary",
-        "",
-        f"- Events reviewed: {len(events)}",
-        f"- Findings generated: {len(findings)}",
-        f"- Unique event names: {len(event_names)}",
-        f"- Unique event sources: {len(event_sources)}",
-        f"- Unique actors: {len(actors)}",
-        f"- Unique source IPs: {len(source_ips)}",
-        "",
-        "## Finding Severity Summary",
-        "",
-    ]
-
-    severity_rows = [["Severity", "Count"]]
-    for severity in ["Critical", "High", "Medium", "Low", "Informational"]:
-        severity_rows.append([severity, str(severities.get(severity, 0))])
-    lines.extend(markdown_table(severity_rows))
-
-    lines.extend(["", "## Top Event Names", ""])
-    name_rows = [["Event name", "Count"]]
-    for name, count in event_names.most_common(10):
-        name_rows.append([name, str(count)])
-    lines.extend(markdown_table(name_rows))
-
-    lines.extend(["", "## Top Event Sources", ""])
-    source_rows = [["Event source", "Count"]]
-    for source, count in event_sources.most_common(10):
-        source_rows.append([source, str(count)])
-    lines.extend(markdown_table(source_rows))
-
-    lines.extend(["", "## Findings", ""])
-    finding_rows = [["Severity", "Signal", "Time", "Event", "Actor", "Why it matters", "Recommended action"]]
-    for finding in sorted(findings, key=lambda item: item.sort_key()):
-        finding_rows.append([
-            finding.severity,
-            finding.signal,
-            finding.event_time,
-            finding.event_name,
-            finding.actor,
-            finding.why_it_matters,
-            finding.recommendation,
-        ])
-    lines.extend(markdown_table(finding_rows))
-
-    lines.extend(
-        [
-            "",
-            "## Analyst Summary",
-            "",
-            "The highest-priority review items are events that affect visibility, privilege, public exposure, or long-lived credentials. Denied actions are also useful because they show behavior that AWS blocked but an analyst should still understand.",
-            "",
-            "## Recommended Follow-Up",
-            "",
-            "- Confirm root activity was expected and MFA protected.",
-            "- Review IAM policy changes and remove unnecessary broad permissions.",
-            "- Confirm access keys are needed, rotated, and monitored.",
-            "- Revoke public administrative ingress and validate final security group state.",
-            "- Keep S3 Block Public Access enabled and review any public policy attempts.",
-            "- Alert on CloudTrail and GuardDuty configuration changes.",
-            "",
-            "## Boundary Statement",
-            "",
-            "This report is based on lab or sanitized CloudTrail evidence. It does not prove compromise and does not assess any production organization.",
-            "",
-        ]
-    )
-    return "\n".join(lines)
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Analyze CloudTrail JSON/CSV exports.")
-    parser.add_argument("inputs", nargs="+", type=Path, help="CloudTrail JSON or CSV files to analyze.")
-    parser.add_argument("--output-dir", type=Path, default=Path("outputs"))
-    args = parser.parse_args()
-
-    events: list[dict[str, Any]] = []
-    for path in args.inputs:
-        events.extend(load_events(path))
-
-    findings: list[Finding] = []
-    for event in events:
-        findings.extend(analyze_event(event))
-    findings.sort(key=lambda item: item.sort_key())
-
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    write_findings_csv(args.output_dir / "cloudtrail-findings.csv", findings)
-    write_counter_csv(args.output_dir / "event-name-frequency.csv", ("event_name", "count"), Counter(event_name(event) for event in events))
-    write_counter_csv(args.output_dir / "event-source-frequency.csv", ("event_source", "count"), Counter(event_source(event) for event in events))
-    write_counter_csv(args.output_dir / "actor-frequency.csv", ("actor", "count"), Counter(actor(event) for event in events))
-    report = build_report(events, findings)
-    report_path = args.output_dir / "sample-cloudtrail-investigation-report.md"
-    report_path.write_text(report, encoding="utf-8")
-
-    print(f"Events reviewed: {len(events)}")
-    print(f"Findings generated: {len(findings)}")
-    print(f"Report written: {report_path}")
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('inputs', nargs='+', type=Path)
+    ap.add_argument('--output-dir', type=Path, default=Path('outputs'))
+    a = ap.parse_args()
+    raw = [e for p in a.inputs for e in load_events(p)]
+    events, dupes = deduplicate(raw)
+    findings = sorted([f for e in events for f in analyze_event(e)], key=lambda f: (ORDER[f['severity']], f['event_time'], f['event_id'], f['signal']))
+    a.output_dir.mkdir(parents=True, exist_ok=True)
+    fields = ['severity', 'signal', 'event_id', 'event_time', 'event_name', 'event_source', 'region', 'actor', 'source_ip', 'outcome', 'why_it_matters', 'recommendation']
+    write_csv(a.output_dir / 'cloudtrail-findings.csv', findings, fields)
+    for filename, key, label in [('event-name-frequency.csv', 'eventName', 'event_name'), ('event-source-frequency.csv', 'eventSource', 'event_source')]:
+        write_csv(a.output_dir / filename, [{label: k, 'count': v} for k, v in Counter((e[key] for e in events)).most_common()], [label, 'count'])
+    write_csv(a.output_dir / 'actor-frequency.csv', [{'actor': k, 'count': v} for k, v in Counter((actor(e) for e in events)).most_common()], ['actor', 'count'])
+    lines = ['# Offline CloudTrail-style investigation', '', f'Input records: {len(raw)}; unique records: {len(events)}; duplicate copies excluded: {dupes}.', f"Review signals: {len(findings)}. Severity counts: {dict(Counter((f['severity'] for f in findings)))}.", '', 'The repository sample is synthetic and composite; other inputs require their own provenance. No AWS deployment, live export, compromise, reachable exposure, or completed remediation is established. Event IDs are absent in the original fixture; the analyzer preserves that limitation. Management events do not establish object reads or data exfiltration.', '', '| Urgency | Event / outcome | Interpretation | Follow-up |', '| --- | --- | --- | --- |']
+    for f in findings:
+        lines.append('| ' + ' | '.join((str(x).replace('|', '\\|').replace('\n', ' ') for x in [f['severity'], f['event_name'] + ' / ' + f['outcome'], f['why_it_matters'], f['recommendation']])) + ' |')
+    (a.output_dir / 'sample-cloudtrail-investigation-report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    print(json.dumps({'events': len(events), 'duplicates': dupes, 'signals': len(findings), 'severity': dict(Counter((f['severity'] for f in findings)))}))
     return 0
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     raise SystemExit(main())

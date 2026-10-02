@@ -1,92 +1,32 @@
-# Detection And Response Plan
+# Walkthrough: investigate a factor change after support contact
 
-## Defender Workflow
+[Project overview](README.md) · [Mappings](attack-mapping.md) · [Validation backlog](response-backlog.md)
 
-The visual below summarizes the defensive operating path for this brief. The rest of the file expands each part into log sources, detection use cases, response playbooks, and metrics.
+**Proposed investigation. No identity platform or SIEM rule has been deployed.** A SIEM is a system for collecting and searching security events.
 
-![Identity-focused defender workflow](visuals/identity-defense-workflow.svg)
+## Begin with a question, not a verdict
 
-## Priority Log Sources
+ATT&CK v17.0 links G1015 to T1556.006, modification of multifactor authentication. Reported attacker enrollment of factors makes recovery events worth investigating. A new factor is also a normal outcome of legitimate recovery.
 
-| Source | Why it matters |
-|---|---|
-| Identity provider logs | Detect unusual sign-ins, MFA changes, new devices, risky sessions, privilege changes, and conditional access changes. |
-| Help desk ticketing and call records | Detect suspicious password reset, MFA transfer, device enrollment, and identity verification failures. |
-| Endpoint detection and response | Detect remote access tools, script execution, credential dumping, and ransomware precursors. |
-| SaaS audit logs | Detect abnormal SharePoint, OneDrive, Teams, Slack, GitHub, email, and cloud storage access. |
-| Email and collaboration logs | Detect mailbox search, forwarding rules, incident thread access, and suspicious account activity notifications. |
-| Cloud control plane logs | Detect IAM changes, new instances, access key use, storage access, and large exports. |
-| Network, proxy, and DNS logs | Detect unauthorized remote access tooling, tunneling, and file-sharing destinations. |
-| Backup and recovery logs | Detect deletion attempts, failed backups, unusual admin access, and restore readiness gaps. |
+| Evidence to connect | What I would examine | Ordinary explanation to consider |
+| --- | --- | --- |
+| Support ticket | Request, verified identity, authorizer, agent, timestamps | Legitimate replacement of a lost device |
+| Identity audit event | Target account, actor, old/new factor metadata, event result | Approved enrollment or administrative maintenance |
+| Sign-in records | Result, device, session, source context, time relationship | Travel, a new device, or a shared network |
+| Access and application records | Role changes, unusual downloads, affected resources | Approved work with a documented need |
 
-## Detection Use Cases
+Correlate stable account and event identifiers where available. A matching display name or shared IP address is weak evidence. Normalize timestamps and check collection gaps before asserting an order.
 
-| Use case | ATT&CK mapping | Detection idea | Response action |
-|---|---|---|---|
-| MFA fatigue followed by successful login | T1621, T1078 | Multiple MFA denials or prompts followed by approval from a new location/device. | Disable sessions, reset credentials, revoke MFA methods, contact user through verified channel. |
-| New MFA device after help desk interaction | T1556.006, T1566.004 | MFA method added shortly after password reset or support ticket. | Validate support request, review ticket evidence, revoke unauthorized method. |
-| High-risk help desk reset | T1598.004, T1656 | Password reset for privileged user, executive, remote worker, or vendor account without strong verification. | Require supervisor approval and independent callback before completion. |
-| Unauthorized remote access tool | T1219.002 | New AnyDesk, TeamViewer, ConnectWise, LogMeIn, ngrok, or similar execution outside approved inventory. | Isolate endpoint, collect process/network evidence, block hash/domain where appropriate. |
-| Abnormal SaaS repository access | T1213.002, T1213.003, T1213.005 | Bulk access to SharePoint, code repositories, or messaging spaces after new login. | Suspend account, revoke sessions, review accessed files, identify data exposure. |
-| Mailbox rule manipulation | T1114, T1114.003 | New inbox forwarding, deletion, or hiding rules, especially for security alerts. | Remove rules, preserve mailbox evidence, reset account and OAuth grants. |
-| Cloud storage exfiltration pattern | T1567.002 | Large upload/download volume to unusual cloud storage or file-sharing service. | Block destination, suspend token, preserve logs, initiate data exposure review. |
-| Ransomware recovery interference | T1486, T1490 | Backup deletion, shadow copy modification, mass file rename/encryption, or admin access to recovery systems. | Isolate impacted hosts, protect backups, activate ransomware playbook. |
+## Make the decision defensible
 
-## Response Playbooks
+If the ticket’s identity verification and authorization are missing or inconsistent with the platform event, preserve the evidence and route the case to the identity/security owner. Any session revocation, account restriction, or factor removal would require that team’s authorized response procedure.
 
-### 1. Suspected Help Desk Social Engineering
+If verification, approval, and subsequent access match legitimate activity, record the basis for the disposition. Missing logs should remain an unresolved limitation.
 
-1. Pause requested reset, MFA transfer, or device enrollment.
-2. Verify requester identity through an independent channel.
-3. Review recent account risk events, failed MFA prompts, and previous tickets.
-4. Escalate privileged, executive, vendor, or security-team account requests.
-5. Preserve ticket notes and call metadata.
-6. Notify security operations if social engineering is suspected.
+![An evidence-first defensive workflow: preserve and connect records, test a benign explanation, authorize a response, then verify state and user access.](visuals/identity-defense-workflow.svg)
 
-### 2. Suspected Account Takeover
+*Proposed workflow. Recovery must be verified after any authorized response; an issued command alone is not proof of restoration.*
 
-1. Disable account or revoke active sessions.
-2. Reset password and remove unauthorized MFA methods.
-3. Review sign-in logs, token use, mailbox rules, OAuth consent, and privilege changes.
-4. Identify accessed files, SaaS applications, cloud resources, and repositories.
-5. Check for lateral movement through remote access tools or cloud services.
-6. Document scope and communicate with privacy/legal teams if sensitive data may be involved.
+## What would make this a tested detection
 
-### 3. Unauthorized Remote Access Tool
-
-1. Isolate the endpoint or server if active compromise is suspected.
-2. Collect process, command line, network, installer, and user context.
-3. Compare against approved remote access inventory.
-4. Remove tool if unauthorized and block known infrastructure.
-5. Review related account activity and remote sessions.
-6. Hunt for the same tool across endpoints and servers.
-
-### 4. Cloud/SaaS Data Theft Concern
-
-1. Revoke suspicious sessions and access tokens.
-2. Preserve SaaS audit logs and cloud storage access logs.
-3. Identify files, repositories, messages, mailboxes, or buckets accessed.
-4. Review bulk exports, unusual queries, and file-sharing destinations.
-5. Determine whether legal, privacy, or customer notification review is required.
-6. Increase monitoring for follow-on extortion or account reuse.
-
-### 5. Ransomware Or Extortion Event
-
-1. Activate incident command and preserve communications out of compromised channels.
-2. Isolate impacted systems and protect backup infrastructure.
-3. Identify data theft indicators before focusing only on encryption.
-4. Prioritize recovery of critical services.
-5. Coordinate legal, privacy, executive, communications, and insurance stakeholders.
-6. Conduct after-action review and update controls.
-
-## Metrics
-
-| Metric | Why it matters |
-|---|---|
-| Percent of privileged accounts protected by phishing-resistant MFA | Measures resistance to MFA abuse. |
-| Number of high-risk help desk resets per month | Shows exposure through support workflows. |
-| Percent of MFA resets with independent verification evidence | Measures help desk control quality. |
-| Mean time to revoke sessions after suspected account takeover | Measures containment speed. |
-| Unauthorized remote access tool detections | Measures visibility into legitimate tool abuse. |
-| SaaS bulk-download alert volume and closure rate | Measures cloud/SaaS monitoring maturity. |
-| Backup restore success rate | Measures recovery readiness if ransomware occurs. |
+Define a platform-specific event schema, required logging, correlation window, exclusions, and severity policy. Exercise legitimate recovery, unauthorized change, denied change, repeated requests, and missing-event cases. Record false positives, missed cases, and the analyst’s decision. None of those performance results exists yet.

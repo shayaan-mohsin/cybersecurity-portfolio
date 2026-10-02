@@ -1,3 +1,5 @@
+> Historical planning record. Superseded by the [current portfolio](../../README.md) and [evidence status](../../PUBLISH_STATUS.md). Completion labels here are not current claims.
+
 # GitHub Project Setup
 
 Create a GitHub Project named `Cybersecurity Portfolio Roadmap`.

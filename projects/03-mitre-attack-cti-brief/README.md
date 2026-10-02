@@ -1,71 +1,34 @@
-# Scattered Spider CTI Brief Using MITRE ATT&CK
+# Identity abuse: turning threat research into investigation questions
 
-## Overview
+[Portfolio home](../../README.md) · [Supported mappings](attack-mapping.md) · [Defensive walkthrough](detection-and-response.md)
 
-This project builds a cyber threat intelligence brief on Scattered Spider, tracked in MITRE ATT&CK as `G1015`. The brief translates public reporting from CISA and MITRE ATT&CK into business risk, ATT&CK technique mapping, detection priorities, and incident-response improvements.
+**Research and defensive design | MITRE ATT&CK v17.0, public advisories, JSON**
 
-The analysis focuses on one practical question:
+An attacker who persuades a support team to change an account can bypass a technically strong sign-in process. I used public reporting about Scattered Spider to examine that trust boundary.
 
-> How should an organization prepare for identity-focused social engineering, help desk abuse, MFA bypass, cloud/SaaS discovery, data theft, and ransomware activity associated with Scattered Spider tradecraft?
+I organized the research with MITRE ATT&CK, a catalog of adversary behaviors. The retained layer includes **11 selected techniques with direct Scattered Spider relationships in ATT&CK v17.0**. Eight other candidate mappings are listed separately because that exact source relationship was not established.
 
-## How To Read This Project
+![A proposed investigation sequence connecting a suspicious support request, a factor or account change, and subsequent access to evidence that an analyst would need at each stage.](visuals/scattered-spider-attack-flow.svg)
 
-Start with the attack-flow visual for the story of the intrusion path, then read the ATT&CK mapping for technique-level detail. The detection-and-response file and response backlog show how the intelligence can become concrete defensive work.
+*An investigation aid based on reported behaviors, not a reconstructed incident or a claim that every attack follows this order. [Open full-size](visuals/scattered-spider-attack-flow.svg).*
 
-This brief is intentionally written for both technical and nontechnical readers: it explains the attacker behavior, the business risk, and the defensive response without relying on private incident data.
+## One question worth investigating
 
-## Visual Snapshot
+A new multifactor authentication (MFA) factor appears after a support interaction. Was it a legitimate recovery, or did an attacker enroll a factor?
 
-![Scattered Spider attack flow](visuals/scattered-spider-attack-flow.svg)
+I would connect the ticket, verification method, authorizing person, identity audit event, and later sign-ins. A factor change alone is insufficient to decide. The [walkthrough](detection-and-response.md) includes ordinary explanations and evidence gaps.
 
-![Defender workflow](visuals/identity-defense-workflow.svg)
+## What I produced
 
-## Evidence Base
+- [A sourced mapping table](attack-mapping.md) and [machine-readable relationship references](evidence/selected-relationships.json)
+- [An ATT&CK Navigator layer](attack-navigator-layer.json), a JSON file for exploring the selected techniques
+- [Proposed investigation questions](detection-and-response.md) and [validation work](response-backlog.md)
+- [Source notes](sources-and-methodology.md), including version and attribution limits
 
-The brief uses public-source reporting collected on May 16, 2026:
+**Outcome:** a research brief that makes its evidence boundaries visible. No detection rules were deployed, attack emulation performed, or security coverage measured. Navigator application rendering is still unverified.
 
-- CISA Joint Cybersecurity Advisory AA23-320A, Scattered Spider
-- MITRE ATT&CK Group G1015, Scattered Spider
-- CISA Best Practices for MITRE ATT&CK Mapping
-- MITRE ATT&CK framework references
+**What I learned:** a valid technique ID is not enough. The behavior, source, actor attribution, tactic, and version all need to agree.
 
-## Key Findings
+[Next: cloud log investigation](../04-aws-cloud-security-log-investigation/README.md)
 
-| Finding | Public-source basis | Defensive implication |
-|---|---|---|
-| Identity and help desk workflows are a primary attack surface | CISA reports phishing, vishing, push bombing, SIM swap, password reset, and MFA token transfer activity. | Help desk identity verification and MFA reset governance need explicit controls. |
-| Valid accounts and MFA manipulation are central to persistence | MITRE maps Scattered Spider to Valid Accounts, MFA request generation, and authentication process modification. | Identity provider logs and MFA enrollment events should be high-priority detection sources. |
-| Legitimate remote access tools can become persistence channels | CISA and MITRE describe use of remote monitoring and management tools. | RMM inventory, application control, and unauthorized remote tool alerts should be operationalized. |
-| Cloud, SaaS, collaboration, and code repositories can become collection targets | MITRE maps the group to cloud storage, SharePoint, code repositories, messaging applications, and email collection. | Cloud/SaaS audit logs need monitoring for bulk access, unusual searches, and suspicious downloads. |
-| The activity can escalate to extortion and ransomware impact | CISA describes data theft, extortion, and ransomware variants, and MITRE maps data encryption for impact. | Incident response should include data-theft containment, executive communications, legal/privacy coordination, and recovery testing. |
-
-## Analyst Competencies Represented
-
-- Public-source CTI research and source-bounded analysis
-- MITRE ATT&CK technique mapping
-- Identity-focused threat modeling
-- Detection engineering and response planning concepts
-- Executive communication for threat-informed risk decisions
-
-## Deliverables
-
-- [`sources-and-methodology.md`](sources-and-methodology.md): sources, collection date, method, confidence, and limitations
-- [`threat-profile.md`](threat-profile.md): threat actor overview, target patterns, objectives, and priority intelligence requirements
-- [`attack-mapping.md`](attack-mapping.md): ATT&CK tactic/technique mapping with detection and response notes
-- [`detection-and-response.md`](detection-and-response.md): detection use cases, log sources, response playbooks, and metrics
-- [`response-backlog.md`](response-backlog.md): prioritized defensive improvement backlog
-- [`executive-summary.md`](executive-summary.md): leadership-facing summary
-- [`attack-navigator-layer.json`](attack-navigator-layer.json): ATT&CK Navigator layer for selected techniques
-- [`visuals/`](visuals/): attack-flow and defender workflow diagrams
-
-## Source References
-
-- CISA AA23-320A, Scattered Spider: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a
-- CISA alert on updated Scattered Spider advisory: https://www.cisa.gov/news-events/alerts/2025/07/29/cisa-and-partners-release-updated-advisory-scattered-spider-group
-- MITRE ATT&CK Group G1015, Scattered Spider: https://attack.mitre.org/groups/G1015/
-- CISA Best Practices for MITRE ATT&CK Mapping: https://www.cisa.gov/news-events/news/best-practices-mitre-attckr-mapping
-- MITRE ATT&CK overview: https://attack.mitre.org/
-
-## Boundary Statement
-
-This report is a public-source CTI brief. It does not attribute activity against any specific organization, confirm compromise, test exploitability, or include nonpublic indicators.
+[Additional charts and diagrams](visuals/README.md)

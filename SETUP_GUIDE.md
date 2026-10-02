@@ -1,52 +1,41 @@
-# Setup Guide
+# Reproduce the portfolio
 
-This guide documents how the repository was published and how the GitHub Project was configured.
+[Portfolio home](README.md) · [Evidence boundaries](PUBLISH_STATUS.md)
 
-## Repository
+Use **Python 3.10 or later**. The analysis, SVG generator, and local checks use only the standard library. No cloud account, ServiceNow instance, credentials, or paid service is required.
 
-Name:
+From the repository root:
 
-`cybersecurity-portfolio`
+```sh
+python tools/reproduce.py
+python -m unittest discover -s tests -v
+python tools/check_portfolio.py
+```
 
-Description:
+On Windows, use your configured Python executable or py in place of python. Regeneration writes only the tracked analysis outputs, diagrams, and generated cloud service/action index. Review the diff afterward.
 
-`Cybersecurity portfolio focused on GRC, cyber risk, cloud security, CTI, vulnerability prioritization, and security strategy.`
+## Inputs and expected results
 
-Visibility:
+| Project | Fixed input | Expected result |
+| --- | --- | --- |
+| Healthcare | 100-row May 16, 2026 CSV | 6,692,288 reported affected count; median 5,140.5 |
+| KEV | 1,592-row May 16, 2026 CSV | Full ranked intake plus top 50; CVE-2024-1708 scores 116 |
+| Cloud | 12 synthetic JSON events | 10 signals: 5 High, 3 Medium, 2 Informational |
+| CTI | Selected ATT&CK v17.0 relationship index | 11 supported layer entries; 8 separate candidates |
 
-Public.
+The script supplies fixed analysis dates. Changing dates or input files intentionally changes results.
 
-## Publish Status
+## Individual analysis commands
 
-The repository has already been created, pushed, and linked to the GitHub Project. Current status is tracked in [`PUBLISH_STATUS.md`](PUBLISH_STATUS.md).
+```sh
+python projects/01-nist-csf-risk-assessment/scripts/analyze_hhs_breaches.py projects/01-nist-csf-risk-assessment/data/hhs-ocr-breach-sample-2026-05-16.csv --as-of 2026-05-16 --output-dir projects/01-nist-csf-risk-assessment/outputs
+python projects/02-cisa-kev-vulnerability-prioritization/scripts/analyze_kev.py projects/02-cisa-kev-vulnerability-prioritization/data/known_exploited_vulnerabilities-2026-05-16.csv --as-of 2026-05-16 --output-dir projects/02-cisa-kev-vulnerability-prioritization/outputs
+python projects/04-aws-cloud-security-log-investigation/scripts/analyze_cloudtrail.py projects/04-aws-cloud-security-log-investigation/data/sample-cloudtrail-events.json --output-dir projects/04-aws-cloud-security-log-investigation/outputs
+python tools/generate_portfolio_visuals.py
+```
 
-## GitHub Project
+## What the checks establish
 
-Project name:
+Regression tests cover the corrected calculations, input rejection, overdue scoring, event outcomes, rule matching, deduplication, mapping consistency, and regenerated-output agreement. Documentation checks inspect relative links and anchors, image alternative text, SVG metadata and text bounds, and prose punctuation.
 
-`Cybersecurity Portfolio Roadmap`
-
-Project URL:
-
-https://github.com/users/shayaan-mohsin/projects/1
-
-Configured fields:
-
-- Portfolio Status
-- Project Area
-- Deliverable Type
-- Priority
-- Evidence
-- Sprint
-
-The starter backlog was converted into GitHub issues and tracked through the project.
-
-## Completed Project Tracks
-
-| Sprint | Project | Status |
-|---|---|---|
-| Sprint 1 | Healthcare Breach Risk Assessment | Complete |
-| Sprint 2 | CISA KEV Vulnerability Prioritization | Complete |
-| Sprint 3 | Scattered Spider CTI Brief | Complete |
-| Sprint 4 | Public review and final polish | Complete |
-| Sprint 5 | AWS Cloud Security Log Investigation Lab | Complete |
+These checks do not establish live source availability, provider schema compliance, AWS deployment, ServiceNow behavior, detection accuracy on a real environment, or original-source provenance. The [status page](PUBLISH_STATUS.md) records those boundaries.

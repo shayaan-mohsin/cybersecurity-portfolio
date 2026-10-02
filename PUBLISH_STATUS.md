@@ -1,47 +1,16 @@
-# Publish Status
+# Current evidence boundaries
 
-## Repository
+[Portfolio home](README.md)
 
-Live repository:
+These boundaries describe what the portfolio demonstrates and what remains to be validated. Publication does not change a project’s evidence status.
 
-https://github.com/shayaan-mohsin/cybersecurity-portfolio
+| Area | Available evidence | Still missing |
+| --- | --- | --- |
+| Healthcare | Dated 100-row CSV, analysis script, generated tables | Original portal capture and a reproducible selection query |
+| KEV | Dated 1,592-row CSV, model, full ranking | Original feed response and collection metadata |
+| Threat brief | Selected relationships from ATT&CK v17.0, mapping table, layer file | Tested detections and Navigator application rendering |
+| Cloud | Synthetic fixture, analyzer, regression checks, proposed CloudFormation | AWS deployment, real exports, delivery and restoration evidence |
+| Capstone | Individual academic project, design summary and decision walkthrough | Deployed system and operational validation |
+| Service desk | Ten scripted scenarios, policy assumptions and evidence plan | ServiceNow configuration, actual records and endpoint execution |
 
-## GitHub Project
-
-Live project roadmap:
-
-https://github.com/users/shayaan-mohsin/projects/1
-
-## Completed Setup
-
-- Git installed locally.
-- GitHub CLI installed locally.
-- GitHub CLI authenticated as `shayaan-mohsin`.
-- Local Git repository initialized on branch `main`.
-- Public GitHub repository created.
-- Portfolio pushed to GitHub.
-- Public GitHub Project created and linked to the repository.
-- Custom Project fields created:
-  - Portfolio Status
-  - Project Area
-  - Deliverable Type
-  - Priority
-  - Evidence
-  - Sprint
-- Sprint field configured with one-week iterations from Sprint 0 through Sprint 5.
-- Starter labels created.
-- Starter backlog converted into GitHub issues.
-- Project item metadata populated across the starter backlog.
-
-## Portfolio V2 Status
-
-Portfolio V2 is complete. The repository now includes four project tracks:
-
-| Project | Status |
-|---|---|
-| Healthcare Breach Risk Assessment | Complete |
-| CISA KEV Vulnerability Prioritization | Complete |
-| Scattered Spider CTI Brief | Complete |
-| AWS Cloud Security Log Investigation Lab | Complete |
-
-Final public-content review is documented in [`project-management/final-portfolio-review.md`](project-management/final-portfolio-review.md).
+Tests check repository behavior and consistency. They do not prove that a proposed control works in production. Dates in filenames identify historical snapshots, not current threat coverage.

@@ -1,72 +1,33 @@
-# Breach Trend Analysis
+# Walkthrough: from a count to a useful question
 
-## Sample Scope
+[Project overview](README.md) · [Source and method](data-methodology.md)
 
-The sampled HHS OCR records cover 100 public breach reports submitted from February 9, 2026 through May 1, 2026. The sample included healthcare providers, health plans, and business associates.
+## 1. Check the unit of analysis
 
-## Visual Summary
+A row is a reported breach, not a patient, hospital, or unique incident victim. The 100 rows sum to 6,692,288 reported affected individuals. The largest report contains 3,117,874, or 46.6% of the total.
 
-The charts below provide the quick-read version of the analysis. They are generated from the local sample using [`scripts/analyze_hhs_breaches.py`](scripts/analyze_hhs_breaches.py), which keeps the visual layer traceable to the same CSV used for the written findings.
+The median of 5,140.5 is a useful companion to the sum because one large report dominates the latter. Neither describes a typical organization’s annual risk.
 
-![Healthcare breach dashboard](visuals/healthcare-breach-dashboard.svg)
+## 2. Resolve an ambiguous category
 
-![Covered entity type distribution](visuals/entity-type-distribution.svg)
+The exact label “Network Server” occurs 60 times. Seven additional reports include it with another location, giving 67 mentions. “Email” has 21 exact-label records and 24 mentions.
 
-## Breach Type
+Those are different calculations. An exact-label distribution partitions the 100 rows; a mention distribution allows overlaps. The [generated location table](outputs/hhs-breach-summary-2026-05-16.md#location-frequency) retains all 11 exact categories.
 
-| Type of breach | Records | Share of sample | Individuals affected |
-|---|---:|---:|---:|
-| Hacking/IT Incident | 88 | 88% | 6,600,874 |
-| Unauthorized Access/Disclosure | 11 | 11% | 90,876 |
-| Theft | 1 | 1% | 538 |
+The breach-type labels are Hacking/IT Incident (88), Unauthorized Access/Disclosure (11), and Theft (1). These broad labels do not identify specific technical causes.
 
-### Interpretation
+## 3. Connect the evidence to a control question
 
-The concentration of Hacking/IT incidents indicates that healthcare risk prioritization should start with compromise-resistant systems and workflows. For a smaller healthcare organization, the highest-value control themes are identity security, patch and exposure management, secure configuration, logging, endpoint protection, and tested recovery.
+**Observation:** server and email labels are common in this retained sample.
 
-Unauthorized access and disclosure remain important because healthcare workflows often involve many roles, vendors, and data handoffs. These risks are less visible than large technical compromises but can still create patient trust, privacy, operational, and notification impacts.
+**Question:** for a hypothetical healthcare organization, can the owners identify sensitive-data systems, explain access decisions, and show monitored recovery procedures?
 
-## Location of Breached Information
+**Evidence I would request:** an asset inventory, access-review results, relevant identity and mail logs, exception records, and a restore-test record.
 
-| Location | Records | Individuals affected |
-|---|---:|---:|
-| Network Server | 60 | 6,347,844 |
-| Email | 21 | 216,263 |
-| Network Server, Other | 5 | 28,766 |
-| Electronic Medical Record | 5 | 80,602 |
-| Other | 2 | 2,209 |
-| Paper/Films | 2 | 6,416 |
-| Desktop Computer | 1 | 2,158 |
-| Email, Network Server | 1 | 500 |
+**Decision boundary:** public counts alone are insufficient to mark a control failed or assign an organization-specific risk rating.
 
-### Interpretation
+## 4. Make the next action reviewable
 
-Network servers appear most often in the sample and account for the largest affected-individual total. This supports a roadmap that prioritizes asset inventory, secure configuration, vulnerability remediation, logging, backup coverage, privileged access review, and segmentation for systems that store or process electronic protected health information.
+The [risk register](risk-register.md) gives each hypothesis an owner to consult and a test to perform. The [roadmap](prioritized-roadmap.md) begins with validation before making larger control investments.
 
-Email appears in more than one-fifth of sampled records. That reinforces the need for MFA, phishing-resistant authentication where feasible, mailbox rules monitoring, security awareness, suspicious message reporting, and incident response playbooks for mailbox compromise.
-
-## Covered Entity Type
-
-| Covered entity type | Records |
-|---|---:|
-| Healthcare Provider | 76 |
-| Business Associate | 14 |
-| Health Plan | 10 |
-
-### Interpretation
-
-Healthcare providers make up most sampled records, which is expected because providers are often the front line of healthcare delivery and operate many systems that support patient care, scheduling, billing, and clinical documentation.
-
-Business associates appear directly in the sample and are also marked present in 28 sampled records. That makes third-party access and service-provider oversight a central governance concern, not a secondary compliance exercise.
-
-## Geographic Spread
-
-The highest-count states in the sample were Texas (12), California (7), Minnesota (6), New York (6), Illinois (5), Michigan (5), and Washington (5). The spread across states suggests that the observed risks are sector-wide rather than limited to one region.
-
-## Risk Themes Derived From The Data
-
-1. Network server compromise is the primary observed exposure pattern.
-2. Email compromise remains a frequent breach location.
-3. Third-party involvement is common enough to justify explicit governance and access review.
-4. A few high-impact incidents can dominate total affected-individual exposure.
-5. Smaller organizations need practical control sequencing because the risk surface spans identity, infrastructure, vendors, monitoring, response, and recovery.
+For exact figures, use the [generated summary](outputs/hhs-breach-summary-2026-05-16.md). The [script](scripts/analyze_hhs_breaches.py) and [repository checks](../../SETUP_GUIDE.md) make recalculation possible.

@@ -1,94 +1,40 @@
-# Cybersecurity Portfolio
+# Shayaan Mohsin | Cybersecurity portfolio
 
-Cybersecurity portfolio focused on Governance, Risk, and Compliance (GRC), cyber risk, cloud security, security analysis, Cyber Threat Intelligence (CTI), vulnerability prioritization, privacy, and security strategy.
+I’m an early-career cybersecurity analyst with an M.S. in Cybersecurity Operations and Leadership from the University of San Diego (June 2026) and a background in public policy and customer-facing operations.
 
-This repository brings together four cybersecurity projects. Each project is written as an analyst deliverable: clear question, evidence base, findings, risk interpretation, visuals, and executive-facing recommendations.
+I’m interested in work that connects technical evidence to a clear decision: which risk to investigate, what to prioritize, and what to tell the people affected.
 
-## How To Read This Portfolio
+[LinkedIn](https://www.linkedin.com/in/shayaanm/) · [Reproduce the analysis](SETUP_GUIDE.md) · [Scope and contributions](CONTRIBUTIONS.md)
 
-Start with the project summaries below, then open the project that best matches the skill area you want to evaluate. Each project includes a reader guide, visual snapshot, methodology notes, deeper analysis, and an executive summary.
+## Start here
 
-| Reading path | Best for reviewing |
-|---|---|
-| Project README | Fast overview of the question, evidence, findings, visuals, and deliverables |
-| Methodology or source notes | How public data, advisory sources, or lab evidence were collected and bounded |
-| Analysis files | Detailed findings, mappings, tables, and interpretation |
-| Executive summary | Leadership-facing communication and risk prioritization |
-| Project management artifacts | Sprint planning, backlog structure, delivery tracking, and portfolio governance |
+**Have two minutes?** Open the [cloud log investigation](projects/04-aws-cloud-security-log-investigation/README.md). The worked example shows how I distinguish an attempted change from a successful one, explain the uncertainty, and identify the next check.
 
-## Portfolio Projects
+**Looking for a particular skill?** Pick the question closest to the role:
 
-| Project | Focus | Primary evidence | Visual layer |
-|---|---|---|---|
-| [Healthcare Breach Risk Assessment](projects/01-nist-csf-risk-assessment/README.md) | GRC, cyber risk, breach trend analysis, NIST CSF 2.0 mapping | HHS OCR breach sample, risk register, CSF mapping, prioritized roadmap, executive brief | Breach type, information location, affected individuals, entity type |
-| [CISA KEV Vulnerability Prioritization](projects/02-cisa-kev-vulnerability-prioritization/README.md) | Vulnerability risk, exploited vulnerability prioritization, remediation planning | CISA KEV feed, triage model, SLA matrix, Python analysis workflow, weekly brief | Vendor concentration, CWE patterns, ransomware use, additions by year, priority distribution |
-| [Scattered Spider CTI Brief](projects/03-mitre-attack-cti-brief/README.md) | CTI, ATT&CK mapping, identity risk, response planning | CISA AA23-320A, MITRE ATT&CK G1015, detection plan, response backlog, executive summary | Attack flow and defender workflow diagrams |
-| [AWS Cloud Security Log Investigation Lab](projects/04-aws-cloud-security-log-investigation/README.md) | Cloud security, SOC-style log review, IAM, S3, GuardDuty, CloudTrail, Python automation | CloudFormation lab design, sanitized CloudTrail-style events, detection catalog, generated investigation report | AWS architecture, investigation workflow, risk-signal dashboard |
+- **[Healthcare risk analysis](projects/01-nist-csf-risk-assessment/README.md)**: turn 100 public breach reports into control questions. Inspect the calculations, hypothetical risk register, and proposed roadmap. **Public-data analysis.**
+- **[Vulnerability intake](projects/02-cisa-kev-vulnerability-prioritization/README.md)**: explain which known-exploited vulnerabilities to research first. Inspect the Python model, full ranking, and one worked decision. **Public-data analysis.**
+- **[Identity threat brief](projects/03-mitre-attack-cti-brief/README.md)**: connect reported identity abuse to useful investigation questions. Inspect 11 supported ATT&CK mappings and their sources. **Research and defensive design.**
+- **[Cloud log investigation](projects/04-aws-cloud-security-log-investigation/README.md)**: distinguish a requested action from its result. Inspect synthetic events, Python logic, and an investigation walkthrough. **Offline simulation.**
 
-## What This Portfolio Demonstrates
+## Explore by role
 
-- Translating public security evidence and lab evidence into practical risk decisions
-- Using frameworks and knowledge bases such as NIST CSF 2.0 and MITRE ATT&CK without overclaiming compliance or attribution
-- Building repeatable workflows for vulnerability prioritization, cloud log review, and executive reporting
-- Reading cloud activity logs and explaining identity, exposure, privilege, logging, and detection signals
-- Communicating technical findings in a way that supports leadership, operations, and project planning
-- Managing cybersecurity work through sprint planning, backlog tracking, and deliverable reviews
-- Using Python to analyze public datasets, parse security logs, and generate repeatable outputs
+- **Governance, risk, and compliance (GRC):** [healthcare executive brief](projects/01-nist-csf-risk-assessment/executive-brief.md) → [risk assumptions and evidence needed](projects/01-nist-csf-risk-assessment/risk-register.md).
+- **Security operations center (SOC) and cloud:** [one event, step by step](projects/04-aws-cloud-security-log-investigation/walkthrough.md) → [analysis code](projects/04-aws-cloud-security-log-investigation/scripts/analyze_cloudtrail.py) → [regression tests](tests/test_analysis.py).
+- **Vulnerability management:** [intake model](projects/02-cisa-kev-vulnerability-prioritization/triage-model.md) → [prioritized research list](projects/02-cisa-kev-vulnerability-prioritization/outputs/kev-prioritized-watchlist-2026-05-16.csv).
+- **Identity and support:** [threat-to-evidence mapping](projects/03-mitre-attack-cti-brief/detection-and-response.md) → [service desk scenario](projects/06-service-desk-workflows/tickets/03-vpn-dns.md).
 
-## Project Management
+## Designs I’m developing
 
-The portfolio is managed as a sprint-based GitHub Project:
+These documents show planning and reasoning. They do not represent systems I have deployed.
 
-- One-week sprint iterations
-- Backlog, Ready, In Progress, Review, and Done workflow
-- Deliverables grouped by GRC, Vulnerability Risk, CTI, Cloud Security, and PM
-- Evidence status tracked from initial research through publication
+- [Serenity Bank capstone](projects/05-serenity-bank-capstone/README.md): an academic security design for a fictional bank, separating customer, employee, administrator, and workload identities.
+- [Service desk workflows](projects/06-service-desk-workflows/README.md): ten scripted ticket scenarios covering troubleshooting, access requests, escalation, and confirmation of restoration. ServiceNow execution and screenshots are still pending.
 
-Live roadmap:
+## What this work demonstrates
 
-- [Cybersecurity Portfolio Roadmap](https://github.com/users/shayaan-mohsin/projects/1)
+The analysis uses Python’s standard library to validate and summarize CSV tables and JSON activity records. The written deliverables connect observations to investigation steps, control questions, or prioritization decisions. The projects also show where I would stop and ask for more evidence.
 
-Project-management artifacts:
+The dated datasets remain fixed so a reviewer can reproduce the results. This repository contains no production incident response, deployed bank environment, completed ServiceNow tickets, or verified patching outcomes.
 
-- [Roadmap](project-management/roadmap.md)
-- [Sprint Plan](project-management/sprint-plan.md)
-- [Portfolio Risk Register](project-management/portfolio-risk-register.md)
-- [GitHub Project Setup](project-management/github-project-setup.md)
-- [Portfolio Walkthrough](project-management/portfolio-walkthrough.md)
-- [Final Portfolio Review](project-management/final-portfolio-review.md)
-- [Visual Quality Control](project-management/visual-quality-control.md)
-- [Visual Quality Report](project-management/visual-quality-report.md)
-
-## Current Status
-
-Portfolio V2 is complete. The repository includes four evidence-backed cybersecurity projects, sprint/project-management artifacts, public-source data or lab evidence, Python-generated outputs, quality-checked visual summaries, executive summaries, and public-content boundaries.
-
-## Tools And Concepts
-
-- AWS CloudTrail
-- Amazon GuardDuty
-- Amazon S3 Block Public Access
-- AWS IAM and IAM Access Analyzer
-- AWS VPC security groups
-- CloudFormation
-- Cloud log investigation
-- NIST Cybersecurity Framework 2.0
-- NIST Secure Software Development Framework
-- HHS OCR Breach Portal
-- HHS HC3 healthcare cybersecurity guidance
-- CISA Known Exploited Vulnerabilities Catalog
-- CISA cyber threat advisories
-- MITRE ATT&CK
-- Governance, Risk, and Compliance
-- Vulnerability prioritization
-- Cyber Threat Intelligence
-- Digital forensics and incident response concepts
-- Python data analysis and log parsing
-- GitHub Projects and sprint-based delivery tracking
-- SVG visual generation and quality-control checks
-
-## Author
-
-Shayaan Mohsin  
-M.S. Cybersecurity Operations and Leadership  
-LinkedIn: [linkedin.com/in/ShayaanM](https://www.linkedin.com/in/ShayaanM)
+[Interview discussion guide](INTERVIEW-GUIDE.md) · [Reproduction and checks](SETUP_GUIDE.md) · [Current evidence boundaries](PUBLISH_STATUS.md)

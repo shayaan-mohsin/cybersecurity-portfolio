@@ -1,0 +1,703 @@
+{
+  "schema_version": "1.0",
+  "status": "design_draft",
+  "synthetic": true,
+  "review_date": "2026-09-30",
+  "cases": [
+    {
+      "n": 1,
+      "id": "LAB-INC-001",
+      "file": "01-account-lockout",
+      "title": "Account locked before a scheduled meeting",
+      "type": "Incident",
+      "core": true,
+      "group": "Service Desk L1 → Identity Support when required",
+      "service": "Workforce sign-in",
+      "person": "Avery Chen, fictional coordinator",
+      "report": "I cannot sign in to my work laptop. It says my account is locked. I have a meeting in 40 minutes.",
+      "impact": "Low",
+      "urgency": "High",
+      "priority": "P3",
+      "rationale": "One user cannot use an existing service and has a time-sensitive meeting without a confirmed workaround. No evidence of a wider outage.",
+      "classification": "An existing account unexpectedly stopped working; restoration is an incident under the lab policy. A routine reset requested while access works would follow the catalog process.",
+      "checks": "Use the lab's approved callback to a pre-enrolled directory number plus an approved second verification step. If this cannot be completed, keep the account unchanged and route to Identity Support. Never request the password, an OTP, or a recovery code in the ticket.",
+      "questions": [
+        "What exact sign-in message appears, and when did it start?",
+        "Does web sign-in fail too? Did the password recently change?",
+        "Are repeated MFA prompts, unfamiliar sign-ins or another affected user present?"
+      ],
+      "diagnostics": [
+        [
+          "Confirm service health and scope",
+          "No widespread failure in the scripted input; continue with a single account hypothesis.",
+          "A security signal routes to the security procedure before normal unlock."
+        ],
+        [
+          "Review authorized account status and recent lockout metadata",
+          "The scripted account is locked; unlock authority must be delegated to the acting role.",
+          "A ServiceNow ticket does not prove directory access. If a directory lab is absent, label the account result simulated."
+        ],
+        [
+          "Correlate recurrence with a controlled test endpoint",
+          "Scripted evidence points to a stale credential in an approved application on LAB-WKS-01.",
+          "Do not delete all stored credentials or infer compromise from a lockout alone. Obtain permission for the specific saved entry."
+        ],
+        [
+          "Apply the narrowly authorized correction and unlock",
+          "Remove/update only the identified lab credential, then unlock under the delegated role.",
+          "Do not reset the password unless the policy and findings require it; suspected compromise requires Identity/SOC direction."
+        ]
+      ],
+      "notes": [
+        "Intake: user unable to sign in; one device/account affected. Impact Low, urgency High, computed P3. Identity check pending; no account action taken.",
+        "Investigation: approved identity check completed in the script. Lab account lockout and repeat attempts from LAB-WKS-01 support a stale-credential hypothesis; broad outage not observed.",
+        "Restoration: scoped stale credential corrected and delegated unlock performed in the expected path. User sign-in and normal application access must be verified before Resolved."
+      ],
+      "comments": [
+        "I’ve recorded the sign-in issue and the meeting deadline. I’ll complete our approved identity check before changing the account. I’ll update you within 15 minutes.",
+        "The account appears to be locking again from a saved sign-in on your test laptop. With your permission, we’ll correct that specific entry and test access.",
+        "Expected closure message: Sign-in and the required application now work in the lab check. Please report any repeat lockout; I’ll include the incident reference for follow-up."
+      ],
+      "negative": "Identity verification fails: do not unlock, do not enroll a new factor, and do not change the verified contact route based on this caller's request. Record the failed verification method without its secret answers; escalate. A recurrence after correction remains In Progress and needs further event correlation.",
+      "verification": [
+        "Actual lab sign-in succeeds using the user's own input, without disclosing secrets to the agent.",
+        "The required application opens and the lockout does not recur during an explicitly recorded observation window.",
+        "Before/after account state and the acting role are captured; user confirmation is separate from the agent's test."
+      ],
+      "end": "Expected: New → In Progress → Resolved after restoration proof; Closed only under the confirmed lab closure rule. An escalation stays open with a named receiving group and next update time.",
+      "evidence": [
+        "Sanitized intake and priority rationale",
+        "Approved identity-check outcome, without answers",
+        "Actual delegated action / directory observation if performed",
+        "Sign-in verification and observation window"
+      ],
+      "limit": "Directory state and unlock are scripted until an authorized test directory and endpoint exist; a PDI alone cannot substantiate them."
+    },
+    {
+      "n": 2,
+      "id": "LAB-INC-002",
+      "file": "02-outlook-sign-in",
+      "title": "Outlook desktop keeps asking for sign-in",
+      "type": "Incident",
+      "core": true,
+      "group": "Service Desk L1 → Messaging Support role-play",
+      "service": "Employee email",
+      "person": "Morgan Reed, fictional analyst",
+      "report": "Outlook keeps asking me to log in. I can use email in the browser, but the desktop app will not sync.",
+      "impact": "Low",
+      "urgency": "Medium",
+      "priority": "P4",
+      "rationale": "One desktop client is impaired and browser email is a viable workaround. The symptom does not establish a tenant outage.",
+      "classification": "Existing mail functionality is degraded. The browser workaround restores some productivity but does not by itself fix desktop synchronization.",
+      "checks": "Verify the user through the established support channel and obtain consent before viewing their screen. Keep mailbox content out of attachments. Ask the user to enter credentials themselves in the official sign-in flow.",
+      "questions": [
+        "What client/version and error are shown? When did it last work?",
+        "Does a controlled browser sign-in and test send/receive work?",
+        "Did the password, device, network or app configuration change? Are others affected?"
+      ],
+      "diagnostics": [
+        [
+          "Check scope and official service health if authorized",
+          "Browser send/receive succeeds in the scripted input; no wider issue is given.",
+          "Access to tenant health requires the proper role. Lack of visibility is a limitation, not a healthy-service finding."
+        ],
+        [
+          "Check client clock, network and supported updates",
+          "The scripted device has a supported client and normal clock; the error is limited to desktop sign-in.",
+          "Record the actual build when testing. Windows 10 mentions in postings do not make an unsupported installation acceptable."
+        ],
+        [
+          "Use the approved client sign-out / sign-in procedure",
+          "A stale desktop session is the scripted hypothesis; a bounded re-authentication restores the client in the expected path.",
+          "Follow the applicable client version. Do not erase an Outlook profile, PST, cached mailbox or all Windows credentials as a first step."
+        ],
+        [
+          "Validate end-to-end mail behavior",
+          "A controlled test message sends and arrives; restart the app and check synchronization again.",
+          "TCP connectivity or a dismissed prompt is not proof of mail flow. Avoid sending test email to unrelated people."
+        ]
+      ],
+      "notes": [
+        "Intake: desktop Outlook cannot sync; webmail workaround reported. One user, Low impact / Medium urgency / P4. Captured client error with mailbox content excluded.",
+        "Investigation: scripted browser send/receive succeeds. Desktop session hypothesis remains provisional; service health and actual build require authorized lab checks.",
+        "Expected action: approved re-authentication, then controlled send/receive and application restart. Profile deletion is outside the first-line path."
+      ],
+      "comments": [
+        "Please use browser email while I check the desktop app. I’ll avoid changes that could remove your local mail data and update you within 30 minutes.",
+        "The symptom appears specific to the desktop sign-in session in this exercise. You’ll enter your credentials yourself during the approved sign-in step.",
+        "Expected closure message: The desktop client sent and received the controlled test and stayed connected after restart. If the prompt returns, we’ll continue the investigation."
+      ],
+      "negative": "Browser sign-in also fails or additional users report the same issue: reassess scope and priority; do not keep treating it as one desktop profile. If the first attempt fails, retain the error/build evidence and escalate rather than repeating destructive resets.",
+      "verification": [
+        "Record an actual supported client build and the precise error if a licensed test tenant is available.",
+        "Controlled send and receive both succeed, with no unrelated mailbox content captured.",
+        "Client restart and user confirmation show the symptom has cleared; note any remaining limitation."
+      ],
+      "end": "Expected: New → In Progress → Resolved after client verification. Use a legitimate On Hold / Awaiting Caller path only when necessary information is requested.",
+      "evidence": [
+        "Error without mailbox content",
+        "Client version and scoped diagnostic notes",
+        "Controlled test result",
+        "User-visible workaround and verification message"
+      ],
+      "limit": "No Microsoft 365 tenant or Outlook license is provisioned; all client/service outcomes currently remain scripted."
+    },
+    {
+      "n": 3,
+      "id": "LAB-INC-003",
+      "file": "03-vpn-dns",
+      "title": "VPN connects but a team application will not open",
+      "type": "Incident",
+      "core": true,
+      "group": "Service Desk L1 → Network Support",
+      "service": "Remote access to team application",
+      "person": "Jordan Ellis, fictional remote employee",
+      "report": "The VPN says connected, but the team app does not load. Normal websites work.",
+      "impact": "Low",
+      "urgency": "Medium",
+      "priority": "P4",
+      "rationale": "One user is currently known to be affected and an approved browser-based alternate workflow is available in the scenario. Reassess if another user reports the same symptom.",
+      "classification": "Access to an existing application is degraded. VPN tunnel establishment alone does not prove DNS, routing, transport or application availability.",
+      "checks": "Confirm the caller/device and approved VPN profile. Obtain consent for remote diagnostics. Use only owned or authorized lab hosts. Do not disable the firewall, antivirus, MFA or certificate validation.",
+      "questions": [
+        "What application name and exact error? Does another internal service work?",
+        "What changed: location, Wi-Fi, client version or VPN profile?",
+        "Are others affected, and is an approved workaround available?"
+      ],
+      "diagnostics": [
+        [
+          "Check tunnel and local network configuration",
+          "Scripted tunnel is connected; local internet works. Record the actual interface/DNS configuration if testing.",
+          "Public browsing is not proof of internal reachability."
+        ],
+        [
+          "Resolve the owned internal app name",
+          "Resolve-DnsName against the configured lab host fails on the affected profile but succeeds on the known-good profile in the script.",
+          "An example-domain placeholder is not a runnable host; do not invent terminal output."
+        ],
+        [
+          "Test transport only after DNS succeeds",
+          "Test-NetConnection to the owned app on its approved port can narrow transport failure.",
+          "TCP success is not authentication or application success; ICMP failure alone does not prove an outage."
+        ],
+        [
+          "Compare approved profile settings and route to Network Support",
+          "A missing DNS suffix/server in the scripted profile is the candidate cause; request correction through the responsible team.",
+          "Do not switch to public DNS for internal names or edit global routes outside L1 authority."
+        ]
+      ],
+      "notes": [
+        "Intake: tunnel reports connected, public web works, one internal application fails. P4 based on known scope and workaround. User update due within 30 minutes.",
+        "Investigation: DNS failure is the scripted discriminating observation; the known-good comparison supports a profile-specific configuration issue. No live diagnostic output exists.",
+        "Handoff: Network Support receives exact symptom, scope, approved profile/version, DNS comparison, checks already attempted and requested next action. Service restoration remains unconfirmed."
+      ],
+      "comments": [
+        "I’ve recorded that the VPN connects but the application does not. Please use the approved alternate workflow while we check the connection path. I’ll update you within 30 minutes.",
+        "The exercise points to an internal name-resolution setting. I’m sending the relevant checks to Network Support; the ticket remains open until application access is verified.",
+        "Expected final message after the receiving team acts: The application opened and its controlled task completed after reconnect. We’ve recorded the corrected profile and your confirmation."
+      ],
+      "negative": "A second affected user reports the same profile failure: update scope, reconsider impact and coordinate a wider incident. If DNS works but TCP fails, follow the transport branch. If TCP works but app sign-in fails, route to the application/identity owner with that distinction.",
+      "verification": [
+        "Actual owned-host DNS resolution succeeds after an authorized correction.",
+        "Approved-port connectivity succeeds; application authentication and a harmless task are independently tested.",
+        "User reconnects and confirms access; receiving team's action and actual role are recorded."
+      ],
+      "end": "Expected: In Progress during network handoff; do not mark Resolved merely because the ticket was reassigned. Resolve only after end-to-end restoration evidence.",
+      "evidence": [
+        "Sanitized device/profile context",
+        "Actual DNS and transport observations if run",
+        "Structured escalation packet and ownership",
+        "Application-level confirmation"
+      ],
+      "limit": "No real VPN or internal application has been created. All network findings are hypothetical until tested in owned infrastructure."
+    },
+    {
+      "n": 4,
+      "id": "LAB-INC-004",
+      "file": "04-printer-reopen",
+      "title": "A stalled print job returns after an apparent recovery",
+      "type": "Incident",
+      "core": true,
+      "group": "Service Desk L1 → Endpoint Support L2",
+      "service": "Workplace printing",
+      "person": "Riley Brooks, fictional administrator",
+      "report": "My print job is stuck. The shared printer works for my teammate, and I need two pages for a meeting.",
+      "impact": "Low",
+      "urgency": "Medium",
+      "priority": "P4",
+      "rationale": "One user's queue is affected and a different approved printer is a workaround. A shared spooler restart would create a larger impact than the reported symptom.",
+      "classification": "An existing printing service is impaired. This scenario deliberately includes recurrence while the incident is Resolved, before closure.",
+      "checks": "Confirm device and printer ownership. Obtain consent to cancel only the user's test job. Use a non-sensitive test document. Do not remove other users' jobs or restart a shared server from L1.",
+      "questions": [
+        "Which printer/queue and document type? Can a harmless test page print?",
+        "Can a teammate print to the same device? Is the problem local or shared?",
+        "What driver/version and application are involved? Did it recur after a prior attempt?"
+      ],
+      "diagnostics": [
+        [
+          "Separate device, shared queue and local-client scope",
+          "Scripted teammate test succeeds, so start with the affected endpoint.",
+          "One successful teammate test narrows scope; it does not prove the device has no intermittent fault."
+        ],
+        [
+          "Cancel only the identified test job and retry",
+          "A harmless test page and the original application print path both succeed in the first scripted attempt.",
+          "Remain In Progress if either check fails. After both checks and user confirmation, record temporary restoration with a defined follow-up window."
+        ],
+        [
+          "Reopen when the original symptom returns",
+          "The scripted original application stalls again during the Resolved period.",
+          "Keep prior evidence; add the recurrence time and attempted job type. Do not conceal the reopen."
+        ],
+        [
+          "Escalate a controlled driver/application comparison",
+          "L2 compares approved driver versions and an alternate application, then proposes a bounded driver update/rollback.",
+          "Changes occur only on the test endpoint with rollback available; no shared-server change is authorized here."
+        ]
+      ],
+      "notes": [
+        "Intake: one endpoint's job is stuck; another user can print. P4. Alternate printer communicated.",
+        "First attempt: scoped job cancellation followed by a harmless page and the original application print task both passed in the scripted path. Expected record temporarily Resolved after user confirmation, with follow-up pending.",
+        "Recurrence: original application failed again before closure. Return to In Progress under the confirmed instance mechanism; retain first attempt and hand off driver/application comparison to L2."
+      ],
+      "comments": [
+        "I’ll check your local print queue first. Please use the approved alternate printer for the meeting; we’ll avoid interrupting other users’ jobs. I’ll update you within 30 minutes.",
+        "The test page and original application task both printed after we removed your stalled test job in this exercise. We will retain a follow-up window because a later recurrence still needs investigation.",
+        "The issue returned, so I’ve reopened the investigation and preserved the first attempt. Endpoint Support will compare the driver and application path; I’ll keep you informed."
+      ],
+      "negative": "Shared printer tests also fail: stop the local-only path and reassess broader scope. After a recurrence, do not repeatedly clear the queue and count separate fixes. If a driver change cannot be safely reversed, escalate without changing it.",
+      "verification": [
+        "Initial recovery includes both the harmless page and original application path before Resolved; later recurrence is documented with actual times when executed.",
+        "After an authorized L2 change, a harmless test page and the original application path both work.",
+        "A recorded repeat-test window and user confirmation support restoration; rollback is known."
+      ],
+      "end": "Expected: New → In Progress → Resolved → In Progress → Resolved → Closed after the policy window. Validate the actual reopen action. A recurrence after Closed becomes a linked new incident under this lab policy.",
+      "evidence": [
+        "Local vs shared scope test",
+        "First restoration check and recurrence",
+        "Reopened activity / preserved history",
+        "L2 action, rollback and repeated verification"
+      ],
+      "limit": "Printing and driver behavior are scripted. The first successful page must not be described as an executed fix."
+    },
+    {
+      "n": 5,
+      "id": "LAB-REQ-001",
+      "file": "05-approved-software",
+      "title": "Request for an approved PDF application",
+      "type": "Catalog request",
+      "core": true,
+      "group": "Service Desk L1 / Software Fulfillment",
+      "service": "Approved software catalog",
+      "person": "Casey Lane, fictional employee",
+      "report": "I need the approved PDF editor for a new assignment. Can someone install it by Friday?",
+      "impact": "N/A",
+      "urgency": "N/A",
+      "priority": "Fulfillment due date",
+      "rationale": "A new capability is requested; use approvals and an agreed fulfillment date rather than an incident restoration SLA.",
+      "classification": "Catalog request: a functioning device needs an additional authorized application. Proposed hierarchy: REQ → one software RITM → fulfillment task after approval.",
+      "checks": "Confirm requested-for, business need, approved package, supported endpoint and license availability. Use separate fictional manager/license-owner approval. The user's request does not authorize local admin rights or an unapproved download.",
+      "questions": [
+        "What capability and deadline are needed? Is the approved viewer enough?",
+        "Which lab device will receive the application? Is it supported?",
+        "Who approves cost/license allocation, and is a seat available?"
+      ],
+      "diagnostics": [
+        [
+          "Select the approved catalog item",
+          "Scripted need requires the editor, not merely a viewer; due date is recorded.",
+          "Do not turn the request into an incident to jump the queue."
+        ],
+        [
+          "Request and record authorization",
+          "Manager and license-owner decisions must precede fulfillment under this lab design.",
+          "Approvals are recorded decisions from separate role-play accounts; no approval is assumed."
+        ],
+        [
+          "Deploy an approved test package if available",
+          "A managed, licensed lab package is installed under the delegated fulfillment method.",
+          "No ad hoc local admin membership, cracked software, or real purchasing."
+        ],
+        [
+          "Verify entitlement and function",
+          "Check approved version, assigned license and a harmless open/edit/save workflow.",
+          "A completed task is insufficient if the application or entitlement does not work."
+        ]
+      ],
+      "notes": [
+        "Request intake: PDF editing needed for an assignment; requested-for and device identified. Proposed catalog item selected, due date recorded; approval pending.",
+        "Approval path: manager/license-owner decision must be captured before a fulfillment task can proceed. If unavailable, communicate the dependency and new estimate.",
+        "Expected fulfillment: approved package and entitlement checked on the lab endpoint; functional test and user confirmation recorded before required tasks are Closed Complete."
+      ],
+      "comments": [
+        "I’ve recorded the PDF editor request and Friday deadline. We’ll confirm approval and a license before installation; I’ll provide an estimate after those checks.",
+        "The request is awaiting the required approval/license decision. I’ll update you by the next business day even if that dependency is still pending.",
+        "Expected fulfillment message: The approved application and license passed the controlled edit/save test. Please confirm that it meets the requested need."
+      ],
+      "negative": "Approval rejected or no licensed seat available: do not install. Record rejection or a pending dependency with a user update. Any alternative package must follow the same catalog authorization. A withdrawn request must not report fulfilled.",
+      "verification": [
+        "Catalog submission generates actual related records when implemented.",
+        "A rejected test produces no provisioning action; approval identity and scope are captured.",
+        "Approved package/version, entitlement and functional test pass; unrelated admin privileges remain absent."
+      ],
+      "end": "Expected: request submitted → approval → fulfillment task → verified completion. Use actual catalog states/flow roll-up; do not label a rejected request Resolved.",
+      "evidence": [
+        "Catalog variables and actual related record numbers",
+        "Manager/license-owner decision",
+        "Package/version/entitlement check",
+        "Functional verification and request outcome"
+      ],
+      "limit": "No license, software purchase or installation has occurred. The flow and package outcome are proposed."
+    },
+    {
+      "n": 6,
+      "id": "LAB-REQ-002",
+      "file": "06-file-share-access",
+      "title": "Read-only access to a team file share",
+      "type": "Catalog request",
+      "core": true,
+      "group": "Service Desk L1 → Identity Support",
+      "service": "Team document share",
+      "person": "Taylor Quinn, fictional employee",
+      "report": "I joined the project team and need access to its reference documents. I get Access denied.",
+      "impact": "N/A",
+      "urgency": "N/A",
+      "priority": "Fulfillment due date",
+      "rationale": "The scripted user has never had this entitlement; this is an access request. If previously approved access unexpectedly stopped working, investigate an incident instead.",
+      "classification": "Catalog request: grant a new scoped entitlement after manager and data-owner approval. A denial can be expected behavior, not a technical failure.",
+      "checks": "Verify requested-for against the roster. Obtain manager and data-owner approval for the exact share and read-only role. Check sensitive-data restrictions and existing entitlements. No broad group, domain admin, or Everyone permission is acceptable.",
+      "questions": [
+        "Did this access ever work, or is it new? Which exact resource?",
+        "Is read-only sufficient, and for how long is access needed?",
+        "Who owns the data and authorizes this user's business need?"
+      ],
+      "diagnostics": [
+        [
+          "Confirm request vs broken entitlement",
+          "Scripted roster shows new project membership without existing share approval.",
+          "Do not treat Access denied as a reason to bypass authorization."
+        ],
+        [
+          "Capture scoped approvals",
+          "Manager confirms team need; data owner authorizes read-only access to the reference share.",
+          "Reject or pause if either approval is missing. Do not reuse another employee's approval."
+        ],
+        [
+          "Apply the narrowly delegated group change",
+          "Add the fictional account to the appropriate read-only group in an actual directory lab.",
+          "ServiceNow is the approval record, not proof of the permission change. Effective access depends on all relevant controls."
+        ],
+        [
+          "Test permitted and forbidden actions",
+          "Read approved test file; attempt a harmless write/delete and an unrelated share access, which must remain denied.",
+          "Use disposable files. Group membership alone is not an effective-permission test."
+        ]
+      ],
+      "notes": [
+        "Intake: new access needed; existing entitlement not claimed. Request-for/resource/read-only scope recorded. Manager and owner approval pending.",
+        "Authorization: scripted approvals refer to the same user, share and privilege. Proposed delegated group change contains no administrative entitlement.",
+        "Expected verification: approved read succeeds; write/delete and unrelated share remain denied. Record effective-access checks and an access-review/expiry reminder if the lab supports it."
+      ],
+      "comments": [
+        "I’ll route the request to your manager and the share’s data owner. We need their approval for the specific access level before changing permissions.",
+        "The request remains pending until the required decisions are recorded. I’ll update you by the next business day and keep the requested scope visible.",
+        "Expected fulfillment message: Read-only access to the approved reference documents passed the test. Editing and unrelated shares remain restricted."
+      ],
+      "negative": "Data owner rejects the request: no membership change. Existing access still denied after an approved group change: investigate token refresh, group nesting and resource permissions within delegated scope; do not add a broader group as a shortcut.",
+      "verification": [
+        "Manager and owner approve the exact user/resource/privilege.",
+        "Actual authorized directory change is observed if a directory lab exists.",
+        "Approved read passes; write/delete and unrelated share tests fail as intended.",
+        "The request outcome matches the evidence, including rejection or incomplete fulfillment."
+      ],
+      "end": "Expected: submitted → approvals → scoped fulfillment → verification → required tasks complete. Retain denial outcomes and actual configured request states.",
+      "evidence": [
+        "Scoped request and both decisions",
+        "Delegated permission-change observation",
+        "Positive and negative effective-access tests",
+        "Completion or rejection message"
+      ],
+      "limit": "No directory/share has been provisioned. Permission and access-test outcomes are scripted."
+    },
+    {
+      "n": 7,
+      "id": "LAB-REQ-003",
+      "file": "07-new-starter",
+      "title": "New starter account and device coordination",
+      "type": "Catalog request",
+      "core": true,
+      "group": "Service Desk L1 / Identity and Endpoint fulfillment",
+      "service": "New Starter Pack",
+      "person": "Alex Rivera, fictional hire; requested by fictional manager Sam Patel",
+      "report": "Alex starts Monday. Please prepare the standard account and laptop for the approved role.",
+      "impact": "N/A",
+      "urgency": "N/A",
+      "priority": "Approved start-date commitment",
+      "rationale": "Planned fulfillment should be managed against its start-date dependency; a future date does not automatically create a P1 incident.",
+      "classification": "One proposed starter-pack RITM under a REQ, with separate account and device tasks. The flow must track both dependencies and roll up honestly.",
+      "checks": "Use the approved fictional HR roster and manager-confirmed role/start date. Verify requester vs requested-for. Provision only standard role entitlements with the appropriate team. Share initial access through an approved channel, never in ticket comments.",
+      "questions": [
+        "Is the hire/start date approved in the authoritative lab roster?",
+        "What standard role bundle, location and device are approved?",
+        "Who completes identity setup, equipment and the user acceptance check?"
+      ],
+      "diagnostics": [
+        [
+          "Validate source and scope",
+          "Scripted roster and manager agree on the employee role and date.",
+          "An email from an unknown requester is not authority to create an account."
+        ],
+        [
+          "Generate separate fulfillment tasks",
+          "Account task goes to Identity; device preparation task goes to Endpoint.",
+          "Record role-play actors. A single checked box must not conceal unfinished work."
+        ],
+        [
+          "Coordinate identity and endpoint prerequisites",
+          "Standard groups, supported test image/updates, device assignment and approved enrollment are planned.",
+          "Do not imply Intune enrollment or imaging occurred unless actually observed in a licensed test lab."
+        ],
+        [
+          "Perform starter acceptance",
+          "Test standard sign-in, required application and device readiness; verify absence of admin privilege.",
+          "HR/manager approval is not a substitute for readiness tests."
+        ]
+      ],
+      "notes": [
+        "Request intake: Sam requests the approved starter pack for Alex. Fictional roster confirms role/date; request-for differs from requester.",
+        "Task coordination: account task and device task have distinct owners. If the account is ready but the device is delayed, keep the item pending and communicate the blocker.",
+        "Expected acceptance: standard account/device checks complete and user/manager acknowledgement captured. No password or recovery material included in the record."
+      ],
+      "comments": [
+        "I’ve recorded the starter request and approved start date. We’ll track account and device preparation separately and provide a readiness update before the start date.",
+        "The account task is ready in the scripted path, but device preparation is still pending. The starter request remains incomplete; I’ll communicate the revised readiness estimate.",
+        "Expected fulfillment message: Both required tasks passed the readiness checks, and the approved recipient confirmed receipt through the agreed process."
+      ],
+      "negative": "HR approval absent or date/role inconsistent: hold provisioning for clarification. One task incomplete: do not close the RITM as fulfilled. A changed start date or withdrawal requires the responsible teams to review pending provisioning and revoke unnecessary test access.",
+      "verification": [
+        "Roster/manager decision identifies the same fictional hire and role.",
+        "Actual task relationships and different assigned groups are visible when implemented.",
+        "All required readiness tests pass and no excess privilege is present.",
+        "A deliberately incomplete task prevents a false fulfilled outcome."
+      ],
+      "end": "Expected: request approved → multiple tasks → all required tasks verified → item/parent roll-up per configured flow. Test both partial completion and cancellation.",
+      "evidence": [
+        "Authoritative fictional roster confirmation",
+        "REQ/RITM/task relationship captures",
+        "Identity and endpoint checks with execution labels",
+        "Partial-completion and acceptance outcomes"
+      ],
+      "limit": "This case is a coordination design; no HR integration, device imaging, shipment or Intune enrollment has occurred."
+    },
+    {
+      "n": 8,
+      "id": "LAB-INC-005",
+      "file": "08-phishing-report",
+      "title": "User reports a suspicious sign-in email",
+      "type": "Support incident / security handoff",
+      "core": true,
+      "group": "Service Desk L1 → Security Operations",
+      "service": "Employee security reporting",
+      "person": "Drew Kim, fictional employee",
+      "report": "I received an email saying my account will be disabled unless I sign in. I clicked the link but did not enter a password.",
+      "impact": "Low, provisional",
+      "urgency": "High",
+      "priority": "P3 under support matrix; immediate security escalation",
+      "rationale": "Known scope is one user, but security urgency requires immediate SOC routing regardless of the support priority. New credential-entry or endpoint evidence may change scope and handling.",
+      "classification": "A reported suspicious message starts a desk record and is handed into the security reporting process. A licensed ServiceNow Security Incident Response app is not assumed; a documented restricted handoff is sufficient.",
+      "checks": "Verify reporter via an established channel. Do not browse the URL, open attachments, send the message to an unrelated account or collect passwords. Use inert sample text and reserved example-domain indicators. Preserve only the evidence the lab procedure authorizes.",
+      "questions": [
+        "Did you open the message, click, enter credentials, approve an MFA prompt or download/run anything?",
+        "What device and approximate time/timezone were involved?",
+        "How was the message reported, and are others reporting it?"
+      ],
+      "diagnostics": [
+        [
+          "Capture reporter actions and timing",
+          "Scripted report says a click without credential entry or download; unknown facts stay unknown.",
+          "Do not declare safe merely because the user denies password entry."
+        ],
+        [
+          "Preserve evidence through the approved channel",
+          "SOC packet references an inert message artifact and necessary headers/indicators in a restricted lab store.",
+          "Broad ticket comments must not contain raw sensitive mailbox data or clickable suspect links."
+        ],
+        [
+          "Route to Security Operations immediately",
+          "The desk supplies who/what/when, affected device, reporter action, source artifact reference and outstanding questions.",
+          "SOC directs containment and identity remediation; L1 does not independently disable accounts or wipe devices."
+        ],
+        [
+          "Maintain the user update and ownership",
+          "Expected handoff acceptance and next action are recorded; the desk remains responsible for communication until transfer is confirmed.",
+          "Assignment alone is not accepted transfer or security containment."
+        ]
+      ],
+      "notes": [
+        "Intake: suspicious account-disable message reported. User states link clicked, no credentials entered/download. Facts are self-reported; scope is provisional. Immediate security escalation initiated.",
+        "Handoff packet: fictional reporter/device, relative event time plus actual timezone when executed, reported interaction, inert evidence reference, checks completed and unresolved exposure questions.",
+        "Ownership: receiving security role must confirm acceptance in the exercise. Desk tracks the next update; containment/outcome remains pending unless the security role supplies corroborating evidence."
+      ],
+      "comments": [
+        "Thank you for reporting it. Do not interact with the message or link again. I’m escalating it through our security process now; I’ll update you within 15 minutes.",
+        "The security team needs the approximate time and whether any sign-in details, MFA prompts or downloads were involved. Please do not send passwords or authentication codes.",
+        "Expected handoff message: The security role has accepted the report in the lab exercise. Follow the approved instructions they provide; we’ll keep the support record linked to the follow-up."
+      ],
+      "negative": "User later admits credential entry or MFA approval: update the facts immediately and escalate the changed exposure to SOC/Identity. Do not continue the original low-exposure assumption. If security acceptance is delayed, follow the escalation chain and keep the user informed.",
+      "verification": [
+        "Handoff includes exposure details, device, time/timezone, artifact reference and pending questions.",
+        "The receiving role explicitly accepts or the pending state/escalation remains visible.",
+        "The desk does not claim containment, clean endpoint or harmless link without evidence.",
+        "No live malicious URLs, secret values or unrelated mailbox content are published."
+      ],
+      "end": "Expected: support record remains active through pending handoff. Closure is coordinated with the security process and the support user's needs; reassignment is not resolution.",
+      "evidence": [
+        "Inert message artifact / source reference",
+        "Structured escalation packet",
+        "Role-play acceptance or pending escalation",
+        "User communication and limitations"
+      ],
+      "limit": "All security evidence is inert and synthetic. No email tenant, live phishing assessment, containment action or SOC investigation has been performed."
+    },
+    {
+      "n": 9,
+      "id": "LAB-INC-006",
+      "file": "09-multi-user-outage",
+      "title": "Multiple callers report a critical application outage",
+      "type": "Incident / outage coordination",
+      "core": false,
+      "group": "Service Desk L1 → Network/Application support and incident lead",
+      "service": "Critical scheduling application",
+      "person": "Several fictional users across two teams",
+      "report": "The scheduling application is unavailable for two teams. There is no approved workaround and a time-critical scheduling window is open.",
+      "impact": "High",
+      "urgency": "High",
+      "priority": "P1",
+      "rationale": "The scripted impact is a widespread critical business service with an immediate deadline and no viable workaround. Validate facts before raising priority.",
+      "classification": "An outage incident coordinates multiple affected-user reports. Parent/related incident linkage and major-incident capabilities must be verified in the actual instance.",
+      "checks": "Correlate symptoms, service and timing without assuming every complaint has the same cause. Use the designated incident lead for a major-incident decision. L1 cannot claim authority to declare one merely because priority is P1.",
+      "questions": [
+        "Which service, locations and user groups are affected?",
+        "Is there an approved workaround or critical deadline?",
+        "Do the symptom and start time align across reports?"
+      ],
+      "diagnostics": [
+        [
+          "Confirm broad service effect",
+          "Two teams report matching symptoms and a controlled service check fails in the script.",
+          "One slow workstation is insufficient for an outage declaration."
+        ],
+        [
+          "Link reports to a coordinating incident",
+          "Retain each caller's information and associate related records when supported.",
+          "Do not cancel every related ticket as a duplicate without preserving communication needs."
+        ],
+        [
+          "Escalate and issue consistent updates",
+          "Incident lead receives business effect, timing, scope, checks and next action.",
+          "Avoid unverified root-cause statements or speculative recovery promises."
+        ],
+        [
+          "Verify recovery with representatives",
+          "Check the critical workflow with users from both teams after the responsible group acts.",
+          "A green status page alone is not proof of user recovery."
+        ]
+      ],
+      "notes": [
+        "Scope confirmed in scripted reports: critical application inaccessible for two teams during a time-sensitive window, no workaround. High impact/High urgency/P1.",
+        "Coordinating incident retains related report references. Lead escalation and next status update recorded; root cause remains unknown.",
+        "Expected recovery: responsible team action documented; representative users complete a controlled scheduling task. Related records receive the same verified status."
+      ],
+      "comments": [
+        "We’re coordinating reports affecting the scheduling application and have escalated the business impact. The cause is still under investigation. The next update is in 15 minutes.",
+        "The incident lead is coordinating the responsible teams. We’ll share verified progress and any approved workaround rather than guessing a recovery time.",
+        "Expected recovery message: Representative users from both affected teams completed the scheduling check. Please report remaining issues against the incident reference."
+      ],
+      "negative": "One caller's symptom differs: investigate separately rather than linking by time alone. Restoration only works for one team: keep the broader incident active. An unresolved dependency must remain visible after a workaround.",
+      "verification": [
+        "Priority is supported by recorded scope and business effect.",
+        "Related records preserve caller context and communication.",
+        "Both teams pass the end-to-end recovery check.",
+        "Major-incident designation, if used, is made by the authorized role and supported feature."
+      ],
+      "end": "Expected: coordinating incident and related reports remain active through restoration and confirmation. Resolve related records according to their individual verified outcomes.",
+      "evidence": [
+        "Scope and impact decision",
+        "Actual relationship fields if supported",
+        "Incident-lead handoff and update sequence",
+        "Representative recovery checks"
+      ],
+      "limit": "An extension scenario only; no outage, major-incident plugin or multi-team operation has been executed."
+    },
+    {
+      "n": 10,
+      "id": "LAB-REQ-004",
+      "file": "10-mfa-recovery",
+      "title": "MFA access recovery after a phone replacement",
+      "type": "Catalog request / restricted identity recovery",
+      "core": false,
+      "group": "Service Desk L1 → Identity Support",
+      "service": "Workforce authentication recovery",
+      "person": "Jamie Park, fictional employee",
+      "report": "I replaced my phone and cannot use my normal MFA method. Please change my number so I can sign in.",
+      "impact": "N/A",
+      "urgency": "N/A",
+      "priority": "Identity recovery routing; reassess service impact",
+      "rationale": "The recovery workflow uses restricted verification and authorization under this lab policy. If the underlying sign-in interruption requires an incident, link that incident rather than bypass recovery controls.",
+      "classification": "A recovery request manages the approved identity procedure. It is distinct from simply enrolling a factor while authenticated. New-factor enrollment is a sensitive change.",
+      "checks": "Use the established recovery policy and pre-enrolled verification routes. A caller-provided phone number or manager email alone is insufficient under this exercise. Identity Support performs recovery within its delegated role. Never disclose codes in ticket notes or disable MFA to make the case easy.",
+      "questions": [
+        "Is an approved alternate enrolled method available?",
+        "Can the established recovery verification be completed?",
+        "Was the old device lost/stolen, or are unexpected authentication prompts occurring?"
+      ],
+      "diagnostics": [
+        [
+          "Check an approved alternate method",
+          "If available, the user follows the official recovery/enrollment path themselves.",
+          "Do not solicit an OTP from the user."
+        ],
+        [
+          "Verify identity independently of the new contact detail",
+          "Scripted approved verification must pass before Identity Support changes any method.",
+          "If verification fails, leave authentication methods unchanged."
+        ],
+        [
+          "Hand off scoped authorized recovery",
+          "Identity Support follows the lab's documented procedure and records only the action/result.",
+          "Temporary access methods, if ever used, require actual tenant support and authorized policy; none is assumed here."
+        ],
+        [
+          "Confirm normal sign-in and method cleanup",
+          "User verifies new enrollment; the old method is reviewed/revoked by the authorized role as appropriate.",
+          "A ticket marked complete is not proof of safe recovery or removal of a lost method."
+        ]
+      ],
+      "notes": [
+        "Intake: phone replacement prevents normal factor use. New phone detail is unverified; no method changes performed by L1.",
+        "Recovery handoff: approved verification outcome and scope provided to Identity Support without secrets. If device was lost or suspicious prompts exist, security exposure is escalated.",
+        "Expected verification: authorized method change, successful user authentication and appropriate old-method disposition; no MFA bypass or broad admin assignment."
+      ],
+      "comments": [
+        "I’ll help route the recovery request. We must complete the established identity checks before changing authentication methods; please do not send codes or recovery secrets.",
+        "The request is with Identity Support for the approved recovery process. I’ll update you within 30 minutes; the new contact detail is not being treated as proof of identity.",
+        "Expected completion message: The approved identity role completed recovery and you verified normal sign-in. The previous method was reviewed under the recovery policy."
+      ],
+      "negative": "Verification cannot be completed: no factor reset, new method, temporary access or MFA disablement. Route to the approved exception process. Evidence of theft or suspicious prompts triggers security escalation and an updated exposure assessment.",
+      "verification": [
+        "Independent approved verification passes without relying solely on new contact details.",
+        "Only the authorized identity role performs the scoped recovery.",
+        "User authenticates normally and previous-method disposition is documented.",
+        "Failed verification results in zero authentication-method changes."
+      ],
+      "end": "Expected: restricted recovery request remains pending until verified/authorized; fulfill only after the normal sign-in check. Link any associated interruption/security record under the actual process.",
+      "evidence": [
+        "Restricted verification outcome",
+        "Identity-role action with no secret material",
+        "User sign-in and old-method disposition",
+        "Failed-verification negative test"
+      ],
+      "limit": "No Microsoft Entra tenant, MFA change or recovery action has been performed. This extension is a procedure design."
+    }
+  ]
+}
