@@ -1,0 +1,204 @@
+{
+  "attack_version": "17.0",
+  "group": "G1015",
+  "source_url": "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-17.0.json",
+  "source_sha256": "c8966a9a55f1723c0082910f4522af448514343f84ffb9a3e757bdd59642d057",
+  "selection": "Eleven selected direct, active group uses relationships; not exhaustive coverage.",
+  "relationships": [
+    {
+      "technique_id": "T1598.004",
+      "name": "Spearphishing Voice",
+      "tactic": "reconnaissance",
+      "technique_stix_id": "attack-pattern--6a5d222a-a7e0-4656-b110-782c33098289",
+      "relationship_stix_id": "relationship--dbec2814-4a92-4ab7-a007-123b40b16d0b",
+      "relationship_modified": "2025-04-16T22:51:28.994Z",
+      "references": [
+        {
+          "source_name": "MSTIC Octo Tempest Operations October 2023",
+          "description": "Microsoft. (2023, October 25). Octo Tempest crosses boundaries to facilitate extortion, encryption, and destruction. Retrieved March 18, 2024.",
+          "url": "https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/"
+        },
+        {
+          "source_name": "Crowdstrike TELCO BPO Campaign December 2022",
+          "description": "Parisi, T. (2022, December 2). Not a SIMulation: CrowdStrike Investigations Reveal Intrusion Campaign Targeting Telco and BPO Companies. Retrieved June 30, 2023.",
+          "url": "https://www.crowdstrike.com/blog/analysis-of-intrusion-campaign-targeting-telecom-and-bpo-companies/"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1556.006",
+      "name": "Multi-Factor Authentication",
+      "tactic": "persistence",
+      "technique_stix_id": "attack-pattern--b4409cd8-0da9-46e1-a401-a241afd4d1cc",
+      "relationship_stix_id": "relationship--55e1a1e9-689f-4242-8316-d59c309849d6",
+      "relationship_modified": "2025-04-16T22:16:01.145Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1136",
+      "name": "Create Account",
+      "tactic": "persistence",
+      "technique_stix_id": "attack-pattern--e01be9c5-e763-4caf-aeb7-000b416aef67",
+      "relationship_stix_id": "relationship--cb094cb6-145c-471b-beac-0895a632bb57",
+      "relationship_modified": "2025-04-16T22:47:11.095Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1656",
+      "name": "Impersonation",
+      "tactic": "defense-evasion",
+      "technique_stix_id": "attack-pattern--c9e0c59e-162e-40a4-b8b1-78fab4329ada",
+      "relationship_stix_id": "relationship--fd6f5d49-889b-42df-b955-ddff0847f5bf",
+      "relationship_modified": "2025-04-16T23:00:04.442Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        },
+        {
+          "source_name": "MSTIC Octo Tempest Operations October 2023",
+          "description": "Microsoft. (2023, October 25). Octo Tempest crosses boundaries to facilitate extortion, encryption, and destruction. Retrieved March 18, 2024.",
+          "url": "https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/"
+        },
+        {
+          "source_name": "Crowdstrike TELCO BPO Campaign December 2022",
+          "description": "Parisi, T. (2022, December 2). Not a SIMulation: CrowdStrike Investigations Reveal Intrusion Campaign Targeting Telco and BPO Companies. Retrieved June 30, 2023.",
+          "url": "https://www.crowdstrike.com/blog/analysis-of-intrusion-campaign-targeting-telecom-and-bpo-companies/"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1621",
+      "name": "Multi-Factor Authentication Request Generation",
+      "tactic": "credential-access",
+      "technique_stix_id": "attack-pattern--954a1639-f2d6-407d-aef3-4917622ca493",
+      "relationship_stix_id": "relationship--a3fef23a-9f22-4d7c-b9f1-3f05372e9d87",
+      "relationship_modified": "2025-04-16T22:36:58.783Z",
+      "references": [
+        {
+          "source_name": "CrowdStrike Scattered Spider BYOVD January 2023",
+          "description": "CrowdStrike. (2023, January 10). SCATTERED SPIDER Exploits Windows Security Deficiencies with Bring-Your-Own-Vulnerable-Driver Tactic in Attempt to Bypass Endpoint Security. Retrieved July 5, 2023.",
+          "url": "https://www.crowdstrike.com/blog/scattered-spider-attempts-to-avoid-detection-with-bring-your-own-vulnerable-driver-tactic/"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1552.001",
+      "name": "Credentials In Files",
+      "tactic": "credential-access",
+      "technique_stix_id": "attack-pattern--837f9164-50af-4ac0-8219-379d8a74cefc",
+      "relationship_stix_id": "relationship--f9234d49-433d-41b2-ac26-7e9c899e6076",
+      "relationship_modified": "2025-04-16T22:58:56.801Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1213.003",
+      "name": "Code Repositories",
+      "tactic": "collection",
+      "technique_stix_id": "attack-pattern--cff94884-3b1c-4987-a70b-6d5643c621c3",
+      "relationship_stix_id": "relationship--8e09a040-057f-4b15-80c3-e7e299b274df",
+      "relationship_modified": "2025-04-16T22:31:02.621Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        },
+        {
+          "source_name": "MSTIC Octo Tempest Operations October 2023",
+          "description": "Microsoft. (2023, October 25). Octo Tempest crosses boundaries to facilitate extortion, encryption, and destruction. Retrieved March 18, 2024.",
+          "url": "https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1114",
+      "name": "Email Collection",
+      "tactic": "collection",
+      "technique_stix_id": "attack-pattern--1608f3e1-598a-42f4-a01a-2e252e81728f",
+      "relationship_stix_id": "relationship--f9270fc0-7d9f-4380-bf78-1f79fa775455",
+      "relationship_modified": "2025-04-16T22:58:57.011Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1213.005",
+      "name": "Messaging Applications",
+      "tactic": "collection",
+      "technique_stix_id": "attack-pattern--fb75213f-cfb0-40bf-a02f-3bad93d6601e",
+      "relationship_stix_id": "relationship--bf341c57-1bdf-4d7a-8c01-1d94acce69a8",
+      "relationship_modified": "2025-04-16T22:43:57.654Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1567.002",
+      "name": "Exfiltration to Cloud Storage",
+      "tactic": "exfiltration",
+      "technique_stix_id": "attack-pattern--bf1b6176-597c-4600-bfcd-ac989670f96b",
+      "relationship_stix_id": "relationship--d4c936f5-2221-4f6d-9d49-c6f499b07c9e",
+      "relationship_modified": "2025-04-16T22:49:41.198Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        },
+        {
+          "source_name": "MSTIC Octo Tempest Operations October 2023",
+          "description": "Microsoft. (2023, October 25). Octo Tempest crosses boundaries to facilitate extortion, encryption, and destruction. Retrieved March 18, 2024.",
+          "url": "https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/"
+        }
+      ]
+    },
+    {
+      "technique_id": "T1486",
+      "name": "Data Encrypted for Impact",
+      "tactic": "impact",
+      "technique_stix_id": "attack-pattern--b80d107d-fa0d-4b60-9684-b0433e8bdba0",
+      "relationship_stix_id": "relationship--47a9cbf2-d225-4cdd-ad8a-760e2c32f6cb",
+      "relationship_modified": "2025-04-16T22:12:04.811Z",
+      "references": [
+        {
+          "source_name": "CISA Scattered Spider Advisory November 2023",
+          "description": "CISA. (2023, November 16). Cybersecurity Advisory: Scattered Spider (AA23-320A). Retrieved March 18, 2024.",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+        },
+        {
+          "source_name": "MSTIC Octo Tempest Operations October 2023",
+          "description": "Microsoft. (2023, October 25). Octo Tempest crosses boundaries to facilitate extortion, encryption, and destruction. Retrieved March 18, 2024.",
+          "url": "https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/"
+        }
+      ]
+    }
+  ]
+}

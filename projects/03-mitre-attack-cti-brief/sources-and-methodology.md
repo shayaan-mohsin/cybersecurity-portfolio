@@ -1,53 +1,23 @@
-# Sources And Methodology
+# Sources and mapping method
 
-## Collection Date
+[Project overview](README.md) · [Supported table](attack-mapping.md) · [Candidates](proposed-mappings.md)
 
-May 16, 2026.
+The analysis is pinned to **Enterprise ATT&CK v17.0**, rather than silently mixing a historical layer with today’s live pages. Later releases may rename, move, revoke, or replace techniques.
 
-## Sources Used
+## Evidence chain
 
-| Source | Why it was used |
-|---|---|
-| CISA AA23-320A, Scattered Spider | Primary public advisory for recent Scattered Spider tactics, techniques, procedures, mitigations, and defensive recommendations. |
-| CISA alert on updated Scattered Spider advisory | Confirms the July 29, 2025 update and summarizes the advisory's emphasis on phishing, push bombing, SIM swap, remote access tools, and ransomware. |
-| MITRE ATT&CK Group G1015, Scattered Spider | Primary ATT&CK reference for group aliases, associated techniques, software, and behavior mappings. |
-| CISA Best Practices for MITRE ATT&CK Mapping | Method reference for mapping adversary behavior to ATT&CK consistently. |
-| MITRE ATT&CK framework | Shared language for tactics, techniques, and defensive gap analysis. |
+1. Use the official [v17.0 STIX dataset](https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-17.0.json). STIX is a structured format for threat information.
+2. Resolve group G1015 and each selected technique ID.
+3. Require a non-revoked, non-deprecated direct group-to-technique “uses” relationship for inclusion in the supported layer.
+4. Preserve the selected tactic from that version and the relationship identifiers and source references in [the evidence file](evidence/selected-relationships.json).
+5. Keep candidates without that exact relationship outside the supported layer.
 
-## Analytical Method
+The evidence file is a small derived index, not the complete MITRE dataset. Its recorded SHA-256 identifies the full dataset used. It allows source tracing; it is not independent corroboration of MITRE’s underlying reporting.
 
-1. Identify a public-source threat focus with enough official reporting to support a useful CTI brief.
-2. Extract observed behaviors from CISA AA23-320A and MITRE ATT&CK G1015.
-3. Map behaviors to ATT&CK tactics and techniques only when the source reporting supports the mapping.
-4. Translate mapped behaviors into defensive use cases, log sources, response actions, and backlog items.
-5. Separate observed source-backed activity from analyst interpretation.
+## Primary references
 
-## Confidence Levels
+- [CISA advisory AA23-320A: Scattered Spider](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a), for reported identity and support-process abuse.
+- [MITRE ATT&CK group G1015](https://attack.mitre.org/groups/G1015/), for current navigation; use the pinned dataset for this layer’s historical meaning.
+- [Microsoft: Octo Tempest operations](https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/), for additional reporting. Overlapping names in industry reporting should not be treated as perfectly interchangeable groups or campaigns.
 
-| Assessment type | Confidence | Reason |
-|---|---|---|
-| Scattered Spider uses social engineering, help desk abuse, MFA bypass, and remote access tooling | High | Directly supported by CISA and MITRE ATT&CK references. |
-| Identity provider, help desk, SaaS, EDR, and collaboration logs are priority detection sources | High | These sources align directly to the documented behaviors. |
-| Organizations with weak MFA reset controls are at elevated risk from this tradecraft | Moderate to high | Strongly implied by CISA reporting, but local risk depends on actual process maturity. |
-| Specific business impact for an individual organization | Moderate | Impact depends on sector, identity architecture, data access, and response maturity. |
-
-## Scope
-
-The report covers defensive CTI for identity-focused intrusion patterns associated with Scattered Spider:
-
-- social engineering and help desk abuse
-- MFA bypass and token transfer
-- valid account abuse
-- remote access tooling
-- cloud, SaaS, collaboration, and code repository discovery
-- data exfiltration and ransomware impact
-
-## Limitations
-
-This brief is based on public reporting. It does not include organization-specific telemetry, victim data, malware reverse engineering, live incident response evidence, or private intelligence feeds.
-
-ATT&CK mappings are used to structure defensive analysis. A mapping does not prove that a local control detects the technique unless the detection is tested against relevant telemetry.
-
-## Ethical Handling
-
-The report avoids exploit instructions, credential theft details, and operational steps that would enable abuse. Recommendations are framed for prevention, detection, response, governance, and recovery.
+The 11 selected techniques are not an exhaustive actor profile and do not represent detection coverage. A direct MITRE relationship is a source-based attribution, not an observation from an environment I investigated.

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="882" viewBox="0 0 760 882" role="img" aria-labelledby="title desc">
+<title id="title">Four identities, separate permissions</title>
+<desc id="desc">Academic proposal. These are parallel access paths. Customer: Customer sign-in → application authorization → permitted account record. Employee: Workforce sign-in → business role → approved staff application. Privileged administrator: Separate admin role → authorized change → audit evidence. Application workload: Service identity → scoped API/data permission → logged operation.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#147d83"/></marker></defs>
+<rect width="760" height="100%" rx="8" fill="#ffffff"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<rect x="30" y="28" width="42" height="5" fill="#147d83"/>
+<text x="30" y="70" font-size="29" font-weight="700" fill="#142b43">Four identities, separate permissions</text>
+<text x="30" y="126" font-size="18" font-weight="400" fill="#46576a">Academic proposal. These are parallel access paths.</text>
+<rect x="30" y="154" width="700" height="142" rx="8" fill="#f4f8fa" stroke="#c7d3df"/>
+<text x="50" y="188" font-size="24" font-weight="700" fill="#142b43">1. Customer</text>
+<text x="50" y="222" font-size="21" font-weight="400" fill="#46576a">Customer sign-in → application authorization → permitted</text>
+<text x="50" y="249" font-size="21" font-weight="400" fill="#46576a">account record.</text>
+<rect x="30" y="326" width="700" height="142" rx="8" fill="#f4f8fa" stroke="#c7d3df"/>
+<text x="50" y="360" font-size="24" font-weight="700" fill="#142b43">2. Employee</text>
+<text x="50" y="394" font-size="21" font-weight="400" fill="#46576a">Workforce sign-in → business role → approved staff</text>
+<text x="50" y="421" font-size="21" font-weight="400" fill="#46576a">application.</text>
+<rect x="30" y="498" width="700" height="142" rx="8" fill="#f4f8fa" stroke="#c7d3df"/>
+<text x="50" y="532" font-size="24" font-weight="700" fill="#142b43">3. Privileged administrator</text>
+<text x="50" y="566" font-size="21" font-weight="400" fill="#46576a">Separate admin role → authorized change → audit evidence.</text>
+<rect x="30" y="670" width="700" height="142" rx="8" fill="#f4f8fa" stroke="#c7d3df"/>
+<text x="50" y="704" font-size="24" font-weight="700" fill="#142b43">4. Application workload</text>
+<text x="50" y="738" font-size="21" font-weight="400" fill="#46576a">Service identity → scoped API/data permission → logged</text>
+<text x="50" y="765" font-size="21" font-weight="400" fill="#46576a">operation.</text>
+</g></svg>

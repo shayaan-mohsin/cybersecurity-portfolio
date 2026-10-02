@@ -14,22 +14,45 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime as dt
-import html
 from collections import Counter, defaultdict
+from statistics import median
 from pathlib import Path
 
 
-PALETTE = ["#2563eb", "#0891b2", "#16a34a", "#ca8a04", "#dc2626", "#7c3aed", "#475569", "#0f766e"]
 
 
 def read_rows(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8-sig") as handle:
-        return list(csv.DictReader(handle))
+        reader = csv.DictReader(handle)
+        required = {'covered_entity','state','covered_entity_type','individuals_affected','breach_submission_date','type_of_breach','location_of_breached_information','business_associate_present'}
+        if not required.issubset(reader.fieldnames or []):
+            raise ValueError('Missing required HHS columns')
+        rows = list(reader)
+    if any(None in row or any(v is None for v in row.values()) for row in rows):
+        raise ValueError("Malformed CSV row width")
+    if not rows:
+        raise ValueError('HHS input has no rows')
+    for i, row in enumerate(rows, 2):
+        parse_int(row['individuals_affected'])
+        date_text = row['breach_submission_date'].strip()
+        try:
+            dt.date.fromisoformat(date_text)
+        except ValueError:
+            dt.datetime.strptime(date_text, '%m/%d/%Y')
+        if row['business_associate_present'].strip().lower() not in {'yes','no'}:
+            raise ValueError(f'Invalid business associate flag at CSV line {i}')
+        if not row['covered_entity'].strip():
+            raise ValueError(f'Missing entity at CSV line {i}')
+    if len({tuple(sorted(row.items())) for row in rows}) != len(rows):
+        raise ValueError('Duplicate complete HHS row')
+    return rows
 
 
 def parse_int(value: str) -> int:
     cleaned = (value or "").replace(",", "").strip()
-    return int(cleaned) if cleaned else 0
+    if not cleaned or not cleaned.isdecimal():
+        raise ValueError('Affected-individual count must be a non-negative integer')
+    return int(cleaned)
 
 
 def counter_by(rows: list[dict[str, str]], field: str) -> Counter[str]:
@@ -50,121 +73,8 @@ def markdown_table(headers: list[str], rows: list[list[object]]) -> str:
         "| " + " | ".join("---" for _ in headers) + " |",
     ]
     for row in rows:
-        lines.append("| " + " | ".join(str(value) for value in row) + " |")
+        lines.append("| " + " | ".join(str(value).replace("|", "\\|").replace("\n", " ") for value in row) + " |")
     return "\n".join(lines)
-
-
-def wrap_label(value: str, width: int = 30) -> list[str]:
-    words = value.split()
-    lines: list[str] = []
-    current: list[str] = []
-    for word in words:
-        candidate = " ".join(current + [word])
-        if len(candidate) <= width:
-            current.append(word)
-        else:
-            if current:
-                lines.append(" ".join(current))
-            current = [word]
-    if current:
-        lines.append(" ".join(current))
-    return lines or [value]
-
-
-def text_block(x: int, y: int, lines: list[str], size: int = 14, weight: str = "400", color: str = "#0f172a") -> str:
-    escaped = [html.escape(line) for line in lines]
-    spans = []
-    for index, line in enumerate(escaped):
-        dy = 0 if index == 0 else size + 4
-        spans.append(f'<tspan x="{x}" dy="{dy}">{line}</tspan>')
-    return f'<text fill="{color}" font-size="{size}" font-weight="{weight}">{"".join(spans)}</text>'
-
-
-def write_bar_chart_svg(
-    path: Path,
-    title: str,
-    subtitle: str,
-    rows: list[tuple[str, int]],
-    value_suffix: str = "",
-    max_rows: int = 8,
-) -> None:
-    rows = rows[:max_rows]
-    width = 980
-    left = 275
-    top = 116
-    row_h = 58
-    bar_w = 560
-    height = top + len(rows) * row_h + 72
-    max_value = max([value for _, value in rows] + [1])
-
-    parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
-        f"<title id=\"title\">{html.escape(title)}</title>",
-        f"<desc id=\"desc\">{html.escape(subtitle)}</desc>",
-        '<rect width="100%" height="100%" fill="#ffffff"/>',
-        '<rect x="18" y="18" width="944" height="' + str(height - 36) + '" rx="14" fill="#f8fafc" stroke="#dbe3ef"/>',
-        text_block(42, 55, [title], 24, "700"),
-        text_block(42, 84, [subtitle], 13, "400", "#475569"),
-    ]
-
-    for index, (label, value) in enumerate(rows):
-        y = top + index * row_h
-        color = PALETTE[index % len(PALETTE)]
-        label_lines = wrap_label(label, 28)
-        parts.append(text_block(42, y + 16, label_lines, 14, "600"))
-        parts.append(f'<rect x="{left}" y="{y}" width="{bar_w}" height="26" rx="13" fill="#e2e8f0"/>')
-        actual_w = int((value / max_value) * bar_w)
-        parts.append(f'<rect x="{left}" y="{y}" width="{actual_w}" height="26" rx="13" fill="{color}"/>')
-        parts.append(
-            f'<text x="{left + bar_w + 22}" y="{y + 19}" fill="#0f172a" font-size="14" font-weight="700">{value:,}{html.escape(value_suffix)}</text>'
-        )
-
-    parts.append("</svg>")
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(parts), encoding="utf-8")
-
-
-def write_dashboard_svg(path: Path, rows: list[dict[str, str]]) -> None:
-    total_records = len(rows)
-    total_affected = sum(parse_int(row.get("individuals_affected", "0")) for row in rows)
-    breach_counts = counter_by(rows, "type_of_breach")
-    location_counts = counter_by(rows, "location_of_breached_information")
-    entity_counts = counter_by(rows, "covered_entity_type")
-    ba_present = sum(1 for row in rows if row.get("business_associate_present", "").strip().lower() == "yes")
-
-    cards = [
-        ("Sample records", f"{total_records:,}", "Public HHS OCR sample"),
-        ("Affected individuals", f"{total_affected:,}", "Total across sample"),
-        ("Hacking/IT incidents", f"{breach_counts.get('Hacking/IT Incident', 0):,}", "Dominant breach type"),
-        ("Network server records", f"{location_counts.get('Network Server', 0):,}", "Most common location"),
-        ("Business associate present", f"{ba_present:,}", "Third-party involvement"),
-        ("Provider records", f"{entity_counts.get('Healthcare Provider', 0):,}", "Largest entity group"),
-    ]
-
-    width, height = 1080, 460
-    parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
-        '<title id="title">Healthcare breach assessment dashboard</title>',
-        '<desc id="desc">Summary metrics from the sampled HHS OCR breach records.</desc>',
-        '<rect width="100%" height="100%" fill="#ffffff"/>',
-        '<rect x="20" y="20" width="1040" height="420" rx="18" fill="#f8fafc" stroke="#dbe3ef"/>',
-        text_block(52, 66, ["Healthcare Breach Risk Snapshot"], 26, "700"),
-        text_block(52, 96, ["HHS OCR sample collected May 16, 2026"], 14, "400", "#475569"),
-    ]
-
-    for index, (label, value, note) in enumerate(cards):
-        col = index % 3
-        row = index // 3
-        x = 52 + col * 330
-        y = 132 + row * 132
-        parts.append(f'<rect x="{x}" y="{y}" width="292" height="96" rx="14" fill="#ffffff" stroke="#dbe3ef"/>')
-        parts.append(text_block(x + 22, y + 28, [label], 13, "700", "#334155"))
-        parts.append(text_block(x + 22, y + 59, [value], 28, "800", PALETTE[index % len(PALETTE)]))
-        parts.append(text_block(x + 22, y + 82, [note], 12, "400", "#64748b"))
-
-    parts.append("</svg>")
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(parts), encoding="utf-8")
 
 
 def build_summary(rows: list[dict[str, str]], as_of: dt.date) -> str:
@@ -186,9 +96,10 @@ def build_summary(rows: list[dict[str, str]], as_of: dt.date) -> str:
                 ["Metric", "Value"],
                 [
                     ["Sample records", f"{len(rows):,}"],
-                    ["Total affected individuals", f"{total_affected:,}"],
+                    ["Sum of reported affected individuals (not unique people)", f"{total_affected:,}"],
+                    ["Median reported affected individuals per record", f"{median(parse_int(r['individuals_affected']) for r in rows):,.1f}"],
                     ["Hacking/IT incident records", f"{breach_counts.get('Hacking/IT Incident', 0):,}"],
-                    ["Network server records", f"{location_counts.get('Network Server', 0):,}"],
+                    ["Network Server-only records", f"{location_counts.get('Network Server', 0):,}"],
                     [
                         "Business associate present",
                         f"{sum(1 for row in rows if row.get('business_associate_present', '').strip().lower() == 'yes'):,}",
@@ -217,7 +128,7 @@ def build_summary(rows: list[dict[str, str]], as_of: dt.date) -> str:
             "",
             "## Method Note",
             "",
-            "This generated summary uses the local dated HHS OCR sample stored in the project data folder. It supports trend analysis and risk framing, but it is not a HIPAA compliance determination or an assessment of any specific organization's internal controls.",
+            "This generated summary uses the local dated HHS OCR sample stored in the project data folder. It supports sample description and risk framing, but it is not a HIPAA compliance determination or an assessment of any specific organization's internal controls.",
             "",
         ]
     )
@@ -228,7 +139,6 @@ def main() -> int:
     parser.add_argument("input_csv", type=Path)
     parser.add_argument("--as-of", default=dt.date.today().isoformat())
     parser.add_argument("--output-dir", type=Path, default=Path("outputs"))
-    parser.add_argument("--visual-dir", type=Path, help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     as_of = dt.date.fromisoformat(args.as_of)

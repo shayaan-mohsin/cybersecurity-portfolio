@@ -1,47 +1,11 @@
-# Data Notes
+# Synthetic input
 
-This folder contains sanitized sample CloudTrail-style events so the Python analyzer can be run without access to a live AWS account.
+[Project overview](../README.md) · [Walkthrough](../walkthrough.md)
 
-## Public Data Handling Rule
+The JSON contains 12 fabricated CloudTrail-style management events. Account numbers, identities, resource names, documentation IP addresses, and the example key are lab values. The sequence combines Regions and lacks provider event IDs. It is not a complete provider export or a forensic record.
 
-Do not commit raw CloudTrail exports from a personal AWS account.
+The denied bucket-policy example uses a composite bucketPolicy field; the analyzer checks errorCode first. Retain the fixture unchanged for reproducibility.
 
-Raw AWS logs can include:
+Supported local JSON containers are Records, Event History Events with embedded CloudTrailEvent strings, an event list, or one event object. CSV is unsupported because it commonly loses nested evidence.
 
-- AWS account IDs
-- ARNs
-- IAM user names
-- source IP addresses
-- access key IDs
-- session names
-- resource names
-- request parameters
-- user-agent strings
-
-Use [`../scripts/sanitize_cloudtrail.py`](../scripts/sanitize_cloudtrail.py) before publishing any log excerpts.
-
-## Sample Dataset
-
-[`sample-cloudtrail-events.json`](sample-cloudtrail-events.json) is a sanitized dataset for reproducible testing. It includes representative management events related to:
-
-- console login
-- root activity
-- IAM policy changes
-- access key creation
-- S3 public access controls
-- security group exposure
-- CloudTrail logging changes
-- GuardDuty detector activity
-- AccessDenied errors
-
-The sample is intentionally small so the report is easy to inspect by hand.
-
-## Real Lab Evidence
-
-When using a live AWS account:
-
-1. Export CloudTrail Event History as JSON.
-2. Store the raw export outside the public repo.
-3. Sanitize the export.
-4. Run the analyzer.
-5. Commit only sanitized evidence and generated summaries.
+Publish synthetic evidence only. The former regex sanitizer is disabled: replacing a few known strings cannot reliably remove identifiers or secrets from arbitrary real logs.
